@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+<title>Lộ trình Pháp lý Điện mặt trời mái nhà &amp; BESS — Nghị định 58/2025/NĐ-CP &amp; 243/2026/NĐ-CP</title>
+<meta name="description" content="Công cụ tra cứu quy trình thủ tục pháp lý điện mặt trời mái nhà kết hợp pin lưu trữ BESS theo Nghị định 58/2025/NĐ-CP và Nghị định sửa đổi 243/2026/NĐ-CP phối hợp cùng EVN." />
+
+<!-- Fonts: Inter only -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg-page: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --border: #E2E8F0;
+    --border-dark: #CBD5E1;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --text-subtle: #94A3B8;
+    --accent: #0F172A;
+    --accent-hover: #1E293B;
+    --tag-bg: #F1F5F9;
+    --tag-text: #334155;
+    --status-ok-bg: #F0FDF4;
+    --status-ok-text: #166534;
+    --status-ok-border: #BBF7D0;
+    --status-warn-bg: #FFFBEB;
+    --status-warn-text: #92400E;
+    --status-warn-border: #FDE68A;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-full: 9999px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-page);
+    min-height: 100vh;
+    line-height: 1.55;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding: 0 24px 80px;
+    }
+  }
+
+  /* ============================================================
+   * HEADER / HERO BANNER (Clean, Light, Minimalist)
+   * ============================================================ */
+  header.hero {
+    background: #FFFFFF;
+    color: var(--text-primary);
+    padding: 36px 20px 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  .hero-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-lg);
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+  }
+
+  .hero-logo-wrap svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .hero-pill-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-full);
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .hero-pill-top span.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #059669;
+    display: inline-block;
+  }
+
+  header.hero h1 {
+    font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  header.hero p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    max-width: 720px;
+    margin: 0 auto 16px;
+    font-weight: 400;
+  }
+
+  header.hero p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .hero-badges {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .hero-badge:hover {
+    background: var(--tag-bg);
+    border-color: var(--border-dark);
+  }
+
+  /* ============================================================
+   * CARD CONTAINER
+   * ============================================================ */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 18px;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .card {
+      padding: 24px 26px;
+      margin-bottom: 24px;
+    }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .section-title .title-icon {
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 2px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+   * QUICK PRESETS (Minimalist clean pills)
+   * ============================================================ */
+  .preset-bar {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .preset-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .preset-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .preset-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+
+  .preset-pill:hover {
+    border-color: var(--text-primary);
+    background: #FFFFFF;
+    color: var(--text-primary);
+  }
+
+  .preset-pill:active {
+    background: var(--tag-bg);
+  }
+
+  /* ============================================================
+   * FORM & RADIO CARDS
+   * ============================================================ */
+  fieldset {
+    border: none;
+    margin-bottom: 22px;
+  }
+
+  fieldset:last-of-type {
+    margin-bottom: 8px;
+  }
+
+  legend {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    width: 100%;
+  }
+
+  legend .qnum {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    color: #FFFFFF;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  legend .qhint {
+    font-size: 0.78rem;
+    color: var(--text-subtle);
+    font-weight: 400;
+    margin-left: auto;
+  }
+
+  .options-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .options-grid.two-col {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 680px) {
+    .options-grid.two-col {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+  }
+
+  /* Option Card */
+  .option-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    user-select: none;
+  }
+
+  .option-card:hover {
+    border-color: var(--border-dark);
+    background: #FAFAFA;
+  }
+
+  .option-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Radio dot */
+  .radio-indicator {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    border: 1.5px solid var(--border-dark);
+    border-radius: 50%;
+    background: #FFFFFF;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+
+  .radio-indicator::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .option-card input:checked + .radio-indicator {
+    border-color: var(--text-primary);
+  }
+
+  .option-card input:checked + .radio-indicator::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .option-card:has(input:checked),
+  .option-card.selected {
+    border-color: var(--text-primary);
+    background: #FAFAFA;
+  }
+
+  .option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .option-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .option-title {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .option-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    background: var(--tag-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .option-desc {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  /* Form Error */
+  .form-error {
+    display: none;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #991B1B;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .form-error.show {
+    display: flex;
+  }
+
+  /* Button Primary - Solid Dark, Clean */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #FFFFFF;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    user-select: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  /* ============================================================
+   * RESULT SECTION & TIMELINE
+   * ============================================================ */
+  #result {
+    display: none;
+  }
+
+  #result.show {
+    display: block;
+  }
+
+  .result-banner {
+    padding: 18px 20px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+  }
+
+  .result-badge-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .result-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--text-primary);
+  }
+
+  .result-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .result-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .result-forms-box {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .result-forms-box strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* Progress tracker */
+  .progress-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+  }
+
+  .progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .progress-count {
+    font-size: 0.78rem;
+    color: var(--text-primary);
+    background: #FFFFFF;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--text-primary);
+    border-radius: var(--radius-full);
+    width: 0%;
+    transition: width 0.25s ease;
+  }
+
+  /* Notices */
+  .notice-group {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .notice {
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .notice .notice-icon {
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .notice-content {
+    flex: 1;
+  }
+
+  .notice.info {
+    background: #F8FAFC;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  .notice.warn {
+    background: var(--status-warn-bg);
+    border: 1px solid var(--status-warn-border);
+    color: var(--status-warn-text);
+  }
+
+  .notice.pccc {
+    background: #FFF7ED;
+    border: 1px solid #FFEDD5;
+    color: #9A3412;
+  }
+
+  .notice b, .notice strong {
+    font-weight: 600;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-top: 4px;
+    margin-bottom: 20px;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding-bottom: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .step {
+      grid-template-columns: 40px 1fr;
+      gap: 16px;
+      padding-bottom: 24px;
+    }
+  }
+
+  .step:last-child {
+    padding-bottom: 4px;
+  }
+
+  .step::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    bottom: -2px;
+    left: 17px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .step::before {
+      left: 19px;
+      top: 42px;
+    }
+  }
+
+  .step:last-child::before {
+    display: none;
+  }
+
+  .step.completed::before {
+    background: #059669;
+  }
+
+  .step-num-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    background: var(--text-primary);
+    transition: background 0.15s ease;
+  }
+
+  @media (min-width: 640px) {
+    .step-num {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+  }
+
+  .step.completed .step-num {
+    background: #059669;
+  }
+
+  /* Step Card */
+  .step-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    transition: border-color 0.15s ease;
+  }
+
+  .step-card:hover {
+    border-color: var(--border-dark);
+  }
+
+  .step.completed .step-card {
+    border-color: var(--status-ok-border);
+    background: #FAFCFA;
+  }
+
+  .step-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .step-card h3 {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .step.completed .step-card h3 {
+    color: var(--text-secondary);
+  }
+
+  .step-check-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg-page);
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .step-check-btn:hover {
+    border-color: #059669;
+    color: #059669;
+    background: #FFFFFF;
+  }
+
+  .step.completed .step-check-btn {
+    border-color: var(--status-ok-border);
+    background: var(--status-ok-bg);
+    color: var(--status-ok-text);
+  }
+
+  .step-detail {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+
+  .step-detail b, .step-detail strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .step-callout {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  /* Step Meta */
+  .step-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .meta-tag-label {
+    color: var(--text-subtle);
+  }
+
+  .meta-tag-val {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .form-badge-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    text-decoration: none;
+    margin-left: 4px;
+  }
+
+  .form-badge-link:hover {
+    border-color: var(--text-primary);
+  }
+
+  /* ============================================================
+   * FEATURE: HỒ SƠ CHUẨN BỊ (CHECKLIST)
+   * ============================================================ */
+  .step-checklist-wrap {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .step-checklist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step-checklist-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .checklist-badge-count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  .step-checklist-items {
+    display: grid;
+    gap: 6px;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .checklist-item:hover {
+    border-color: var(--border-dark);
+  }
+
+  .checklist-item input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .chk-box {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    border: 1.5px solid var(--border-dark);
+    border-radius: 3px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+
+  .chk-box::after {
+    content: "✓";
+    font-size: 11px;
+    font-weight: 700;
+    color: #FFFFFF;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.15s ease;
+  }
+
+  .checklist-item input:checked + .chk-box {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+  }
+
+  .checklist-item input:checked + .chk-box::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .checklist-item.checked {
+    background: #FAFAFA;
+  }
+
+  .checklist-item.checked .chk-doc-name {
+    text-decoration: line-through;
+    color: var(--text-subtle);
+  }
+
+  .chk-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chk-top-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  .chk-doc-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .chk-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--tag-bg);
+    color: var(--text-muted);
+  }
+
+  .chk-type-badge.required {
+    background: #FEF2F2;
+    border-color: #FECACA;
+    color: #991B1B;
+  }
+
+  .chk-type-badge.optional {
+    background: var(--tag-bg);
+    color: var(--text-secondary);
+  }
+
+  .chk-source-line {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Legal warning */
+  .legal-warning {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    background: var(--status-warn-bg);
+    border: 1px solid var(--status-warn-border);
+    color: var(--status-warn-text);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  /* Result actions */
+  .result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--text-primary);
+    background: #FAFAFA;
+  }
+
+  /* ============================================================
+   * REFERENCE SECTION & TABLE
+   * ============================================================ */
+  .ref-toolbar {
+    margin-bottom: 16px;
+  }
+
+  .ref-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .ref-tab-btn {
+    padding: 6px 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .ref-tab-btn:hover {
+    border-color: var(--border-dark);
+    color: var(--text-primary);
+  }
+
+  .ref-tab-btn.active {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+
+  .ref-search-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .ref-search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .ref-search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: var(--text-subtle);
+  }
+
+  .ref-search-input {
+    width: 100%;
+    padding: 7px 10px 7px 32px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-family: inherit;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .ref-search-input:focus {
+    border-color: var(--text-primary);
+  }
+
+  /* Table */
+  .table-responsive-desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .table-responsive-desktop {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.82rem;
+  }
+
+  .ref-table th {
+    background: var(--bg-page);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  .ref-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ref-table tr:hover td {
+    background: #FAFAFA;
+  }
+
+  .ref-code-badge {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .ref-category-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* Mobile cards */
+  .cards-mobile-view {
+    display: grid;
+    gap: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .cards-mobile-view {
+      display: none;
+    }
+  }
+
+  .ref-card-item {
+    padding: 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .ref-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .ref-card-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .ref-card-row {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .ref-card-label {
+    color: var(--text-subtle);
+    font-weight: 500;
+  }
+
+  /* Legal Basis Box */
+  .legal-basis-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .legal-basis-box h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .legal-basis-box ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .legal-basis-box li {
+    position: relative;
+    padding-left: 14px;
+    margin-bottom: 6px;
+  }
+
+  .legal-basis-box li::before {
+    content: "•";
+    position: absolute;
+    left: 2px;
+    color: var(--text-subtle);
+  }
+
+  .legal-basis-box strong {
+    color: var(--text-primary);
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    margin-top: 24px;
+    padding: 14px 18px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+    border-radius: var(--radius-md);
+    line-height: 1.55;
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--text-primary);
+    color: #FFFFFF;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  #toast.show {
+    display: flex;
+  }
+
+  /* Print */
+  @media print {
+    body {
+      background: #FFFFFF;
+      font-size: 11pt;
+    }
+    header.hero {
+      border: none;
+      padding: 10px 0;
+    }
+    .card {
+      border: 1px solid #CCC;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+    .result-actions, .preset-bar, #input-section {
+      display: none !important;
+    }
+    #result {
+      display: block !important;
+    }
+    .ref-toolbar {
+      display: none !important;
+    }
+    .table-responsive-desktop {
+      display: block !important;
+    }
+    .cards-mobile-view {
+      display: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo-wrap">
+      <!-- Sun + Battery Vector Icon -->
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Điện mặt trời và BESS">
+        <circle cx="26" cy="24" r="10" fill="#fde047"/>
+        <g stroke="#fde047" stroke-width="3" stroke-linecap="round">
+          <path d="M26 6v5M26 37v5M8 24h5M39 24h5M13 11l3.5 3.5M35.5 33.5L39 37M39 11l-3.5 3.5M16.5 33.5L13 37"/>
+        </g>
+        <rect x="34" y="36" width="24" height="16" rx="3" fill="#ffffff" fill-opacity=".95"/>
+        <path d="M58 40h3v8h-3" fill="#fde047"/>
+        <g fill="#10b981">
+          <rect x="37" y="47" width="4" height="3" rx="1"/>
+          <rect x="43" y="47" width="4" height="3" rx="1"/>
+          <rect x="49" y="47" width="4" height="3" rx="1"/>
+        </g>
+        <path d="M45 38.5l-4 5h3l-1 4 4.5-5.5h-3l1.5-3.5h-1z" fill="#0767d9"/>
+      </svg>
+    </div>
+
+    <div class="hero-pill-top">
+      <span class="dot"></span>
+      Cơ sở pháp lý 2025 – 2026
+    </div>
+
+    <h1>Lộ trình Pháp lý Điện mặt trời mái nhà &amp; Pin lưu trữ (BESS)</h1>
+    <p>Tra cứu thủ tục pháp lý theo quy mô công suất và nhu cầu sử dụng điện dư, chuẩn hóa theo <strong>Nghị định 58/2025/NĐ-CP</strong> và sửa đổi bởi <strong>Nghị định 243/2026/NĐ-CP</strong>, phối hợp EVN &amp; PCCC.</p>
+
+    <div class="hero-badges">
+      <span class="hero-badge">⚡ Đấu nối lưới điện quốc gia (EVN)</span>
+      <span class="hero-badge">☀️ Điện mặt trời mái nhà</span>
+      <span class="hero-badge">🔋 Pin lưu trữ BESS</span>
+      <span class="hero-badge">🏕️ Hệ thống Độc lập Off-Grid</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ================= INPUT CONFIGURATION ================= -->
+  <section id="input-section" class="card" aria-labelledby="form-title">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="form-title">
+          <span class="title-icon">📝</span>
+          Cấu hình thông tin dự án
+        </h2>
+        <p class="section-sub">Chọn quy mô công suất và phương thức kết nối để hệ thống lập lộ trình chi tiết từng bước kèm danh mục hồ sơ chuẩn bị phân định rõ nguồn gốc.</p>
+      </div>
+    </div>
+
+    <!-- Quick Presets -->
+    <div class="preset-bar">
+      <div class="preset-header">⚡ Chọn nhanh các trường hợp phổ biến:</div>
+      <div class="preset-pills">
+        <button type="button" class="preset-pill" onclick="applyPreset('A', 'ban')">🏠 Hộ GĐ &lt;100kW (Bán EVN)</button>
+        <button type="button" class="preset-pill" onclick="applyPreset('A', 'khongban')">🔌 Hộ GĐ &lt;100kW (Zero-Export)</button>
+        <button type="button" class="preset-pill" onclick="applyPreset('B', 'ban')">🏭 Doanh nghiệp 100-1000kW (Bán EVN)</button>
+        <button type="button" class="preset-pill" onclick="applyPreset('B', 'khongban')">⚙️ Nhà xưởng 100-1000kW (Zero-Export)</button>
+        <button type="button" class="preset-pill" onclick="applyPreset('C', 'ban')">🏢 Quy mô lớn ≥1.000kW (Bán EVN)</button>
+        <button type="button" class="preset-pill" onclick="applyPreset('A', 'offgrid')">🏕️ Độc lập Off-Grid hoàn toàn</button>
+      </div>
+    </div>
+
+    <form id="roadmap-form" novalidate>
+      <!-- Question 1 -->
+      <fieldset>
+        <legend>
+          <span class="qnum">1</span>
+          Quy mô công suất lắp đặt hệ thống?
+          <span class="qhint">Chọn 1 quy mô</span>
+        </legend>
+
+        <div class="options-grid" role="radiogroup" aria-label="Quy mô công suất lắp đặt">
+          <label class="option-card">
+            <input type="radio" name="scale" value="A" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Dưới 100 kW</span>
+                <span class="option-tag">Hạ áp &lt; 1 kV</span>
+              </span>
+              <span class="option-desc">Hộ gia đình, cá nhân hoặc tổ chức quy mô nhỏ — đấu nối cấp điện áp hạ áp 1 pha / 3 pha sinh hoạt, kinh doanh nhỏ.</span>
+            </span>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="scale" value="B" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Từ 100 kW đến dưới 1.000 kW</span>
+                <span class="option-tag">Trung áp 1 – 35 kV</span>
+              </span>
+              <span class="option-desc">Hộ gia đình lớn, doanh nghiệp, nhà xưởng — có trạm biến áp riêng, kết nối lưới trung áp, yêu cầu thẩm duyệt PCCC.</span>
+            </span>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="scale" value="C" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Từ 1.000 kW trở lên</span>
+                <span class="option-tag">Quy mô lớn</span>
+              </span>
+              <span class="option-desc">Hệ thống quy mô lớn (doanh nghiệp, trang trại, hộ kinh doanh) — bắt buộc làm thủ tục Đăng ký phát triển (Mẫu số 03).</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Question 2 -->
+      <fieldset>
+        <legend>
+          <span class="qnum">2</span>
+          Nhu cầu lượng điện dư &amp; Phương thức kết nối?
+          <span class="qhint">Chọn 1 phương án</span>
+        </legend>
+
+        <div class="options-grid two-col" role="radiogroup" aria-label="Nhu cầu đối với lượng điện dư">
+          <label class="option-card">
+            <input type="radio" name="surplus" value="ban" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Có phát điện dư lên lưới bán cho EVN</span>
+                <span class="option-tag">Hợp đồng Mẫu 05</span>
+              </span>
+              <span class="option-desc">Ký hợp đồng mua bán điện dư với EVN — tỷ lệ sản lượng mua lại áp dụng theo NĐ 243/2026/NĐ-CP.</span>
+            </span>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="surplus" value="khongban" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Tự sản tự tiêu 100%, KHÔNG bán điện</span>
+                <span class="option-tag">Zero-Export</span>
+              </span>
+              <span class="option-desc">Bắt buộc lắp đặt và cấu hình thiết bị chống phát ngược vào lưới (Zero-Export) bảo vệ an toàn hệ thống điện.</span>
+            </span>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="surplus" value="offgrid" />
+            <span class="radio-indicator"></span>
+            <span class="option-content">
+              <span class="option-title-row">
+                <span class="option-title">Độc lập hoàn toàn (Off-Grid)</span>
+                <span class="option-tag">Miễn thủ tục</span>
+              </span>
+              <span class="option-desc">Hệ thống điện mặt trời + BESS hoạt động tách biệt 100% với lưới EVN. Được miễn toàn bộ thủ tục thông báo / đăng ký.</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div id="form-error" class="form-error" role="alert">
+        <span>⚠️</span>
+        <span>Vui lòng chọn cả 2 câu hỏi (Quy mô công suất &amp; Nhu cầu điện dư) trước khi tạo lộ trình.</span>
+      </div>
+
+      <button type="submit" class="btn-primary">
+        <span>🚀 Tạo Lộ Trình Pháp Lý Chi Tiết</span>
+      </button>
+    </form>
+  </section>
+
+  <!-- ================= RESULT SECTION ================= -->
+  <section id="result" class="card" aria-live="polite">
+    <!-- Result Banner -->
+    <div class="result-banner">
+      <div class="result-badge-top">
+        <span>✓</span> Lộ trình thủ tục pháp lý chuẩn hóa
+      </div>
+      <h2 class="result-title" id="result-title"></h2>
+      <div class="result-chips" id="result-chips"></div>
+      <div class="result-forms-box" id="result-forms-box"></div>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-card" id="progress-card">
+      <div class="progress-header">
+        <span>📌 Tiến độ thực hiện hồ sơ &amp; lắp đặt</span>
+        <span class="progress-count" id="progress-text">0 / 0 bước (0%)</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+    </div>
+
+    <!-- Notices -->
+    <div class="notice-group" id="result-notices"></div>
+
+    <!-- Steps Timeline -->
+    <div class="timeline" id="timeline"></div>
+
+    <!-- Legal Warning -->
+    <div id="legal-warning-container"></div>
+
+    <!-- Action Buttons -->
+    <div class="result-actions">
+      <button type="button" class="btn-secondary print-btn" onclick="window.print()">
+        <span>🖨️ In lộ trình / Lưu file PDF</span>
+      </button>
+      <button type="button" class="btn-secondary" onclick="copyRoadmapText()">
+        <span>📋 Sao chép tóm tắt lộ trình &amp; Checklist</span>
+      </button>
+      <button type="button" class="btn-secondary" onclick="resetFormSelection()">
+        <span>🔄 Chọn cấu hình khác</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= REFERENCE SECTION ================= -->
+  <section id="reference" class="card" aria-labelledby="ref-title">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="ref-title">
+          <span class="title-icon">📚</span>
+          Tra cứu biểu mẫu &amp; văn bản pháp lý
+        </h2>
+        <p class="section-sub">Bảng đối chiếu sử dụng hồ sơ, quy chuẩn kỹ thuật điện, an toàn xây dựng và PCCC cho ĐTMN &amp; Pin lưu trữ BESS.</p>
+      </div>
+    </div>
+
+    <!-- Toolbar: Category Filter Tabs & Search -->
+    <div class="ref-toolbar">
+      <div class="ref-filter-tabs" role="tablist">
+        <button type="button" class="ref-tab-btn active" data-cat="all" onclick="setRefCategory('all')">Tất cả văn bản &amp; quy chuẩn</button>
+        <button type="button" class="ref-tab-btn" data-cat="forms" onclick="setRefCategory('forms')">Biểu mẫu NĐ 58 &amp; 243</button>
+        <button type="button" class="ref-tab-btn" data-cat="pccc" onclick="setRefCategory('pccc')">Quy chuẩn PCCC &amp; Pin BESS</button>
+        <button type="button" class="ref-tab-btn" data-cat="tech" onclick="setRefCategory('tech')">Quy chuẩn Kỹ thuật &amp; Xây dựng</button>
+        <button type="button" class="ref-tab-btn" data-cat="legal" onclick="setRefCategory('legal')">Chế tài Vi phạm NĐ 133</button>
+      </div>
+
+      <div class="ref-search-row">
+        <div class="ref-search-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input type="text" id="ref-search" class="ref-search-input" placeholder="Tìm kiếm theo mã số, tên quy chuẩn, cơ quan..." oninput="filterRefTable()" />
+        </div>
+        <div style="font-size: 0.82rem; color: var(--ink-500); font-weight: 600;" id="ref-count-text">
+          Hiển thị 14 văn bản / quy chuẩn
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Table View (No Horizontal Scroll) -->
+    <div class="table-responsive-desktop">
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th style="width: 105px;">Ký hiệu</th>
+            <th style="width: 175px;">Tên văn bản / Tiêu chuẩn</th>
+            <th style="width: 135px;">Đối tượng áp dụng</th>
+            <th>Trường hợp &amp; Nội dung trọng tâm</th>
+            <th style="width: 155px;">Cơ quan thẩm duyệt / Tiếp nhận</th>
+          </tr>
+        </thead>
+        <tbody id="ref-table-body">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Cards View -->
+    <div class="cards-mobile-view" id="ref-cards-mobile">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Legal Basis Cards -->
+    <div class="legal-basis-box">
+      <h4>📖 Căn cứ pháp lý &amp; Quy chuẩn kỹ thuật áp dụng:</h4>
+      <ul>
+        <li><strong>Nghị định 58/2025/NĐ-CP</strong> — Quy định cơ chế khuyến khích phát triển điện mặt trời mái nhà tự sản xuất, tự tiêu thụ và hệ thống biểu mẫu từ Mẫu số 01 đến Mẫu số 05.</li>
+        <li><strong>Nghị định 243/2026/NĐ-CP</strong> — Sửa đổi, bổ sung về tỷ lệ sản lượng điện dư được EVN mua lại theo Hợp đồng Mẫu số 05.</li>
+        <li><strong>Nghị định 133/2026/NĐ-CP</strong> — Chế tài xử phạt vi phạm hành chính trong lĩnh vực điện lực và PCCC (đấu nối trái phép, gian lận chế độ chống phát ngược Zero-Export).</li>
+        <li><strong>Tiêu chuẩn kỹ thuật PCCC đối với Pin BESS</strong> — TCVN 13877, IEC 62619, UL 1973, UL 9540: bắt buộc khoảng cách an toàn / phòng ngăn cháy riêng, cảnh báo khói quang học, cảm biến nhiệt tự ngắt và hệ thống chữa cháy khí chuyên dụng (FM200, Novec 1230, Stat-X).</li>
+        <li><strong>An toàn kết cấu mái theo Luật Xây dựng</strong> — Kiểm định chịu lực của hệ thống xà gồ, kèo mái nhà xưởng chịu tải trọng tấm pin và trạm pin BESS.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER FOOTER -->
+  <footer class="disclaimer">
+    ⚖️ <strong>Miễn trừ trách nhiệm:</strong> Nội dung công cụ tra cứu được tổng hợp và biên soạn nhằm mục đích hướng dẫn, hỗ trợ tham khảo và không thay thế văn bản quy phạm pháp luật gốc. Thời gian xử lý thủ tục thực tế có thể thay đổi tùy thuộc vào quy hoạch phụ tải lưới điện và hướng dẫn của Sở Công Thương / Điện lực tại từng địa phương. Chủ đầu tư vui lòng đối chiếu văn bản pháp luật hiện hành trước khi triển khai thi công.
+  </footer>
+
+</main>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast" role="status" aria-live="polite">
+  <span id="toast-icon">✓</span>
+  <span id="toast-message">Đã sao chép</span>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+ * DỮ LIỆU BIỂU MẪU & VĂN BẢN (FORM_INFO)
+ * ============================================================ */
+const FORM_INFO = {
+  "01": { code: "Mẫu số 01", name: "Thông báo phát triển điện mặt trời mái nhà", where: "Sở Công Thương · Cơ quan PCCC · Điện lực địa phương", badgeClass: "" },
+  "02": { code: "Mẫu số 02", name: "Thông báo phát triển điện mặt trời mái nhà", where: "Sở Công Thương", badgeClass: "" },
+  "03": { code: "Mẫu số 03", name: "Giấy đăng ký phát triển nguồn điện", where: "Sở Công Thương / UBND cấp tỉnh", badgeClass: "" },
+  "04": { code: "Mẫu số 04", name: "Giấy chứng nhận đăng ký phát triển", where: "Sở Công Thương / UBND cấp tỉnh ký cấp", badgeClass: "" },
+  "05": { code: "Mẫu số 05", name: "Hợp đồng mua bán điện dư", where: "Điện lực (EVN) địa phương", badgeClass: "" },
+  "cv": { code: "Công văn", name: "Đề nghị thỏa thuận đấu nối vào lưới điện trung áp", where: "Điện lực sở tại / Tổng công ty Điện lực (từ 1.000 kW)", badgeClass: "cv" }
+};
+
+/* ============================================================
+ * BẢNG TRA CỨU VĂN BẢN (REF_DATA)
+ * ============================================================ */
+const REF_DATA = [
+  /* --- 1. NHÓM BIỂU MẪU PHÁP LÝ NĐ 58 & 243 --- */
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Công văn",
+    name: "Công văn đề nghị thỏa thuận đấu nối vào lưới điện trung áp",
+    target: "Chủ đầu tư (hộ gia đình/cá nhân, doanh nghiệp)",
+    cases: "Chỉ dành cho hệ thống đấu nối trung áp trở lên (từ 100 kW): gửi ngay từ đầu để EVN khảo sát lưới và trả lại Văn bản thỏa thuận đấu nối đã ký duyệt — văn bản này được đính kèm bộ hồ sơ Đăng ký phát triển (Mẫu số 03); nếu chưa thỏa thuận đấu nối trước với EVN, Sở Công Thương không tiếp nhận hồ sơ và không cấp Giấy chứng nhận (Mẫu số 04). Hệ thống hạ áp dưới 100 kW không cần — nội dung đã lồng trong Mẫu số 01.",
+    receiver: "Điện lực (EVN) địa phương · Tổng công ty Điện lực (từ 1.000 kW)",
+    badgeClass: "cv"
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Mẫu số 01",
+    name: "Thông báo phát triển điện mặt trời mái nhà",
+    target: "Hộ gia đình, cá nhân (hoặc tổ chức quy mô nhỏ)",
+    cases: "Hệ thống dưới 100 kW đấu nối cấp hạ áp — dù có bán điện dư hay không bán đều dùng mẫu này. Đã tích hợp sẵn nội dung đề nghị đấu nối hạ áp, không cần công văn thỏa thuận riêng.",
+    receiver: "Sở Công Thương · Cơ quan PCCC · Điện lực địa phương",
+    badgeClass: ""
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Mẫu số 02",
+    name: "Thông báo phát triển điện mặt trời mái nhà",
+    target: "Tổ chức, cá nhân (doanh nghiệp, nhà xưởng)",
+    cases: "Hệ thống từ 100 kW đến dưới 1.000 kW và KHÔNG bán điện dư (tự sản tự tiêu hoàn toàn, có thiết bị Zero-Export và tủ pin BESS).",
+    receiver: "Sở Công Thương",
+    badgeClass: ""
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Mẫu số 03",
+    name: "Giấy đăng ký phát triển nguồn điện",
+    target: "Tổ chức, cá nhân (doanh nghiệp, hộ kinh doanh lớn)",
+    cases: "Hệ thống từ 1.000 kW trở lên (bất kể có bán điện hay không) HOẶC hệ thống từ 100 kW đến dưới 1.000 kW nhưng CÓ nhu cầu bán điện dư vào lưới EVN. Bắt buộc kèm Văn bản thỏa thuận đấu nối của EVN.",
+    receiver: "Sở Công Thương / UBND cấp tỉnh",
+    badgeClass: ""
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Mẫu số 04",
+    name: "Giấy chứng nhận đăng ký phát triển",
+    target: "Sở Công Thương / UBND cấp tỉnh (cơ quan cấp)",
+    cases: "Kết quả đầu ra (giấy phép) cấp cho chủ đầu tư sau khi thẩm định thành công hồ sơ Mẫu số 03 (thời gian tối đa 10 – 15 ngày làm việc). Là điều kiện bắt buộc trước khi triển khai thi công.",
+    receiver: "Gửi trả cho Chủ đầu tư",
+    badgeClass: ""
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Mẫu số 05",
+    name: "Hợp đồng mua bán điện dư",
+    target: "Chủ đầu tư và Đơn vị điện lực (EVN)",
+    cases: "Ký kết ở giai đoạn cuối sau khi nghiệm thu kỹ thuật và lắp đặt xong công tơ 2 chiều; tỷ lệ sản lượng điện dư được mua áp dụng theo sửa đổi mới nhất của Nghị định 243/2026/NĐ-CP.",
+    receiver: "Điện lực địa phương",
+    badgeClass: ""
+  },
+  {
+    category: "forms",
+    categoryName: "Biểu mẫu NĐ 58 & 243",
+    code: "Off-Grid",
+    name: "Cơ chế miễn thủ tục thông báo & đăng ký",
+    target: "Chủ đầu tư mọi quy mô công suất",
+    cases: "Hệ thống điện mặt trời + BESS hoạt động tách biệt 100% với lưới điện quốc gia (không có liên kết vật lý với lưới EVN): được miễn hoàn toàn Mẫu 01, 02, 03; tự nghiệm thu nội bộ, không cần báo cáo EVN / Sở Công Thương. Vẫn phải tuân thủ an toàn kỹ thuật, kết cấu mái và PCCC.",
+    receiver: "Không phát sinh (không nộp hồ sơ)",
+    badgeClass: "offgrid"
+  },
+
+  /* --- 2. NHÓM TIÊU CHUẨN PCCC & PIN LƯU TRỮ BESS --- */
+  {
+    category: "pccc",
+    categoryName: "Quy chuẩn PCCC & Pin BESS",
+    code: "TCVN 13877",
+    name: "Hệ thống lưu trữ năng lượng bằng pin (BESS) — Yêu cầu an toàn PCCC",
+    target: "Mọi hệ thống BESS từ 100 kW trở lên và khuyến khích hộ gia đình",
+    cases: "Quy định khoảng cách an toàn chống cháy lan, yêu cầu phòng ngăn cháy chịu lửa tối thiểu REI 120 cho phòng pin BESS công nghiệp, thông gió cưỡng bức chống tích tụ khí hydro/khí cháy, và ngưỡng nhiệt độ vận hành.",
+    receiver: "Cơ quan Cảnh sát PCCC & CNCH địa phương thẩm duyệt",
+    badgeClass: "pccc"
+  },
+  {
+    category: "pccc",
+    categoryName: "Quy chuẩn PCCC & Pin BESS",
+    code: "IEC 62619 / UL 1973",
+    name: "Tiêu chuẩn an toàn cell & pack pin lưu trữ Lithium-ion công nghiệp",
+    target: "Nhà sản xuất tủ pin BESS / Nhà thầu EPC nhập khẩu",
+    cases: "Chứng nhận khả năng kiểm soát hiện tượng runaway nhiệt độ (thermal runaway), kiểm thử cơ học chống va đập, chống ngắn mạch trong, hệ thống quản lý pin (BMS) có chức năng tự động ngắt khi phát hiện quá dòng/quá nhiệt.",
+    receiver: "Tổ chức kiểm định quốc tế / Hồ sơ CO-CQ đính kèm nghiệm thu",
+    badgeClass: "pccc"
+  },
+  {
+    category: "pccc",
+    categoryName: "Quy chuẩn PCCC & Pin BESS",
+    code: "Chữa cháy khí tự động",
+    name: "Quy chuẩn trang bị hệ thống chữa cháy khí tự động cho kho/tủ BESS",
+    target: "Tủ/phòng lưu trữ pin BESS công suất lớn và trong nhà",
+    cases: "Bắt buộc trang bị hệ thống chữa cháy khí sạch (FM-200 / HFC-227ea, Novec 1230 / FK-5-1-12 hoặc Sol-khí Stat-X) có kích hoạt liên động với cảm biến báo khói sớm và cảm biến nhiệt độ. Nghiêm cấm dùng nước thông thường dập pin Lithium.",
+    receiver: "Cơ quan Cảnh sát PCCC thẩm duyệt và nghiệm thu thực địa",
+    badgeClass: "pccc"
+  },
+
+  /* --- 3. NHÓM QUY CHUẨN KỸ THUẬT ĐIỆN & AN TOÀN XÂY DỰNG --- */
+  {
+    category: "tech",
+    categoryName: "Quy chuẩn Kỹ thuật & Xây dựng",
+    code: "TCVN 2737 / Luật XD",
+    name: "Tiêu chuẩn tải trọng & an toàn chịu lực kết cấu mái công trình",
+    target: "Mái nhà xưởng, tòa nhà thương mại, công trình trung áp",
+    cases: "Khảo sát và tính toán hệ số an toàn chịu lực của hệ thống kèo, xà gồ mái khi chịu thêm tải trọng tĩnh của tấm pin quang điện (15 - 20 kg/m²), giá đỡ và tủ pin BESS, cũng như tải trọng gió bão cực trị theo quy chuẩn xây dựng.",
+    receiver: "Đơn vị tư vấn kiểm định xây dựng có chứng chỉ hành nghề",
+    badgeClass: "tech"
+  },
+  {
+    category: "tech",
+    categoryName: "Quy chuẩn Kỹ thuật & Xây dựng",
+    code: "TT 39/2015 & TT 30/2019",
+    name: "Quy chuẩn kỹ thuật quốc gia về chất lượng điện năng hòa lưới phân phối",
+    target: "Mọi hệ thống điện mặt trời mái nhà đấu nối lưới điện EVN",
+    cases: "Quy định giới hạn độ méo sóng hài (THD < 5%), độ lệch tần số (±0.2 Hz), dao động và nhấp nháy điện áp tại điểm đấu nối kỹ thuật; bảo đảm không gây nhiễu sóng hoặc suy giảm chất lượng điện cho lưới điện phân phối.",
+    receiver: "Trung tâm thí nghiệm điện / Đơn vị điện lực (EVN) đo đạc",
+    badgeClass: "tech"
+  },
+  {
+    category: "tech",
+    categoryName: "Quy chuẩn Kỹ thuật & Xây dựng",
+    code: "Zero-Export Control",
+    name: "Yêu cầu kỹ thuật thiết bị chống phát ngược (Zero-Export) & Anti-Islanding",
+    target: "Hệ thống tự sản tự tiêu 100%, không ký hợp đồng bán điện",
+    cases: "Thiết bị Zero-Export (Smart Meter / CT sensor + Controller) phải có thời gian phản hồi công suất dưới 2 giây; tích hợp tính năng Anti-Islanding tự động cô lập ngắt hòa lưới trong vòng 0.1 giây khi lưới điện EVN mất điện để bảo vệ an toàn cho công nhân sửa chữa.",
+    receiver: "Điện lực sở tại kiểm tra thực địa và niêm phong cổng cài đặt",
+    badgeClass: "tech"
+  },
+
+  /* --- 4. NHÓM CHẾ TÀI XỬ PHẠT VI PHẠM NĐ 133 --- */
+  {
+    category: "legal",
+    categoryName: "Chế tài Vi phạm NĐ 133",
+    code: "NĐ 133/2026/NĐ-CP",
+    name: "Xử phạt vi phạm hành chính trong lĩnh vực điện lực và PCCC",
+    target: "Tất cả tổ chức, cá nhân lắp đặt và vận hành ĐTMN & BESS",
+    cases: "Quy định mức phạt tiền từ 20 – 100 triệu đồng đối với hành vi đưa hệ thống vào vận hành khi chưa nộp Thông báo (Mẫu 01/02) hoặc chưa có Giấy chứng nhận (Mẫu 04); phạt tiền và buộc dừng hoạt động, EVN đơn phương ngắt kết nối lưới điện tức thì nếu để rò rỉ điện năng lên lưới mà không có hợp đồng.",
+    receiver: "Thanh tra Sở Công Thương · UBND các cấp · Điện lực (EVN)",
+    badgeClass: "legal"
+  }
+];
+
+/* ============================================================
+ * CẢNH BÁO PCCC & PHÁP LÝ DÙNG CHUNG
+ * ============================================================ */
+const PCCC_NOTICE = {
+  type: "pccc",
+  icon: "🔥",
+  html: "<strong>Checklist an toàn PCCC cho Pin BESS (Lithium-ion):</strong> (1) <strong>Khoảng cách an toàn / phòng ngăn cháy riêng (TCVN 13877)</strong> cho tủ BESS; (2) <strong>Hệ thống cảnh báo khói quang học sớm</strong>; (3) <strong>Cảm biến nhiệt độ tự động ngắt liên động biến tần</strong>; (4) <strong>Hệ thống chữa cháy khí chuyên dụng (FM200 / Novec 1230 / Stat-X)</strong>. Hệ thống từ 100 kW trở lên phải có <strong>Hồ sơ Thẩm duyệt thiết kế PCCC</strong> do cơ quan Cảnh sát PCCC phê duyệt trước khi thi công."
+};
+
+const LEGAL_WARNING_HTML = `<div class="legal-warning">
+  <h4>⚠️ CẢNH BÁO PHÁP LÝ &amp; CHẾ TÀI XỬ PHẠT (Nghị định 133/2026/NĐ-CP)</h4>
+  <ul>
+    <li><strong>Không nộp Thông báo (Mẫu 01/02) / Giấy đăng ký phát triển (Mẫu 03) trước khi vận hành hòa lưới</strong> sẽ bị <strong>xử phạt vi phạm hành chính</strong> theo quy định tại Nghị định 133/2026/NĐ-CP và <strong>buộc tạm dừng hoạt động tức thì</strong>.</li>
+    <li><strong>Đối với hệ thống đăng ký Zero-Export (không bán điện):</strong> nếu thiết bị chống phát ngược bị lỗi hoặc tự ý can thiệp làm phát điện lên lưới EVN khi chưa có hợp đồng mua bán điện, chủ đầu tư sẽ bị <strong>xử phạt hành chính</strong> và đơn vị điện lực (EVN) <strong>đơn phương ngắt kết nối lưới điện ngay lập tức</strong>.</li>
+  </ul>
+</div>`;
+
+/* ============================================================
+ * DỮ LIỆU LỘ TRÌNH KÈM CHECKLIST PHÂN ĐỊNH 3 NHÓM NGUỒN GỐC
+ * type: "User" (Bạn tự chuẩn bị) | "EPC" (Nhà thầu EPC lập) | "Gov" (Nhận từ Cơ quan NN/EVN)
+ * ============================================================ */
+const ROADMAPS = {
+  /* ---------- A1: < 100 kW + CÓ bán điện dư ---------- */
+  "A|ban": {
+    title: "Dưới 100 kW · Có phát điện dư lên lưới bán cho EVN",
+    chips: ["⚡ Cấp điện áp hạ áp (dưới 1 kV)", "🏠 Hộ gia đình / Cá nhân", "📑 Hợp đồng Mẫu 05"],
+    forms: ["01", "05"],
+    notices: [
+      { type: "info", icon: "📌", html: "<strong>Lưu ý:</strong> Hệ thống hạ áp dưới 100 kW (hộ gia đình) <strong>không cần Công văn thỏa thuận đấu nối trung áp riêng</strong> — nội dung đề nghị đấu nối đã được lồng sẵn trong <strong>Mẫu số 01</strong>." },
+      { type: "info", icon: "📑", html: "Hợp đồng mua bán điện dư (Mẫu số 05) ban hành kèm <strong>Nghị định 58/2025/NĐ-CP</strong>; tỷ lệ sản lượng điện dư được mua áp dụng theo sửa đổi của <strong>Nghị định 243/2026/NĐ-CP</strong>." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Khảo sát hiện trạng và nộp hồ sơ Thông báo phát triển theo Mẫu số 01",
+        detail: "Khảo sát hiện trạng kết cấu mái nhà, tủ điện và nhu cầu tiêu thụ; điền và nộp <b>Thông báo phát triển điện mặt trời mái nhà theo Mẫu số 01</b> (nội dung đề nghị đấu nối hạ áp <b>đã lồng sẵn trong mẫu</b> — không cần công văn thỏa thuận riêng) gửi <b>Sở Công Thương, Cơ quan PCCC và Điện lực địa phương</b> để theo dõi, quản lý.",
+        agency: "Sở Công Thương · Cơ quan PCCC · Điện lực địa phương",
+        time: "Nộp trực tiếp hoặc trực tuyến (nơi có cổng DVC)",
+        form: "01",
+        checklist: [
+          { doc: "Đơn Thông báo phát triển điện mặt trời mái nhà (theo Mẫu số 01)", type: "User", source: "Chủ hộ / Doanh nghiệp ký tên, đóng dấu theo mẫu chuẩn NĐ 58/2025" },
+          { doc: "Sổ đỏ / Sổ hồng hoặc Hợp đồng mua bán / thuê nhà ở hợp pháp", type: "User", source: "Chủ nhà / Chủ đầu tư cung cấp bản sao y chứng thực" },
+          { doc: "Bản vẽ sơ đồ nguyên lý hệ thống điện mặt trời & tủ pin BESS đấu nối hạ áp", type: "EPC", source: "Nhà thầu EPC khảo sát hiện trường và thiết kế kỹ thuật" },
+          { doc: "Bản thuyết minh thông số kỹ thuật (Catalog, CO/CQ tấm pin, Inverter hybrid, tủ BESS)", type: "EPC", source: "Nhà thầu EPC cung cấp từ nhà sản xuất chính hãng" },
+          { doc: "Hình ảnh chụp hiện trạng mái nhà, vị trí đặt tủ BESS và công tơ điện lực hiện hữu", type: "EPC", source: "Kỹ sư EPC khảo sát chụp lưu hồ sơ thực địa" }
+        ]
+      },
+      {
+        title: "Triển khai thi công lắp đặt hệ thống pin mặt trời kết hợp tủ BESS",
+        detail: "Thi công lắp đặt hệ thống pin mặt trời kết hợp <b>tủ lưu trữ pin BESS</b> bảo đảm các <b>tiêu chuẩn an toàn kỹ thuật</b> (tiêu chuẩn thiết bị, chống giật, chống cháy nổ cho kho tủ pin) theo hồ sơ đã thông báo. Với tủ BESS Lithium-ion: đặt nơi thoáng, <b>cách vật liệu dễ cháy</b>; lắp <b>cảnh báo khói</b>, <b>cảm biến nhiệt độ tự ngắt</b> và <b>thiết bị chữa cháy chuyên dụng cho pin Lithium</b>.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>An toàn PCCC cho BESS:</strong> tủ pin đặt nơi thông thoáng, cách vật liệu dễ cháy; có thiết bị báo khói, cảm biến nhiệt tự ngắt và bình chữa cháy chuyên dụng pin Lithium." },
+        checklist: [
+          { doc: "Hồ sơ kiểm tra an toàn kết cấu mái và khung giàn đỡ pin chịu lực", type: "EPC", source: "Nhà thầu EPC tính toán tải trọng và chịu trách nhiệm an toàn" },
+          { doc: "Chứng chỉ chất lượng an toàn cell pin Lithium BESS (IEC 62619 / UL 1973)", type: "EPC", source: "Nhà cung cấp / Nhà thầu EPC bàn giao kèm thiết bị" },
+          { doc: "Phương án an toàn PCCC tủ BESS (khoảng cách an toàn, cảm biến nhiệt tự ngắt)", type: "EPC", source: "Nhà thầu EPC thiết kế thi công tuân thủ TCVN 13877" },
+          { doc: "Trang bị bình chữa cháy khí chuyên dụng cho pin Lithium tại khu vực đặt tủ BESS", type: "User", source: "Chủ đầu tư hoặc EPC mua sắm trang bị theo khuyến nghị" }
+        ]
+      },
+      {
+        title: "EVN kiểm tra, ký biên bản nghiệm thu đấu nối và thay công tơ 2 chiều",
+        detail: "EVN cử cán bộ đến kiểm tra hiện trường, <b>ký biên bản nghiệm thu đấu nối kỹ thuật tại chỗ</b> và tiến hành <b>thay công tơ 2 chiều</b> để ghi nhận chính xác cả điện năng tiêu thụ và lượng điện dư phát lên lưới.",
+        agency: "Điện lực (EVN) địa phương",
+        time: "Theo lịch hẹn kiểm tra của đơn vị điện lực",
+        form: null,
+        checklist: [
+          { doc: "Giấy đề nghị kiểm tra kỹ thuật và đóng điện đấu nối gửi Điện lực", type: "User", source: "Chủ đầu tư ký gửi Điện lực sở tại sau khi hoàn thành thi công" },
+          { doc: "Bản vẽ hoàn công hệ thống điện mặt trời và BESS thực tế lắp đặt", type: "EPC", source: "Nhà thầu EPC lập và bàn giao cho Chủ đầu tư" },
+          { doc: "Biên bản đo điện trở nối đất tiếp địa an toàn (< 4 Ohm)", type: "EPC", source: "Nhà thầu EPC đo kiểm bằng thiết bị đo chuyên dụng" },
+          { doc: "Biên bản nghiệm thu kỹ thuật an toàn đấu nối điện tại hiện trường", type: "Gov", source: "Cán bộ kỹ thuật Điện lực (EVN) kiểm tra và ký xác nhận" }
+        ]
+      },
+      {
+        title: "Ký kết hợp đồng mua bán điện dư chính thức theo Mẫu số 05",
+        detail: "Ký kết <b>hợp đồng mua bán điện dư theo Mẫu số 05</b> (ban hành kèm <b>Nghị định 58/2025/NĐ-CP</b>, áp dụng <b>tỷ lệ sản lượng điện dư được mua theo sửa đổi mới nhất của Nghị định 243/2026/NĐ-CP</b>) để bắt đầu chu kỳ thanh toán bù trừ tiền điện.",
+        agency: "Điện lực (EVN) địa phương",
+        time: "Sau khi hoàn tất nghiệm thu và thay công tơ 2 chiều",
+        form: "05",
+        checklist: [
+          { doc: "Biên bản treo tháo, niêm phong kẹp chì công tơ 2 chiều đo đếm điện năng", type: "Gov", source: "Đội đo đếm Điện lực (EVN) thực hiện và bàn giao cho Chủ đầu tư" },
+          { doc: "Bản sao CCCD / ĐKKD và thông tin số tài khoản ngân hàng nhận tiền điện dư", type: "User", source: "Chủ hộ / Doanh nghiệp cung cấp cho Điện lực" },
+          { doc: "Hợp đồng mua bán điện dư chính thức theo Mẫu số 05", type: "Gov", source: "Điện lực (EVN) phát hành và hai bên cùng ký (tỷ lệ mua theo NĐ 243/2026)" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- A2: < 100 kW + KHÔNG bán điện (Zero-Export) ---------- */
+  "A|khongban": {
+    title: "Dưới 100 kW · Tự sản tự tiêu 100% (Zero-Export)",
+    chips: ["⚡ Cấp điện áp hạ áp (dưới 1 kV)", "🏠 Hộ gia đình / Cá nhân", "🚫 Chống phát ngược bắt buộc"],
+    forms: ["01"],
+    notices: [
+      { type: "warn", icon: "🔒", html: "<strong>Bắt buộc:</strong> Hệ thống phải lắp đặt và cấu hình <strong>thiết bị chống phát ngược (Zero-Export)</strong> để đảm bảo không phát điện năng lên lưới; không ký hợp đồng mua bán điện." },
+      { type: "info", icon: "📌", html: "<strong>Lưu ý:</strong> Hệ thống hạ áp dưới 100 kW <strong>không cần Công văn thỏa thuận đấu nối trung áp</strong> — nội dung đề nghị đấu nối đã lồng sẵn trong <strong>Mẫu số 01</strong>." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Khảo sát hiện trạng và nộp hồ sơ Thông báo phát triển theo Mẫu số 01",
+        detail: "Khảo sát hiện trạng; điền và nộp <b>Mẫu số 01</b> (nội dung đề nghị đấu nối hạ áp <b>đã lồng sẵn trong mẫu</b>, ghi rõ phương án tự sản tự tiêu và thiết bị chống phát ngược) gửi <b>Sở Công Thương, Cơ quan PCCC và Điện lực địa phương</b> để quản lý theo dõi.",
+        agency: "Sở Công Thương · Cơ quan PCCC · Điện lực địa phương",
+        time: "Nộp trực tiếp hoặc qua dịch vụ công trực tuyến",
+        form: "01",
+        checklist: [
+          { doc: "Đơn Thông báo phát triển ĐTM mái nhà (Mẫu số 01 — ghi rõ chế độ Zero-Export)", type: "User", source: "Chủ hộ / Tổ chức ký tên và nộp Sở Công Thương" },
+          { doc: "Sổ đỏ / Sổ hồng hoặc Hợp đồng thuê địa điểm hợp pháp", type: "User", source: "Chủ đầu tư cung cấp bản sao y" },
+          { doc: "Bản vẽ sơ đồ nguyên lý đấu nối hạ áp có tích hợp thiết bị chống phát ngược", type: "EPC", source: "Nhà thầu EPC thiết kế kèm vị trí lắp đặt CT sensor / Smart Meter" },
+          { doc: "Thuyết minh kỹ thuật thiết bị Zero-Export và tủ lưu trữ BESS", type: "EPC", source: "Nhà thầu EPC cung cấp từ nhà sản xuất" }
+        ]
+      },
+      {
+        title: "Lắp đặt hệ thống — bắt buộc cấu hình thiết bị Zero-Export",
+        detail: "Thi công lắp đặt pin mặt trời kết hợp tủ BESS bảo đảm tiêu chuẩn an toàn kỹ thuật, gồm cả <b>cảnh báo khói, cảm biến nhiệt tự ngắt và chữa cháy chuyên dụng pin Lithium</b>. <b>Bắt buộc lắp đặt và cấu hình thiết bị chống phát ngược (Zero-Export)</b>, kiểm thử chế độ không phát ngược trước khi vận hành.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>An toàn PCCC cho BESS:</strong> tủ pin đặt nơi thông thoáng, có cảm biến nhiệt tự ngắt khi quá nhiệt độ cho phép." },
+        checklist: [
+          { doc: "Chứng chỉ CO/CQ và chuẩn an toàn pin BESS (IEC 62619 / UL 1973)", type: "EPC", source: "Nhà thầu EPC bàn giao kèm thiết bị" },
+          { doc: "Biên bản cài đặt và test thử nghiệm chức năng chống phát ngược nội bộ", type: "EPC", source: "Kỹ sư EPC đo kiểm độ nhạy phản hồi công suất < 2 giây" },
+          { doc: "Biên bản nghiệm thu an toàn PCCC tủ pin BESS nội bộ", type: "EPC", source: "Nhà thầu EPC cùng Chủ đầu tư kiểm tra" }
+        ]
+      },
+      {
+        title: "EVN kiểm tra và ký biên bản nghiệm thu đấu nối kỹ thuật",
+        detail: "EVN đến kiểm tra hiện trường, <b>ký biên bản nghiệm thu đấu nối kỹ thuật tại chỗ</b>; xác minh hoạt động thực tế của thiết bị chống phát ngược và <b>đo đạc chất lượng điện năng</b> tại điểm đấu nối.",
+        agency: "Điện lực (EVN) địa phương",
+        time: "Theo lịch hẹn kiểm tra của đơn vị điện lực",
+        form: null,
+        checklist: [
+          { doc: "Biên bản kiểm tra thực địa xác nhận hoạt động chống phát ngược", type: "Gov", source: "Cán bộ EVN giám sát mô phỏng và ký biên bản" },
+          { doc: "Báo cáo kiểm tra chất lượng điện năng hòa lưới tại điểm đấu nối", type: "Gov", source: "Điện lực đo đạc hoặc đơn vị thí nghiệm xác nhận" },
+          { doc: "Biên bản niêm phong cài đặt thông số Zero-Export tại biến tần", type: "Gov", source: "EVN niêm phong cổng cấu hình chống can thiệp" }
+        ]
+      },
+      {
+        title: "Gửi văn bản nghiệm thu hoàn thành để vận hành chính thức",
+        detail: "Gửi <b>văn bản nghiệm thu hoàn thành công trình</b> cho Sở Công Thương và Điện lực địa phương để đưa hệ thống vào <b>vận hành tự sản tự tiêu chính thức</b>.",
+        agency: "Sở Công Thương · Điện lực (EVN) địa phương",
+        time: "Sau khi nghiệm thu kỹ thuật đạt yêu cầu",
+        form: null,
+        checklist: [
+          { doc: "Văn bản báo cáo nghiệm thu hoàn thành công trình đưa vào sử dụng", type: "User", source: "Chủ đầu tư ký gửi Sở Công Thương và Điện lực" },
+          { doc: "Hồ sơ hoàn công và quy trình vận hành hệ thống tự sản tự tiêu", type: "EPC", source: "Nhà thầu EPC lập và bàn giao cho Chủ đầu tư" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- B1: 100 kW – < 1000 kW + CÓ bán điện dư ---------- */
+  "B|ban": {
+    title: "Từ 100 kW đến dưới 1.000 kW · Có phát điện dư lên lưới bán cho EVN",
+    chips: ["⚡ Trung áp trở lên (1 – 35 kV)", "👤 Doanh nghiệp, nhà xưởng, hộ lớn", "📑 Cần Đăng ký phát triển (Mẫu 03)"],
+    forms: ["cv", "03", "04", "05"],
+    notices: [
+      { type: "info", icon: "📌", html: "<strong>Lưu ý:</strong> Hệ thống 100 kW – dưới 1.000 kW mà <strong>có nhu cầu bán điện dư</strong> bắt buộc phải lập hồ sơ <strong>Đăng ký phát triển nguồn điện (Mẫu số 03)</strong> — không áp dụng thủ tục thông báo đơn giản. Tỷ lệ điện dư được mua theo <strong>NĐ 243/2026/NĐ-CP</strong>." },
+      { type: "info", icon: "📎", html: "<strong>Điều kiện tiên quyết:</strong> <strong>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</strong> phải đính kèm bộ hồ sơ Mẫu số 03 — nếu chưa thỏa thuận đấu nối trước với EVN, Sở Công Thương <strong>sẽ không tiếp nhận hồ sơ</strong> và <strong>không cấp Giấy chứng nhận (Mẫu số 04)</strong>." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Gửi Công văn đề nghị thỏa thuận đấu nối trung áp và Thẩm duyệt PCCC",
+        detail: "Gửi <b>Công văn đề nghị thỏa thuận đấu nối vào lưới điện trung áp</b> đến Điện lực địa phương <b>ngay từ đầu</b> — EVN khảo sát lưới điện và trả lại <b>Văn bản thỏa thuận đấu nối đã ký duyệt</b> làm tiền đề cho các thủ tục tiếp theo. Song song, nộp hồ sơ xin <b>Thẩm duyệt thiết kế PCCC</b> cho tủ/phòng pin BESS tại cơ quan Cảnh sát PCCC.",
+        agency: "Điện lực (EVN) địa phương · Cơ quan Cảnh sát PCCC",
+        time: "Theo quy định về thỏa thuận đấu nối và thẩm duyệt PCCC",
+        form: "cv",
+        checklist: [
+          { doc: "Công văn đề nghị thỏa thuận đấu nối vào lưới điện trung áp", type: "User", source: "Doanh nghiệp / Chủ đầu tư ký đóng dấu gửi Điện lực cấp tỉnh" },
+          { doc: "Giấy phép kinh doanh, Giấy phép xây dựng nhà xưởng, Sổ đỏ / Hợp đồng thuê mái", type: "User", source: "Chủ đầu tư cung cấp bản sao y công chứng" },
+          { doc: "Bản vẽ sơ đồ nguyên lý một sợi (SLD) trạm biến áp, solar và BESS", type: "EPC", source: "Đơn vị tư vấn thiết kế điện có chứng chỉ hành nghề lập" },
+          { doc: "Hồ sơ thiết kế PCCC chuyên dụng cho tủ/phòng pin BESS (TCVN 13877, chữa cháy khí)", type: "EPC", source: "Đơn vị tư vấn PCCC có đủ năng lực lập" },
+          { doc: "Văn bản thỏa thuận đấu nối trung áp đã ký duyệt", type: "Gov", source: "Điện lực cấp tỉnh/thành phố (EVN) khảo sát và cấp" }
+        ]
+      },
+      {
+        title: "Thiết lập hồ sơ Đăng ký phát triển nguồn điện theo Mẫu số 03",
+        detail: "Thiết lập hồ sơ <b>Đăng ký phát triển nguồn điện theo Mẫu số 03</b> (bắt buộc vì có bán điện dư) kèm thiết kế kỹ thuật và <b>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</b>; nộp trực tiếp hoặc trực tuyến lên <b>Sở Công Thương</b>.",
+        agency: "Sở Công Thương",
+        time: "Nộp trực tiếp hoặc trực tuyến qua Cổng dịch vụ công",
+        form: "03",
+        checklist: [
+          { doc: "Giấy đăng ký phát triển nguồn điện theo Mẫu số 03 (NĐ 58/2025)", type: "User", source: "Chủ đầu tư lập và nộp Sở Công Thương / Cổng DVC" },
+          { doc: "Văn bản thỏa thuận đấu nối trung áp đã được EVN ký duyệt", type: "Gov", source: "Đính kèm từ Bước 1 (điều kiện bắt buộc để Sở tiếp nhận)" },
+          { doc: "Báo cáo kiểm định an toàn chịu lực kết cấu mái nhà xưởng (TCVN 2737)", type: "EPC", source: "Đơn vị kiểm định xây dựng độc lập khảo sát và cấp" },
+          { doc: "Thuyết minh thiết kế cơ sở và tiêu chuẩn cell pin BESS (IEC 62619, UL 1973, UL 9540)", type: "EPC", source: "Nhà thầu EPC / Nhà sản xuất cung cấp" },
+          { doc: "Giấy chứng nhận thẩm duyệt thiết kế PCCC", type: "Gov", source: "Phòng Cảnh sát PCCC & CNCH Công an tỉnh thẩm định và cấp" }
+        ]
+      },
+      {
+        title: "Chờ phê duyệt thẩm định — nhận Giấy chứng nhận theo Mẫu số 04",
+        detail: "Chờ cơ quan quản lý nhà nước <b>thẩm định hồ sơ (tối đa 10 – 15 ngày làm việc)</b>. Sau khi thẩm định đạt yêu cầu, <b>Sở Công Thương ký và trả về Giấy chứng nhận đăng ký phát triển theo Mẫu số 04</b>.",
+        agency: "Sở Công Thương · Điện lực (lấy ý kiến điều kiện lưới)",
+        time: "10 – 15 ngày làm việc",
+        form: "04",
+        checklist: [
+          { doc: "Biên nhận tiếp nhận hồ sơ từ Sở Công Thương / Cổng dịch vụ công tỉnh", type: "Gov", source: "Bộ phận một cửa Sở Công Thương cấp" },
+          { doc: "Văn bản giải trình, bổ sung kỹ thuật (nếu có yêu cầu từ Sở Công Thương / EVN)", type: "EPC", source: "Nhà thầu EPC phối hợp Chủ đầu tư giải trình" },
+          { doc: "Giấy chứng nhận đăng ký phát triển nguồn điện (Mẫu số 04)", type: "Gov", source: "Giám đốc Sở Công Thương ký cấp (kết quả sau 10 - 15 ngày)" }
+        ]
+      },
+      {
+        title: "Triển khai thi công xây lắp sau khi có Giấy chứng nhận Mẫu 04",
+        detail: "Sau khi có <b>Mẫu số 04</b>, triển khai thi công lắp đặt hệ thống tấm pin, biến tần Inverter và <b>trạm lưu trữ pin BESS</b> theo đúng hồ sơ đã duyệt và thiết kế PCCC đã thẩm duyệt. Thi công BESS phải tuân thủ nghiêm ngặt tiêu chuẩn PCCC: <b>khoảng cách an toàn / phòng ngăn cháy riêng cho BESS</b>, <b>hệ thống cảnh báo khói</b>, <b>cảm biến nhiệt độ ngắt tự động</b> và <b>hệ thống chữa cháy chuyên dụng cho pin Lithium</b>.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Hồ sơ Thẩm duyệt thiết kế PCCC:</strong> thi công bắt buộc đúng thiết kế PCCC đã được cơ quan Cảnh sát PCCC thẩm duyệt; là điều kiện tiên quyết khi nghiệm thu PCCC." },
+        checklist: [
+          { doc: "Bản sao Giấy chứng nhận Mẫu 04 và Giấy phép xây dựng niêm yết tại công trường", type: "User", source: "Chủ đầu tư sao y lưu tại ban chỉ huy công trường" },
+          { doc: "Bản vẽ thi công PCCC và phương án an toàn lao động đã thẩm duyệt", type: "EPC", source: "Nhà thầu EPC triển khai thi công đúng hồ sơ duyệt" },
+          { doc: "Hồ sơ CO/CQ, Test report đầu vào của tấm pin, Inverter và phòng pin BESS", type: "EPC", source: "Nhà cung cấp thiết bị bàn giao nghiệm thu đầu vào" },
+          { doc: "Biên bản lắp đặt hoàn thiện hệ thống chữa cháy khí tự động (FM200/Novec/Stat-X)", type: "EPC", source: "Đơn vị thi công PCCC chuyên nghiệp lắp đặt và nghiệm thu nội bộ" }
+        ]
+      },
+      {
+        title: "Nghiệm thu PCCC, an toàn điện kỹ thuật và lắp công tơ 2 chiều",
+        detail: "Tổ chức nghiệm thu thực tế <b>hệ thống PCCC</b>; phối hợp EVN nghiệm thu <b>an toàn điện kỹ thuật, điều kiện đóng điện hòa lưới</b>, lắp đặt <b>công tơ 2 chiều</b> và kiểm định chất lượng điện năng.",
+        agency: "Cơ quan Cảnh sát PCCC · Điện lực (EVN) địa phương",
+        time: "Theo quy định nghiệm thu PCCC và lịch làm việc của EVN",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Nhắc nhở:</strong> <strong>Hồ sơ Thẩm duyệt PCCC + Biên bản nghiệm thu PCCC</strong> phải hoàn chỉnh trước khi đề nghị đóng điện." },
+        checklist: [
+          { doc: "Văn bản nghiệm thu hoàn thành PCCC công trình", type: "Gov", source: "Cơ quan Cảnh sát PCCC & CNCH kiểm tra thực địa và cấp" },
+          { doc: "Báo cáo thử nghiệm, kiểm định chất lượng điện năng hòa lưới (Thông tư 39/30 TT-BCT)", type: "EPC", source: "Trung tâm thí nghiệm điện độc lập đo đạc và cấp chứng nhận" },
+          { doc: "Biên bản nghiệm thu an toàn kỹ thuật đóng điện hòa lưới", type: "Gov", source: "Điện lực (EVN) phối hợp Chủ đầu tư lập" },
+          { doc: "Biên bản treo tháo, niêm phong hệ thống công tơ 2 chiều trung áp", type: "Gov", source: "Đội đo đếm Điện lực (EVN) lắp đặt và bàn giao" }
+        ]
+      },
+      {
+        title: "Ký kết hợp đồng mua bán điện dư chính thức theo Mẫu số 05",
+        detail: "Gửi hồ sơ nghiệm thu cho EVN, thương thảo phương thức vận hành; ký kết <b>hợp đồng mua bán điện dư theo Mẫu số 05</b> (kèm NĐ 58/2025/NĐ-CP, tỷ lệ điện dư được mua theo NĐ 243/2026/NĐ-CP).",
+        agency: "Điện lực (EVN) địa phương",
+        time: "Sau khi hoàn tất nghiệm thu và lắp đặt công tơ 2 chiều",
+        form: "05",
+        checklist: [
+          { doc: "Bộ hồ sơ hoàn thành công trình có chữ ký xác nhận liên ngành", type: "EPC", source: "Nhà thầu EPC hoàn thiện bàn giao cho Chủ đầu tư" },
+          { doc: "Hồ sơ pháp lý, tài khoản thụ hưởng thanh toán tiền điện của Doanh nghiệp", type: "User", source: "Doanh nghiệp cung cấp cho EVN" },
+          { doc: "Hợp đồng mua bán điện dư chính thức theo Mẫu số 05", type: "Gov", source: "Điện lực (EVN) phát hành và ký kết theo tỷ lệ NĐ 243/2026/NĐ-CP" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- B2: 100 kW – < 1000 kW + KHÔNG bán điện (Zero-Export) ---------- */
+  "B|khongban": {
+    title: "Từ 100 kW đến dưới 1.000 kW · Tự sản tự tiêu 100% (Zero-Export)",
+    chips: ["⚡ Trung áp trở lên (1 – 35 kV)", "👤 Doanh nghiệp, nhà xưởng, hộ lớn", "🚫 Chống phát ngược bắt buộc"],
+    forms: ["cv", "02"],
+    notices: [
+      { type: "warn", icon: "🔒", html: "<strong>Bắt buộc:</strong> Phải lắp đặt và cấu hình <strong>thiết bị chống phát ngược (Zero-Export)</strong>; hệ thống chỉ được vận hành ở chế độ tự sản tự tiêu 100%." },
+      { type: "info", icon: "📎", html: "<strong>Điều kiện tiên quyết:</strong> Gửi <strong>Công văn thỏa thuận đấu nối trung áp</strong> đến EVN <strong>ngay từ đầu</strong> — văn bản đã ký duyệt là tiền đề để Sở Công Thương rà soát phụ tải lưới khi xử lý hồ sơ Mẫu số 02." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Gửi Công văn đề nghị thỏa thuận đấu nối trung áp và Thẩm duyệt PCCC",
+        detail: "Gửi <b>Công văn đề nghị thỏa thuận đấu nối vào lưới điện trung áp</b> đến Điện lực sở tại <b>ngay từ đầu</b> — EVN khảo sát lưới điện và trả lại <b>Văn bản thỏa thuận đấu nối đã ký duyệt</b>. Song song, nộp hồ sơ xin <b>Thẩm duyệt thiết kế PCCC</b> cho hệ thống pin lưu trữ BESS tại <b>cơ quan Cảnh sát PCCC địa phương</b>.",
+        agency: "Điện lực (EVN) địa phương · Cơ quan Cảnh sát PCCC",
+        time: "Theo quy định về thỏa thuận đấu nối và thẩm duyệt PCCC",
+        form: "cv",
+        checklist: [
+          { doc: "Công văn đề nghị thỏa thuận đấu nối (nêu rõ phương án tự sản tự tiêu Zero-Export)", type: "User", source: "Doanh nghiệp ký đóng dấu gửi Điện lực địa phương" },
+          { doc: "Hồ sơ pháp lý cơ sở: ĐKKD, Giấy phép xây dựng, Giấy tờ sở hữu/thuê nhà xưởng", type: "User", source: "Doanh nghiệp cung cấp bản sao y" },
+          { doc: "Bản vẽ sơ đồ nguyên lý đấu nối trạm biến áp và giải pháp điều khiển Zero-Export", type: "EPC", source: "Nhà thầu EPC thiết kế chi tiết" },
+          { doc: "Hồ sơ thiết kế PCCC phòng pin BESS theo TCVN 13877 (chữa cháy khí tự động)", type: "EPC", source: "Đơn vị tư vấn PCCC lập" },
+          { doc: "Văn bản thỏa thuận đấu nối trung áp đã ký duyệt", type: "Gov", source: "Điện lực địa phương (EVN) khảo sát và cấp" }
+        ]
+      },
+      {
+        title: "Nộp hồ sơ Thông báo phát triển theo Mẫu số 02",
+        detail: "Chuẩn bị <b>01 bộ hồ sơ Thông báo phát triển theo Mẫu số 02</b> (đã có Văn bản thỏa thuận đấu nối từ Bước 1 làm tiền đề) nộp <b>trực tiếp hoặc qua mạng lên Sở Công Thương</b>.",
+        agency: "Sở Công Thương",
+        time: "Nộp trực tiếp hoặc qua mạng (Cổng DVC trực tuyến)",
+        form: "02",
+        checklist: [
+          { doc: "Thông báo phát triển ĐTM mái nhà (Mẫu 02 theo NĐ 58/2025)", type: "User", source: "Doanh nghiệp lập gửi Sở Công Thương" },
+          { doc: "Văn bản thỏa thuận đấu nối trung áp của EVN (đính kèm)", type: "Gov", source: "Nhận từ Điện lực tại Bước 1" },
+          { doc: "Báo cáo kiểm định an toàn chịu lực mái nhà xưởng theo Luật Xây dựng", type: "EPC", source: "Đơn vị kiểm định xây dựng khảo sát và cấp" },
+          { doc: "Tài liệu kỹ thuật Inverter và thiết bị Zero-Export (độ trễ phản hồi < 2s)", type: "EPC", source: "Nhà thầu EPC cung cấp" }
+        ]
+      },
+      {
+        title: "Chờ rà soát hồ sơ thông báo — kiểm tra phụ tải lưới điện",
+        detail: "Chờ duyệt hồ sơ thông báo trong vòng <b>10 ngày làm việc</b> để cơ quan chức năng <b>rà soát phụ tải lưới điện khu vực</b>; hồ sơ hợp lệ được chấp nhận để chủ đầu tư triển khai thi công.",
+        agency: "Sở Công Thương · Điện lực (EVN) địa phương",
+        time: "10 ngày làm việc",
+        form: null,
+        checklist: [
+          { doc: "Phiếu tiếp nhận hồ sơ Mẫu số 02 từ Sở Công Thương", type: "Gov", source: "Sở Công Thương cấp biên nhận" },
+          { doc: "Văn bản rà soát chấp thuận phụ tải lưới điện", type: "Gov", source: "Sở Công Thương phối hợp EVN trả lời trong 10 ngày làm việc" }
+        ]
+      },
+      {
+        title: "Lắp đặt hệ thống — bắt buộc cấu hình Zero-Export",
+        detail: "Thực hiện lắp đặt hệ thống tấm pin, <b>biến tần Inverter</b>. Thi công BESS phải tuân thủ tiêu chuẩn PCCC cho pin Lithium-ion: <b>khoảng cách an toàn / phòng ngăn cháy riêng</b>, <b>hệ thống cảnh báo khói</b>, <b>cảm biến nhiệt độ tự động ngắt</b> và <b>hệ thống chữa cháy chuyên dụng</b>. <b>Bắt buộc lắp đặt và cấu hình thiết bị chống phát ngược (Zero-Export)</b>, kiểm thử chế độ không phát ngược trước khi vận hành.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Hồ sơ Thẩm duyệt PCCC:</strong> thi công bắt buộc đúng hồ sơ PCCC đã được cơ quan Cảnh sát PCCC thẩm duyệt." },
+        checklist: [
+          { doc: "Chứng chỉ CO/CQ và chứng nhận an toàn pin BESS (IEC 62619, UL 1973)", type: "EPC", source: "Nhà thầu EPC bàn giao kèm thiết bị" },
+          { doc: "Biên bản kiểm tra và thử nghiệm mô phỏng cắt tải Zero-Export nội bộ", type: "EPC", source: "Kỹ sư EPC đo kiểm công suất phát ngược về 0W" },
+          { doc: "Hồ sơ hoàn thiện hệ thống PCCC phòng pin BESS: cảm biến khói, ngắt nhiệt runaway", type: "EPC", source: "Đơn vị thi công PCCC lắp đặt hoàn chỉnh" }
+        ]
+      },
+      {
+        title: "Nghiệm thu PCCC, đo kiểm chất lượng điện năng và đưa vào vận hành",
+        detail: "Tổ chức <b>nghiệm thu thực tế hệ thống PCCC</b> và <b>đo đạc chất lượng điện năng</b> với sự tham gia của EVN. Gửi <b>văn bản nghiệm thu hoàn thành công trình</b> cho Sở Công Thương và Điện lực để đưa vào <b>vận hành tự sản tự tiêu chính thức</b>.",
+        agency: "Cơ quan Cảnh sát PCCC · Sở Công Thương · Điện lực (EVN)",
+        time: "Sau khi nghiệm thu đạt yêu cầu",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Nhắc nhở:</strong> Hồ sơ thẩm duyệt và biên bản nghiệm thu PCCC phải hoàn chỉnh trước khi đóng điện." },
+        checklist: [
+          { doc: "Biên bản nghiệm thu hoàn thành PCCC cơ sở", type: "Gov", source: "Phòng Cảnh sát PCCC & CNCH kiểm tra và cấp" },
+          { doc: "Biên bản thử nghiệm thực tế tính năng chống phát ngược có sự chứng kiến của EVN", type: "Gov", source: "Cán bộ kỹ thuật EVN kiểm tra và niêm phong cài đặt" },
+          { doc: "Báo cáo đo đạc kiểm định chất lượng điện năng tại trạm biến áp", type: "EPC", source: "Trung tâm thí nghiệm điện cấp" },
+          { doc: "Văn bản báo cáo hoàn thành công trình gửi Sở Công Thương", type: "User", source: "Doanh nghiệp nộp để đưa vào vận hành tự sản tự tiêu chính thức" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- C1: >= 1000 kW + CÓ bán điện dư ---------- */
+  "C|ban": {
+    title: "Từ 1.000 kW trở lên · Có phát điện dư lên lưới bán cho EVN",
+    chips: ["⚡ Hệ thống quy mô lớn", "👤 Doanh nghiệp, hộ kinh doanh lớn", "🏛️ Đăng ký phát triển bắt buộc (Mẫu số 03)"],
+    forms: ["cv", "03", "04", "05"],
+    notices: [
+      { type: "info", icon: "📌", html: "<strong>Lưu ý:</strong> Mọi hệ thống <strong>từ 1.000 kW trở lên</strong> đều bắt buộc phải lập hồ sơ <strong>Đăng ký phát triển nguồn điện (Mẫu số 03)</strong> bất kể có bán điện hay không. Tỷ lệ điện dư được mua theo <strong>NĐ 243/2026/NĐ-CP</strong>." },
+      { type: "info", icon: "📎", html: "<strong>Điều kiện tiên quyết:</strong> <strong>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</strong> phải đính kèm bộ hồ sơ Mẫu số 03 — nếu chưa thỏa thuận đấu nối trước với EVN, Sở Công Thương / UBND tỉnh <strong>không tiếp nhận hồ sơ</strong> và <strong>không cấp Giấy chứng nhận (Mẫu số 04)</strong>." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Xin chấp thuận đấu nối và Thẩm duyệt PCCC cấp dự án công nghiệp",
+        detail: "Gửi <b>Công văn đề nghị thỏa thuận đấu nối vào lưới điện</b> đến <b>Tổng công ty Điện lực</b> <b>ngay từ đầu</b> — EVN khảo sát lưới điện và trả lại <b>Văn bản thỏa thuận đấu nối đã ký duyệt</b> làm tiền đề cho các thủ tục tiếp theo. Song song, thực hiện <b>Thẩm duyệt thiết kế PCCC cấp dự án công nghiệp</b> cho công trình pin mặt trời + BESS quy mô lớn.",
+        agency: "Tổng công ty Điện lực · Cơ quan Cảnh sát PCCC",
+        time: "Theo quy định về chấp thuận đấu nối và thẩm duyệt PCCC",
+        form: "cv",
+        checklist: [
+          { doc: "Công văn đề nghị thỏa thuận đấu nối gửi Tổng công ty Điện lực", type: "User", source: "Chủ đầu tư dự án ký và đóng dấu" },
+          { doc: "Hồ sơ pháp lý dự án: Chủ trương đầu tư, Giấy phép xây dựng, Báo cáo ĐTM", type: "User", source: "Chủ đầu tư cung cấp bộ hồ sơ pháp lý dự án" },
+          { doc: "Báo cáo nghiên cứu kỹ thuật đấu nối chuyên sâu & tính toán ổn định lưới", type: "EPC", source: "Viện năng lượng / Đơn vị tư vấn điện cấp 1 lập" },
+          { doc: "Hồ sơ Thẩm duyệt thiết kế PCCC cấp dự án công nghiệp cho trạm BESS", type: "EPC", source: "Đơn vị tư vấn PCCC đủ năng lực lập" },
+          { doc: "Văn bản thỏa thuận đấu nối từ Tổng công ty Điện lực", type: "Gov", source: "Tổng công ty Điện lực (EVN miền) phê duyệt" }
+        ]
+      },
+      {
+        title: "Thiết lập hồ sơ Đăng ký phát triển nguồn điện theo Mẫu số 03",
+        detail: "Thiết lập hồ sơ <b>Đăng ký phát triển nguồn điện theo Mẫu số 03</b> kèm thiết kế kỹ thuật và <b>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</b>; nộp <b>trực tiếp hoặc trực tuyến lên Sở Công Thương / UBND cấp tỉnh</b>.",
+        agency: "Sở Công Thương / UBND cấp tỉnh",
+        time: "Nộp trực tiếp hoặc trực tuyến qua Cổng DVC",
+        form: "03",
+        checklist: [
+          { doc: "Giấy đăng ký phát triển nguồn điện theo Mẫu số 03", type: "User", source: "Chủ đầu tư nộp UBND tỉnh / Sở Công Thương" },
+          { doc: "Văn bản chấp thuận thỏa thuận đấu nối của Tổng công ty Điện lực", type: "Gov", source: "Đính kèm từ Bước 1 (điều kiện bắt buộc)" },
+          { doc: "Báo cáo kiểm định an toàn chịu lực mái công trình do đơn vị kiểm định độc lập cấp 1 lập", type: "EPC", source: "Tổ chức kiểm định xây dựng cấp 1 khảo sát và cấp" },
+          { doc: "Giấy chứng nhận thẩm duyệt thiết kế PCCC của Cục/Phòng Cảnh sát PCCC", type: "Gov", source: "Cơ quan Cảnh sát PCCC cấp" },
+          { doc: "Chứng chỉ CO/CQ và tiêu chuẩn cell pin BESS (IEC 62619, UL 1973, UL 9540)", type: "EPC", source: "Nhà sản xuất / Tổng thầu EPC cung cấp" }
+        ]
+      },
+      {
+        title: "Chờ phê duyệt cấp phép — nhận Giấy chứng nhận theo Mẫu số 04",
+        detail: "Chờ cơ quan quản lý nhà nước <b>thẩm định hồ sơ (thời gian tối đa 10 – 15 ngày làm việc)</b>. Sau khi thẩm định đạt yêu cầu, <b>Sở Công Thương / UBND tỉnh ký và trả về Giấy chứng nhận đăng ký phát triển theo Mẫu số 04</b>.",
+        agency: "Sở Công Thương / UBND cấp tỉnh",
+        time: "10 – 15 ngày làm việc",
+        form: "04",
+        checklist: [
+          { doc: "Biên nhận tiếp nhận hồ sơ từ Trung tâm Phục vụ hành chính công tỉnh", type: "Gov", source: "Sở Công Thương cấp" },
+          { doc: "Biên bản họp hội đồng thẩm định liên ngành (Sở Công Thương, EVN, Sở Xây dựng)", type: "Gov", source: "Hội đồng thẩm định tỉnh lập" },
+          { doc: "Giấy chứng nhận đăng ký phát triển nguồn điện (Mẫu số 04)", type: "Gov", source: "UBND cấp tỉnh / Sở Công Thương ký cấp" }
+        ]
+      },
+      {
+        title: "Triển khai thi công xây dựng sau khi có Giấy chứng nhận Mẫu 04",
+        detail: "Sau khi có <b>Mẫu số 04</b>, tiến hành triển khai <b>thi công xây dựng và lắp đặt trạm lưu trữ pin BESS</b> cùng hệ thống năng lượng theo đúng hồ sơ đã duyệt. Thi công BESS phải tuân thủ nghiêm ngặt tiêu chuẩn PCCC cho pin Lithium-ion: <b>khoảng cách an toàn / phòng ngăn cháy riêng cho BESS</b>, <b>hệ thống cảnh báo khói</b>, <b>cảm biến nhiệt tự ngắt</b> và <b>hệ thống chữa cháy chuyên dụng</b>.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Hồ sơ Thẩm duyệt thiết kế PCCC:</strong> thi công bắt buộc đúng thiết kế PCCC đã được cơ quan Cảnh sát PCCC thẩm duyệt." },
+        checklist: [
+          { doc: "Giấy phép xây dựng và Giấy chứng nhận Mẫu 04 niêm yết tại công trình", type: "User", source: "Chủ đầu tư lưu tại ban quản lý dự án" },
+          { doc: "Bản vẽ thi công được duyệt, biện pháp thi công an toàn và nhật ký công trình", type: "EPC", source: "Tổng thầu EPC triển khai thi công và giám sát" },
+          { doc: "Hồ sơ nghiệm thu thiết bị đầu vào (Solar panels, Inverter tập trung, container BESS)", type: "EPC", source: "Tư vấn giám sát và EPC nghiệm thu" },
+          { doc: "Lắp đặt hệ thống chữa cháy khí tự động chuyên dụng (FM200 / Novec 1230 / Stat-X) và SCADA", type: "EPC", source: "Nhà thầu chuyên ngành thi công hoàn thiện" }
+        ]
+      },
+      {
+        title: "Tổ chức nghiệm thu liên ngành (PCCC, an toàn điện & kiểm định)",
+        detail: "Tổ chức <b>nghiệm thu liên ngành</b>: <b>PCCC</b>, <b>an toàn điện kỹ thuật</b>, <b>thử nghiệm kiểm định chất lượng điện năng hòa lưới</b> cho toàn bộ hệ thống tấm pin và BESS.",
+        agency: "Cơ quan Cảnh sát PCCC · Cơ quan kiểm định · Điện lực",
+        time: "Theo quy định nghiệm thu liên ngành",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Nhắc nhở:</strong> Hồ sơ Thẩm duyệt PCCC + Biên bản nghiệm thu PCCC phải hoàn chỉnh trước khi đề nghị đóng điện." },
+        checklist: [
+          { doc: "Văn bản nghiệm thu hoàn thành PCCC của Cục/Phòng Cảnh sát PCCC", type: "Gov", source: "Cơ quan Cảnh sát PCCC kiểm định và cấp" },
+          { doc: "Báo cáo thử nghiệm kiểm định chất lượng điện năng của Trung tâm thí nghiệm điện độc lập", type: "EPC", source: "Trung tâm thí nghiệm điện cấp" },
+          { doc: "Biên bản thử nghiệm đóng điện điểm đấu nối trung/cao áp", type: "Gov", source: "Điện lực (EVN) phối hợp lập" },
+          { doc: "Biên bản kết nối tín hiệu điều độ xa SCADA / EMS với Trung tâm điều độ hệ thống điện", type: "Gov", source: "Trung tâm Điều độ hệ thống điện (A0/Ax) nghiệm thu" }
+        ]
+      },
+      {
+        title: "Chốt chỉ số đầu kỳ và ký Hợp đồng mua bán điện dư (Mẫu số 05)",
+        detail: "Gửi hồ sơ nghiệm thu cho <b>EVN</b>, tiến hành <b>chốt chỉ số đầu kỳ</b>, thương thảo <b>phương thức vận hành điều độ từ xa</b> và ký kết <b>Hợp đồng mua bán điện dư chính thức theo Mẫu số 05</b> (tỷ lệ điện dư được mua theo NĐ 243/2026/NĐ-CP).",
+        agency: "Điện lực (EVN) · Tổng công ty Điện lực",
+        time: "Sau khi hoàn tất kiểm tra đấu nối hòa lưới",
+        form: "05",
+        checklist: [
+          { doc: "Biên bản nghiệm thu liên ngành hoàn thành toàn bộ công trình", type: "EPC", source: "Tổng thầu EPC và Chủ đầu tư lập" },
+          { doc: "Biên bản chốt chỉ số công tơ đầu kỳ (TI, TU, hệ thống đo đếm chính và dự phòng)", type: "Gov", source: "Điện lực (EVN) và Chủ đầu tư cùng ký" },
+          { doc: "Hợp đồng mua bán điện dư theo Mẫu số 05 ký với Tổng công ty Điện lực", type: "Gov", source: "Tổng công ty Điện lực (EVN) phát hành và ký kết (NĐ 243/2026)" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- C2: >= 1000 kW + KHÔNG bán điện (Zero-Export) ---------- */
+  "C|khongban": {
+    title: "Từ 1.000 kW trở lên · Tự sản tự tiêu 100% (Zero-Export)",
+    chips: ["⚡ Hệ thống quy mô lớn", "👤 Doanh nghiệp, hộ kinh doanh lớn", "🚫 Chống phát ngược bắt buộc"],
+    forms: ["cv", "03", "04"],
+    notices: [
+      { type: "warn", icon: "🔒", html: "<strong>Bắt buộc:</strong> Dù không bán điện, hệ thống từ 1.000 kW trở lên vẫn <strong>bắt buộc phải đăng ký phát triển (Mẫu số 03)</strong> và lắp đặt <strong>thiết bị chống phát ngược (Zero-Export)</strong>." },
+      { type: "info", icon: "📎", html: "<strong>Điều kiện tiên quyết:</strong> <strong>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</strong> phải đính kèm bộ hồ sơ Mẫu số 03 — nếu chưa thỏa thuận đấu nối trước với EVN, Sở Công Thương / UBND tỉnh <strong>không tiếp nhận hồ sơ</strong> và <strong>không cấp Giấy chứng nhận (Mẫu số 04)</strong>." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Xin chấp thuận đấu nối và Thẩm duyệt PCCC cấp dự án công nghiệp",
+        detail: "Gửi <b>Công văn đề nghị thỏa thuận đấu nối vào lưới điện</b> đến <b>Tổng công ty Điện lực</b> <b>ngay từ đầu</b> — EVN khảo sát lưới điện và trả lại <b>Văn bản thỏa thuận đấu nối đã ký duyệt</b> làm tiền đề cho các thủ tục tiếp theo. Song song, thực hiện <b>Thẩm duyệt thiết kế PCCC cấp dự án công nghiệp</b> cho trạm lưu trữ pin BESS quy mô lớn.",
+        agency: "Tổng công ty Điện lực · Cơ quan Cảnh sát PCCC",
+        time: "Theo quy định về chấp thuận đấu nối và thẩm duyệt PCCC",
+        form: "cv",
+        checklist: [
+          { doc: "Công văn đề nghị thỏa thuận đấu nối gửi Tổng công ty Điện lực", type: "User", source: "Chủ đầu tư ký gửi EVN" },
+          { doc: "Hồ sơ pháp lý dự án, Giấy phép xây dựng, Quyền sử dụng đất công trình", type: "User", source: "Chủ đầu tư cung cấp" },
+          { doc: "Đề án kỹ thuật tự sản tự tiêu 100% kèm giải pháp điều khiển Zero-Export tự động", type: "EPC", source: "Đơn vị tư vấn thiết kế lập" },
+          { doc: "Hồ sơ Thẩm duyệt thiết kế PCCC trạm lưu trữ pin BESS công nghiệp", type: "EPC", source: "Đơn vị tư vấn PCCC lập" },
+          { doc: "Văn bản thỏa thuận đấu nối từ Tổng công ty Điện lực", type: "Gov", source: "Tổng công ty Điện lực phê duyệt" }
+        ]
+      },
+      {
+        title: "Thiết lập hồ sơ Đăng ký phát triển nguồn điện theo Mẫu số 03",
+        detail: "Hệ thống từ 1.000 kW trở lên <b>bất kể có bán điện hay không</b> đều thiết lập hồ sơ <b>Đăng ký phát triển theo Mẫu số 03</b> (nêu rõ chế độ tự sản tự tiêu 100%) kèm <b>Văn bản thỏa thuận đấu nối đã được EVN ký duyệt</b>; nộp lên <b>Sở Công Thương / UBND cấp tỉnh</b>.",
+        agency: "Sở Công Thương / UBND cấp tỉnh",
+        time: "Nộp trực tiếp hoặc trực tuyến qua Cổng DVC",
+        form: "03",
+        checklist: [
+          { doc: "Giấy đăng ký phát triển theo Mẫu số 03 (cam kết tự sản tự tiêu 100%, Zero-Export)", type: "User", source: "Chủ đầu tư nộp UBND tỉnh / Sở Công Thương" },
+          { doc: "Văn bản thỏa thuận đấu nối đã ký với Tổng công ty Điện lực", type: "Gov", source: "Đính kèm từ Bước 1" },
+          { doc: "Báo cáo kiểm định an toàn chịu lực mái nhà xưởng", type: "EPC", source: "Đơn vị kiểm định xây dựng cấp 1 cấp" },
+          { doc: "Giấy chứng nhận thẩm duyệt thiết kế PCCC", type: "Gov", source: "Cơ quan Cảnh sát PCCC cấp" }
+        ]
+      },
+      {
+        title: "Chờ phê duyệt cấp phép — nhận Giấy chứng nhận theo Mẫu số 04",
+        detail: "Chờ thẩm định hồ sơ (<b>tối đa 10 – 15 ngày làm việc</b>); sau khi đạt yêu cầu, nhận <b>Giấy chứng nhận đăng ký phát triển theo Mẫu số 04</b> trước khi triển khai thi công.",
+        agency: "Sở Công Thương / UBND cấp tỉnh",
+        time: "10 – 15 ngày làm việc",
+        form: "04",
+        checklist: [
+          { doc: "Biên nhận tiếp nhận hồ sơ từ Trung tâm Phục vụ hành chính công tỉnh", type: "Gov", source: "Sở Công Thương cấp" },
+          { doc: "Giấy chứng nhận đăng ký phát triển (Mẫu số 04)", type: "Gov", source: "UBND cấp tỉnh / Sở Công Thương ký cấp" }
+        ]
+      },
+      {
+        title: "Triển khai thi công — bắt buộc cấu hình thiết bị Zero-Export",
+        detail: "Sau khi có <b>Mẫu số 04</b>, triển khai thi công xây dựng, lắp đặt trạm lưu trữ pin BESS và hệ thống năng lượng. Thi công BESS phải tuân thủ nghiêm ngặt tiêu chuẩn PCCC: <b>khoảng cách an toàn / phòng ngăn cháy riêng</b>, <b>hệ thống cảnh báo khói</b>, <b>cảm biến nhiệt tự ngắt</b> và <b>hệ thống chữa cháy chuyên dụng</b>. <b>Bắt buộc lắp đặt và cấu hình thiết bị chống phát ngược (Zero-Export)</b> cho toàn hệ thống.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Hồ sơ Thẩm duyệt PCCC:</strong> thi công bắt buộc đúng thiết kế PCCC đã được cơ quan Cảnh sát PCCC thẩm duyệt." },
+        checklist: [
+          { doc: "Hồ sơ CO/CQ, Catalog hệ thống tủ BESS và Inverter", type: "EPC", source: "Tổng thầu EPC cung cấp" },
+          { doc: "Hồ sơ lắp đặt bộ điều khiển Zero-Export công nghiệp (phản hồi mili-giây, ngắt tức thời)", type: "EPC", source: "Nhà thầu EPC lắp đặt và hiệu chuẩn" },
+          { doc: "Lắp đặt hệ thống PCCC phòng pin: cảm biến khói, cảm biến nhiệt, chữa cháy khí tự động", type: "EPC", source: "Nhà thầu PCCC thi công hoàn thiện" }
+        ]
+      },
+      {
+        title: "Nghiệm thu liên ngành và xác minh chế độ Zero-Export",
+        detail: "Nghiệm thu liên ngành: <b>PCCC, an toàn điện kỹ thuật, thử nghiệm kiểm định chất lượng điện năng</b>; xác minh thực tế chế độ Zero-Export tại điểm đấu nối cùng đơn vị điện lực.",
+        agency: "Cơ quan Cảnh sát PCCC · Cơ quan kiểm định · Điện lực",
+        time: "Theo quy định nghiệm thu liên ngành",
+        form: null,
+        callout: { type: "pccc", icon: "🔥", html: "<strong>Nhắc nhở:</strong> Hồ sơ thẩm duyệt và biên bản nghiệm thu PCCC phải hoàn chỉnh trước khi đóng điện." },
+        checklist: [
+          { doc: "Biên bản nghiệm thu hoàn thành PCCC công trình", type: "Gov", source: "Cơ quan Cảnh sát PCCC nghiệm thu và cấp" },
+          { doc: "Biên bản kiểm tra thực địa cùng EVN: mô phỏng cắt phụ tải, xác nhận 0kW phát lên lưới", type: "Gov", source: "Điện lực (EVN) kiểm tra và niêm phong cổng cài đặt" },
+          { doc: "Báo cáo thử nghiệm chất lượng điện năng hòa lưới", type: "EPC", source: "Trung tâm kiểm định điện cấp" }
+        ]
+      },
+      {
+        title: "Gửi văn bản nghiệm thu hoàn thành để vận hành chính thức",
+        detail: "Gửi <b>văn bản và kết quả nghiệm thu hoàn thành</b> cho Sở Công Thương / UBND cấp tỉnh và Điện lực để đưa hệ thống vào <b>vận hành tự sản tự tiêu chính thức</b> (không ký hợp đồng mua bán điện).",
+        agency: "Sở Công Thương / UBND cấp tỉnh · Điện lực (EVN)",
+        time: "Sau khi nghiệm thu đạt yêu cầu",
+        form: null,
+        checklist: [
+          { doc: "Báo cáo nghiệm thu hoàn thành công trình gửi Sở Công Thương / UBND tỉnh và EVN", type: "User", source: "Chủ đầu tư nộp chính thức" },
+          { doc: "Quy trình vận hành, bảo trì định kỳ và phương án ứng cứu sự cố pin BESS", type: "EPC", source: "Nhà thầu EPC chuyển giao cho đội ngũ vận hành" }
+        ]
+      }
+    ]
+  },
+
+  /* ---------- OFF-GRID: Độc lập hoàn toàn, KHÔNG đấu nối lưới EVN ---------- */
+  offgrid: {
+    title: "Độc lập hoàn toàn (Off-Grid) · Không đấu nối lưới EVN",
+    chips: ["🔋 Điện mặt trời + BESS tách biệt 100% với lưới điện quốc gia", "📏 Áp dụng cho mọi quy mô công suất", "✅ Miễn toàn bộ thủ tục thông báo / đăng ký"],
+    forms: [],
+    exemptLegal: true,
+    notices: [
+      { type: "info", icon: "✅", html: "<strong>MIỄN HOÀN TOÀN thủ tục:</strong> Hệ thống Off-Grid được <strong>miễn hoàn toàn</strong> thủ tục Thông báo phát triển (Mẫu 01/02) và Đăng ký phát triển (Mẫu 03) với Sở Công Thương / EVN theo quy định — không phát sinh hồ sơ pháp lý đấu nối, không hợp đồng mua bán điện." },
+      PCCC_NOTICE
+    ],
+    steps: [
+      {
+        title: "Khảo sát, thiết kế và thi công hệ thống Off-Grid bảo đảm an toàn",
+        detail: "Khảo sát nhu cầu tiêu thụ, thiết kế hệ thống pin mặt trời + BESS + biến tần hoạt động <b>độc lập hoàn toàn với lưới điện quốc gia</b>; thi công bảo đảm <b>an toàn kỹ thuật</b>, <b>an toàn kết cấu mái nhà</b> và <b>PCCC cho tủ/pin BESS</b>: khoảng cách an toàn / phòng ngăn cháy riêng, cảnh báo khói, cảm biến nhiệt độ tự ngắt, hệ thống chữa cháy chuyên dụng cho pin Lithium.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Theo tiến độ hợp đồng thi công",
+        form: null,
+        checklist: [
+          { doc: "Sổ đỏ / Sổ hồng hoặc Giấy tờ sở hữu vị trí lắp đặt", type: "User", source: "Chủ đầu tư chuẩn bị" },
+          { doc: "Bản vẽ thiết kế sơ đồ nguyên lý hệ thống điện độc lập Off-Grid (không kết nối lưới EVN)", type: "EPC", source: "Nhà thầu EPC thiết kế và cam kết an toàn" },
+          { doc: "Hồ sơ kiểm tra khả năng chịu lực kết cấu mái nhà / khung giàn đỡ pin", type: "EPC", source: "Nhà thầu EPC kiểm tra" },
+          { doc: "Chứng nhận an toàn thiết bị pin BESS (IEC 62619 / UL 1973)", type: "EPC", source: "Nhà cung cấp thiết bị bàn giao" },
+          { doc: "Phương án PCCC cho tủ pin BESS: vị trí thoáng khí, máy báo khói, bình chữa cháy khí", type: "EPC", source: "Nhà thầu EPC thi công bảo đảm" }
+        ]
+      },
+      {
+        title: "Tự nghiệm thu nội bộ và đưa vào vận hành độc lập",
+        detail: "Chủ đầu tư / nhà thầu <b>tự nghiệm thu nội bộ</b> (an toàn điện, an toàn PCCC cho BESS) và đưa hệ thống vào <b>vận hành sử dụng độc lập</b> — <b>không cần báo cáo EVN / Sở Công Thương</b>, không phát sinh hợp đồng mua bán điện.",
+        agency: "Chủ đầu tư · Nhà thầu EPC",
+        time: "Sau khi thi công hoàn tất và nghiệm thu nội bộ đạt yêu cầu",
+        form: null,
+        checklist: [
+          { doc: "Biên bản tự nghiệm thu an toàn kỹ thuật điện nội bộ giữa Chủ đầu tư và EPC", type: "EPC", source: "Nhà thầu EPC và Chủ đầu tư cùng ký" },
+          { doc: "Biên bản nghiệm thu an toàn PCCC cho tủ pin BESS nội bộ", type: "EPC", source: "Nhà thầu EPC và Chủ đầu tư nghiệm thu" },
+          { doc: "Sổ tay hướng dẫn vận hành, bảo dưỡng pin lưu trữ định kỳ", type: "EPC", source: "Nhà thầu EPC chuyển giao (miễn hoàn toàn báo cáo EVN / Sở Công Thương)" }
+        ]
+      }
+    ]
+  }
+};
+
+/* ============================================================
+ * STATE MANAGEMENT
+ * ============================================================ */
+let currentKey = "";
+let currentRoadmapData = null;
+let completedStepsState = {}; // { [stepIndex]: boolean }
+let checklistItemsState = {}; // { [stepIndex + "_" + cIndex]: boolean }
+let activeRefCategory = "all";
+
+function esc(text) {
+  if (!text) return "";
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function showToast(message, icon = "✓") {
+  const toast = document.getElementById("toast");
+  document.getElementById("toast-message").textContent = message;
+  document.getElementById("toast-icon").textContent = icon;
+  toast.classList.add("show");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2600);
+}
+
+/* ============================================================
+ * STEP & CHECKLIST PROGRESS PERSISTENCE
+ * ============================================================ */
+function getStorageKey(key) {
+  return "bems_roadmap_progress_" + key;
+}
+
+function getChecklistStorageKey(key) {
+  return "bems_roadmap_checklist_" + key;
+}
+
+function loadStepProgress(key) {
+  try {
+    const raw = localStorage.getItem(getStorageKey(key));
+    if (raw) return JSON.parse(raw);
+  } catch (e) {
+    // fallback
+  }
+  return {};
+}
+
+function saveStepProgress(key, state) {
+  try {
+    localStorage.setItem(getStorageKey(key), JSON.stringify(state));
+  } catch (e) {
+    // fallback
+  }
+}
+
+function loadChecklistProgress(key) {
+  try {
+    const raw = localStorage.getItem(getChecklistStorageKey(key));
+    if (raw) return JSON.parse(raw);
+  } catch (e) {
+    // fallback
+  }
+  return {};
+}
+
+function saveChecklistProgress(key, state) {
+  try {
+    localStorage.setItem(getChecklistStorageKey(key), JSON.stringify(state));
+  } catch (e) {
+    // fallback
+  }
+}
+
+/* Toggle Step Completed */
+function toggleStepComplete(index) {
+  completedStepsState[index] = !completedStepsState[index];
+  saveStepProgress(currentKey, completedStepsState);
+  updateStepDOM(index);
+  updateProgressBar();
+}
+
+/* Toggle individual checklist item */
+function toggleChecklistItem(stepIndex, cIndex) {
+  const itemKey = stepIndex + "_" + cIndex;
+  checklistItemsState[itemKey] = !checklistItemsState[itemKey];
+  saveChecklistProgress(currentKey, checklistItemsState);
+
+  // Update item appearance
+  const chkInput = document.getElementById(`chk-${stepIndex}-${cIndex}`);
+  if (chkInput) {
+    chkInput.checked = Boolean(checklistItemsState[itemKey]);
+  }
+
+  updateChecklistCounter(stepIndex);
+}
+
+function updateChecklistCounter(stepIndex) {
+  const step = currentRoadmapData?.steps[stepIndex];
+  if (!step || !step.checklist) return;
+
+  const total = step.checklist.length;
+  let done = 0;
+  for (let c = 0; c < total; c++) {
+    if (checklistItemsState[stepIndex + "_" + c]) done++;
+  }
+
+  const badgeEl = document.getElementById(`chk-badge-${stepIndex}`);
+  if (badgeEl) {
+    badgeEl.textContent = `${done}/${total} đã chuẩn bị`;
+    if (done === total && total > 0) {
+      badgeEl.style.background = "var(--energy-50)";
+      badgeEl.style.borderColor = "var(--energy-200)";
+      badgeEl.style.color = "var(--energy-700)";
+    } else {
+      badgeEl.style.background = "var(--blue-50)";
+      badgeEl.style.borderColor = "var(--blue-100)";
+      badgeEl.style.color = "var(--blue-600)";
+    }
+  }
+}
+
+function updateStepDOM(index) {
+  const stepEl = document.getElementById("step-item-" + index);
+  const btnEl = document.getElementById("step-btn-" + index);
+  if (!stepEl || !btnEl) return;
+
+  const isDone = Boolean(completedStepsState[index]);
+  if (isDone) {
+    stepEl.classList.add("completed");
+    btnEl.innerHTML = "<span>✓ Đã xong</span>";
+  } else {
+    stepEl.classList.remove("completed");
+    btnEl.innerHTML = "<span>○ Đánh dấu xong</span>";
+  }
+}
+
+function updateProgressBar() {
+  if (!currentRoadmapData) return;
+  const total = currentRoadmapData.steps.length;
+  let done = 0;
+  for (let i = 0; i < total; i++) {
+    if (completedStepsState[i]) done++;
+  }
+  const pct = Math.round((done / total) * 100);
+  document.getElementById("progress-text").textContent = `${done} / ${total} bước (${pct}%)`;
+  document.getElementById("progress-bar-fill").style.width = pct + "%";
+}
+
+/* ============================================================
+ * RENDER ROADMAP WITH DETAILED CHECKLIST
+ * ============================================================ */
+function getBadgeConfig(type) {
+  if (type === "User") {
+    return { label: "👤 Bạn tự chuẩn bị", class: "user" };
+  } else if (type === "EPC") {
+    return { label: "🛠️ Nhà thầu EPC lập", class: "epc" };
+  } else if (type === "Gov") {
+    return { label: "🏛️ Cơ quan NN / EVN cấp", class: "gov" };
+  }
+  return { label: "📄 Hồ sơ", class: "epc" };
+}
+
+function renderRoadmap(data, key) {
+  currentRoadmapData = data;
+  currentKey = key;
+  completedStepsState = loadStepProgress(key);
+  checklistItemsState = loadChecklistProgress(key);
+
+  // 1. Title & Chips
+  document.getElementById("result-title").textContent = data.title;
+
+  const chipsEl = document.getElementById("result-chips");
+  chipsEl.innerHTML = data.chips
+    .map(chip => `<span class="result-chip">${esc(chip)}</span>`)
+    .join("");
+
+  // 2. Forms box
+  const formsBoxEl = document.getElementById("result-forms-box");
+  if (data.forms && data.forms.length > 0) {
+    const listHtml = data.forms
+      .map(f => {
+        const item = FORM_INFO[f];
+        return `<strong>${esc(item.code)}</strong> (${esc(item.name)})`;
+      })
+      .join("; ");
+    formsBoxEl.innerHTML = `📑 <strong>Biểu mẫu áp dụng:</strong> ${listHtml}`;
+  } else {
+    formsBoxEl.innerHTML = `📑 <strong>Biểu mẫu áp dụng:</strong> Không phát sinh hồ sơ — được miễn thủ tục theo quy định.`;
+  }
+
+  // 3. Notices
+  const noticeGroup = document.getElementById("result-notices");
+  noticeGroup.innerHTML = (data.notices || [])
+    .map(n => `
+      <div class="notice ${n.type}">
+        <span class="notice-icon">${n.icon || "ℹ️"}</span>
+        <div class="notice-content">${n.html}</div>
+      </div>
+    `)
+    .join("");
+
+  // 4. Legal Warning
+  const legalContainer = document.getElementById("legal-warning-container");
+  legalContainer.innerHTML = data.exemptLegal ? "" : LEGAL_WARNING_HTML;
+
+  // 5. Timeline Steps with Checklist
+  const timelineEl = document.getElementById("timeline");
+  timelineEl.innerHTML = data.steps.map((step, i) => {
+    const isDone = Boolean(completedStepsState[i]);
+    const checklistHtml = (step.checklist && step.checklist.length > 0) ? `
+      <div class="step-checklist-wrap">
+        <div class="step-checklist-header">
+          <span class="step-checklist-title">📋 Hồ sơ &amp; Tài liệu cần chuẩn bị:</span>
+          <span class="checklist-badge-count" id="chk-badge-${i}">0/${step.checklist.length} đã chuẩn bị</span>
+        </div>
+        <div class="step-checklist-items">
+          ${step.checklist.map((item, cIndex) => {
+            const itemKey = i + "_" + cIndex;
+            const isChecked = Boolean(checklistItemsState[itemKey]);
+            const badge = getBadgeConfig(item.type);
+            return `
+              <label class="checklist-item" for="chk-${i}-${cIndex}">
+                <input type="checkbox" id="chk-${i}-${cIndex}" onchange="toggleChecklistItem(${i}, ${cIndex})" ${isChecked ? "checked" : ""} />
+                <span class="chk-box"></span>
+                <div class="chk-content">
+                  <div class="chk-top-line">
+                    <span class="chk-type-badge ${badge.class}">${badge.label}</span>
+                    <span class="chk-doc-name">${esc(item.doc)}</span>
+                  </div>
+                  <div class="chk-source-line">
+                    <em>Nguồn / Thực hiện:</em> ${esc(item.source)}
+                  </div>
+                </div>
+              </label>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    ` : "";
+
+    return `
+      <div class="step ${isDone ? "completed" : ""}" id="step-item-${i}">
+        <div class="step-num-wrap">
+          <div class="step-num">${i + 1}</div>
+        </div>
+        <div class="step-card">
+          <div class="step-top">
+            <h3>${esc(step.title)}</h3>
+            <button type="button" class="step-check-btn" id="step-btn-${i}" onclick="toggleStepComplete(${i})" title="Đánh dấu tiến độ thực hiện">
+              <span>${isDone ? "✓ Đã xong" : "○ Đánh dấu xong"}</span>
+            </button>
+          </div>
+          <div class="step-detail">${step.detail}</div>
+          ${step.callout ? `
+            <div class="notice ${step.callout.type} step-callout">
+              <span class="notice-icon">${step.callout.icon || "ℹ️"}</span>
+              <div class="notice-content">${step.callout.html}</div>
+            </div>
+          ` : ""}
+          ${checklistHtml}
+          <div class="step-meta">
+            <div class="meta-tag">
+              <span class="meta-tag-label">🏛️ Cơ quan xử lý:</span>
+              <span class="meta-tag-val agency">${esc(step.agency)}</span>
+            </div>
+            <div class="meta-tag">
+              <span class="meta-tag-label">⏱️ Thời hạn / Tiến độ:</span>
+              <span class="meta-tag-val time">${esc(step.time)}</span>
+            </div>
+            ${step.form && FORM_INFO[step.form] ? `
+              <div class="meta-tag">
+                <span class="meta-tag-label">📄 Biểu mẫu nộp:</span>
+                <span class="meta-tag-val form">
+                  <a href="#reference" class="form-badge-link" onclick="quickHighlightRef('${step.form}')">
+                    ${esc(FORM_INFO[step.form].code)} — ${esc(FORM_INFO[step.form].name)} ↗
+                  </a>
+                </span>
+              </div>
+            ` : ""}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // Update checklist counters
+  data.steps.forEach((_, i) => updateChecklistCounter(i));
+
+  updateProgressBar();
+}
+
+/* ============================================================
+ * QUICK PRESETS & ACTIONS
+ * ============================================================ */
+function applyPreset(scaleValue, surplusValue) {
+  const scaleRadio = document.querySelector(`input[name="scale"][value="${scaleValue}"]`);
+  const surplusRadio = document.querySelector(`input[name="surplus"][value="${surplusValue}"]`);
+
+  if (scaleRadio) scaleRadio.checked = true;
+  if (surplusRadio) surplusRadio.checked = true;
+
+  document.getElementById("form-error").classList.remove("show");
+
+  // Trigger form submit automatically for seamless 1-click experience
+  document.getElementById("roadmap-form").dispatchEvent(new Event("submit", { cancelable: true }));
+  showToast("Đã thiết lập cấu hình nhanh!", "⚡");
+}
+
+function resetFormSelection() {
+  document.getElementById("input-section").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function copyRoadmapText() {
+  if (!currentRoadmapData) return;
+
+  const stepsText = currentRoadmapData.steps
+    .map((s, i) => {
+      let t = `Bước ${i + 1}: ${s.title}\n- Chi tiết: ${s.detail.replace(/<[^>]*>/g, "")}\n- Cơ quan: ${s.agency}\n- Thời gian: ${s.time}`;
+      if (s.checklist && s.checklist.length > 0) {
+        t += `\n- Hồ sơ cần chuẩn bị:\n  ` + s.checklist.map(c => {
+          const typeLabel = c.type === "User" ? "[Bạn tự chuẩn bị]" : c.type === "EPC" ? "[Nhà thầu EPC lập]" : "[Cơ quan NN/EVN cấp]";
+          return `[ ] ${typeLabel} ${c.doc} (Nguồn: ${c.source})`;
+        }).join("\n  ");
+      }
+      return t;
+    })
+    .join("\n\n");
+
+  const fullText = `[LỘ TRÌNH PHÁP LÝ ĐIỆN MẶT TRỜI MÁI NHÀ & BESS]\n` +
+    `Cấu hình: ${currentRoadmapData.title}\n` +
+    `Căn cứ: Nghị định 58/2025/NĐ-CP, Nghị định 243/2026/NĐ-CP & Tiêu chuẩn PCCC/BESS\n\n` +
+    `CÁC BƯỚC TRIỂN KHAI & HỒ SƠ CHUẨN BỊ:\n\n${stepsText}\n\n` +
+    `Lưu ý: Tuân thủ quy định PCCC và thiết bị Zero-Export (nếu không bán điện).`;
+
+  navigator.clipboard.writeText(fullText).then(() => {
+    showToast("Đã sao chép tóm tắt lộ trình & Checklist!", "📋");
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = fullText;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    showToast("Đã sao chép tóm tắt lộ trình!", "📋");
+  });
+}
+
+function quickHighlightRef(formCode) {
+  setRefCategory("all");
+  const searchInput = document.getElementById("ref-search");
+  const codeName = FORM_INFO[formCode]?.code || formCode;
+  searchInput.value = codeName;
+  filterRefTable();
+  const refSection = document.getElementById("reference");
+  refSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ============================================================
+ * REFERENCE TABLE POPULATION, FILTER & CATEGORIES
+ * ============================================================ */
+function setRefCategory(cat) {
+  activeRefCategory = cat;
+  document.querySelectorAll(".ref-tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-cat") === cat);
+  });
+  filterRefTable();
+}
+
+function renderRefSection(items) {
+  // Desktop Table
+  const tbody = document.getElementById("ref-table-body");
+  tbody.innerHTML = items.map(item => `
+    <tr>
+      <td>
+        <span class="ref-code-badge ${item.badgeClass}">${esc(item.code)}</span>
+        <div><span class="ref-category-tag">${esc(item.categoryName)}</span></div>
+      </td>
+      <td><strong>${esc(item.name)}</strong></td>
+      <td style="color: var(--ink-700);">${esc(item.target)}</td>
+      <td style="color: var(--ink-700);">${esc(item.cases)}</td>
+      <td><strong style="color: var(--navy-800);">${esc(item.receiver)}</strong></td>
+    </tr>
+  `).join("");
+
+  // Mobile Cards
+  const mobileWrap = document.getElementById("ref-cards-mobile");
+  mobileWrap.innerHTML = items.map(item => `
+    <div class="ref-card-item">
+      <div class="ref-card-header">
+        <span class="ref-code-badge ${item.badgeClass}">${esc(item.code)}</span>
+        <span class="ref-category-tag">${esc(item.categoryName)}</span>
+      </div>
+      <div class="ref-card-name">${esc(item.name)}</div>
+      <div class="ref-card-row">
+        <span class="ref-card-label">Đối tượng:</span> ${esc(item.target)}
+      </div>
+      <div class="ref-card-row">
+        <span class="ref-card-label">Áp dụng:</span> ${esc(item.cases)}
+      </div>
+      <div class="ref-card-row">
+        <span class="ref-card-label">Tiếp nhận / Thẩm duyệt:</span> <strong style="color: var(--navy-800);">${esc(item.receiver)}</strong>
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("ref-count-text").textContent = `Hiển thị ${items.length} / ${REF_DATA.length} văn bản & quy chuẩn`;
+}
+
+function filterRefTable() {
+  const query = (document.getElementById("ref-search").value || "").toLowerCase().trim();
+
+  let filtered = REF_DATA;
+
+  // Filter by category tab
+  if (activeRefCategory !== "all") {
+    filtered = filtered.filter(item => item.category === activeRefCategory);
+  }
+
+  // Filter by search query
+  if (query) {
+    filtered = filtered.filter(item => {
+      return item.code.toLowerCase().includes(query) ||
+             item.name.toLowerCase().includes(query) ||
+             item.target.toLowerCase().includes(query) ||
+             item.cases.toLowerCase().includes(query) ||
+             item.receiver.toLowerCase().includes(query) ||
+             item.categoryName.toLowerCase().includes(query);
+    });
+  }
+
+  renderRefSection(filtered);
+}
+
+/* ============================================================
+ * FORM SUBMISSION & URL SYNC
+ * ============================================================ */
+document.getElementById("roadmap-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const scale = document.querySelector('input[name="scale"]:checked');
+  const surplus = document.querySelector('input[name="surplus"]:checked');
+  const errEl = document.getElementById("form-error");
+
+  if (!scale || !surplus) {
+    errEl.classList.add("show");
+    if (!scale) {
+      document.querySelector('input[name="scale"]').closest("fieldset").scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      document.querySelector('input[name="surplus"]').closest("fieldset").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    return;
+  }
+  errEl.classList.remove("show");
+
+  const key = `${scale.value}|${surplus.value}`;
+  const data = surplus.value === "offgrid" ? ROADMAPS.offgrid : ROADMAPS[key];
+  if (!data) return;
+
+  // Sync with URL query parameters for sharing
+  try {
+    const url = new URL(window.location);
+    url.searchParams.set("scale", scale.value);
+    url.searchParams.set("surplus", surplus.value);
+    window.history.replaceState({}, "", url);
+  } catch (err) {
+    // ignore
+  }
+
+  renderRoadmap(data, key);
+
+  const resultEl = document.getElementById("result");
+  resultEl.classList.remove("show");
+  void resultEl.offsetWidth; // force reflow for smooth re-animation
+  resultEl.classList.add("show");
+
+  resultEl.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+/* ============================================================
+ * INIT: URL PARAMS & EVENT LISTENERS
+ * ============================================================ */
+window.addEventListener("DOMContentLoaded", () => {
+  renderRefSection(REF_DATA);
+
+  // Check URL params
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const scale = params.get("scale");
+    const surplus = params.get("surplus");
+    if (scale && surplus) {
+      const scaleInput = document.querySelector(`input[name="scale"][value="${scale}"]`);
+      const surplusInput = document.querySelector(`input[name="surplus"][value="${surplus}"]`);
+      if (scaleInput && surplusInput) {
+        scaleInput.checked = true;
+        surplusInput.checked = true;
+        document.getElementById("roadmap-form").dispatchEvent(new Event("submit", { cancelable: true }));
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+});
+</script>
+</body>
+</html>
