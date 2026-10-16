@@ -1,293 +1,762 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Logic Business — Cảnh báo BEMS (đối chiếu code 4aef4f5)</title>
-<style>
-  :root{--border:#E5E7EB;--text:#111827;--muted:#4B5563;--sub:#6B7280;--bg:#F9FAFB;
-    --danger:#991B1B;--warning:#92400E;--info:#374151;--ok:#065F46;--brand:#111827;
-    --blue:#1E40AF;--purple:#5B21B6}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;padding:24px 20px;font-size:13.5px}
-  .container{max-width:1180px;margin:0 auto}
-  .header{background:#fff;border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin-bottom:16px}
-  .header h1{font-size:19px;font-weight:600;margin-bottom:6px}
-  .header p{color:var(--sub);font-size:12.5px}
-  .toc{background:#fff;border:1px solid var(--border);border-radius:6px;padding:14px 20px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px 14px}
-  .toc a{color:var(--blue);text-decoration:none;font-size:12px;font-weight:500}
-  .toc a:hover{text-decoration:underline}
-  section{background:#fff;border:1px solid var(--border);border-radius:6px;padding:20px 24px;margin-bottom:16px}
-  section h2{font-size:15px;font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-  section h3{font-size:13px;font-weight:600;margin:14px 0 8px}
-  p.desc{color:var(--muted);font-size:12.5px;margin-bottom:10px}
-  table{width:100%;border-collapse:collapse;text-align:left;margin:8px 0}
-  th{background:var(--bg);color:var(--muted);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border:1px solid var(--border)}
-  td{padding:8px 10px;border:1px solid var(--border);font-size:12px;vertical-align:top}
-  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:#F3F4F6;border:1px solid var(--border);border-radius:3px;padding:1px 5px;color:#1F2937}
-  .flow{background:#0F172A;color:#E2E8F0;border-radius:6px;padding:16px 18px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.65;overflow-x:auto;margin:10px 0;white-space:pre}
-  .flow .g{color:#6EE7B7}.flow .r{color:#FCA5A5}.flow .y{color:#FDE68A}.flow .b{color:#93C5FD}.flow .p{color:#C4B5FD}.flow .d{color:#94A3B8}.flow .o{color:#FDBA74}
-  .badge{display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 7px;margin:1px 2px}
-  .b-push{background:#DBEAFE;color:#1E40AF}.b-inbox{background:#FEF3C7;color:#92400E}
-  .b-skip{background:#F3F4F6;color:#6B7280}.b-ok{background:#D1FAE5;color:#065F46}
-  .note{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:5px;padding:10px 14px;font-size:12px;color:var(--blue);margin:10px 0}
-  .warn{background:#FFFBEB;border:1px solid #FDE68A;border-radius:5px;padding:10px 14px;font-size:12px;color:#92400E;margin:10px 0}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:900px){.two-col{grid-template-columns:1fr}}
-  .mini{border:1px solid var(--border);border-radius:6px;padding:12px 14px}
-  .mini h4{font-size:12px;font-weight:600;margin-bottom:6px;color:var(--muted)}
-  .footer{text-align:right;font-size:11px;color:var(--sub);padding:6px 2px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Trận Cảnh Báo BeMS (Phân loại Stick - Pin)</title>
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --border: #E5E7EB;
+      --border-dark: #D1D5DB;
+      --text-main: #111827;
+      --text-muted: #4B5563;
+      --text-sub: #6B7280;
+      --row-hover: #F9FAFB;
+      --code-bg: #F3F4F6;
+      
+      /* Mức độ: Đơn sắc & trung tính, không rực rỡ */
+      --danger-text: #991B1B;
+      --warning-text: #92400E;
+      --info-text: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #F9FAFB;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      padding: 32px 24px;
+      font-size: 13px;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px 28px;
+    }
+
+    /* HEADER */
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .header p {
+      color: var(--text-sub);
+      font-size: 13px;
+    }
+
+    /* STATS & METRICS */
+    .stats-row {
+      display: flex;
+      gap: 20px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .stats-row span strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* CONTROLS BAR */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tabs {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+
+    .tab-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border: none;
+      border-right: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .tab-btn:last-child {
+      border-right: none;
+    }
+
+    .tab-btn:hover {
+      background: #F3F4F6;
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: #111827;
+      color: #FFFFFF;
+    }
+
+    .filters-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .search-box {
+      width: 280px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #FFFFFF;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #4B5563;
+    }
+
+    .level-select {
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #FFFFFF;
+      color: var(--text-muted);
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    thead th {
+      background: #F9FAFB;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dark);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--row-hover);
+    }
+
+    td {
+      padding: 12px 14px;
+      vertical-align: top;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .td-stt {
+      width: 40px;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 12px;
+    }
+
+    .td-name {
+      width: 250px;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .type-tag {
+      font-size: 11px;
+      color: var(--text-sub);
+      display: inline-block;
+    }
+
+    .td-level {
+      width: 90px;
+      white-space: nowrap;
+    }
+
+    .level-text {
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .level-danger {
+      color: var(--danger-text);
+    }
+
+    .level-warning {
+      color: var(--warning-text);
+    }
+
+    .level-info {
+      color: var(--info-text);
+    }
+
+    .td-trigger {
+      width: 420px;
+    }
+
+    .code-cond {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11.5px;
+      background: var(--code-bg);
+      border: 1px solid #E5E7EB;
+      border-radius: 3px;
+      padding: 2px 6px;
+      color: #1F2937;
+      display: inline-block;
+      margin-bottom: 3px;
+      word-break: break-word;
+    }
+
+    .desc-cond {
+      color: var(--text-sub);
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    .td-action {
+      color: var(--text-main);
+    }
+
+    .action-text {
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .empty-msg {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-sub);
+      font-style: italic;
+    }
+
+    .footer {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
+
 <div class="container">
+  
+  <div class="header">
+    <h1>Ma trận cảnh báo BeMS (Phân loại Stick - Pin)</h1>
+    <div class="stats-row">
+      <span>Tổng số: <strong id="statTotal">32</strong></span>
+      <span>Cảnh báo Pin: <strong id="statPin">16</strong></span>
+      <span>Cảnh báo Stick: <strong id="statStick">16</strong></span>
+      <span>Khẩn cấp: <strong id="statDanger">8</strong></span>
+    </div>
+  </div>
 
-<div class="header">
-  <h1>⚡ Logic Business — Hệ cảnh báo BEMS</h1>
-  <p>Đối chiếu commit <code>4aef4f5 "feature alerting"</code> (14/10) — mô tả <b>đúng code đang chạy</b>, không phải ý định thiết kế. Class gốc ghi cuối mỗi phần. Mở bằng trình duyệt.</p>
+  <div class="controls">
+    <div class="tabs">
+      <button class="tab-btn active" data-type="all" onclick="setTab('all')">Tất cả (32)</button>
+      <button class="tab-btn" data-type="pin" onclick="setTab('pin')">Cảnh báo Pin (16)</button>
+      <button class="tab-btn" data-type="stick" onclick="setTab('stick')">Cảnh báo Stick (16)</button>
+    </div>
+
+    <div class="filters-right">
+      <select id="levelSelect" class="level-select" onchange="applyFilter()">
+        <option value="all">Tất cả mức độ</option>
+        <option value="danger">Khẩn cấp</option>
+        <option value="warning">Cảnh báo</option>
+        <option value="info">Thông tin</option>
+      </select>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm cảnh báo..." onkeyup="applyFilter()">
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="td-stt">STT</th>
+        <th>Tên cảnh báo & Phân loại</th>
+        <th>Mức độ</th>
+        <th>Nguồn kích hoạt gốc (Điều kiện kích hoạt)</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Hệ thống BeMS • Cập nhật ngày 05/10/2026
+  </div>
+
 </div>
 
-<div class="toc">
-  <a href="#s1">1 · Tổng quan 2 đường</a><a href="#s2">2 · Luồng tín hiệu Kafka</a>
-  <a href="#s3">3 · Máy trạng thái episode</a><a href="#s4">4 · Chính sách push</a>
-  <a href="#s5">5 · Ngân sách push &amp; fan-out</a><a href="#s6">6 · Scheduler nội bộ</a>
-  <a href="#s7">7 · Rule &amp; công tắc hộ</a><a href="#s8">8 · Timeline thực tế</a>
-  <a href="#s9">9 · Bảng outcome</a>
-</div>
+<script>
+const data = [
+  /* ================= PIN (16 CẢNH BÁO) ================= */
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin yếu cấp 1 (Low Battery L1)",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "B_left_cap1 <= 20% khi mất lưới",
+    condDesc: "Dung lượng pin giảm xuống ngưỡng tối thiểu trong lúc đang chạy nguồn dự phòng.",
+    action: "Tắt bớt các thiết bị công suất lớn (máy lạnh, máy giặt, bếp từ) để kéo dài thời gian cấp điện."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin cạn kiệt cấp 2 (Low Battery L2)",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "B_left_cap1 <= 10% khi mất lưới",
+    condDesc: "Pin chạm đáy bảo vệ phần cứng; BMS chuẩn bị cắt cổng xả.",
+    action: "Báo động sắp mất điện hoàn toàn. Chuẩn bị nguồn điện dự phòng khác."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin sạc đầy (Battery Full)",
+    level: "info",
+    levelName: "Thông tin",
+    condCode: "B_left_cap1 == 100% và dòng sạc BC <= 1A",
+    condDesc: "Pin đã nạp đầy no.",
+    action: "Có thể bật các thiết bị tiêu thụ trong nhà để tận dụng tối đa lượng điện mặt trời phát dư."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Tụt SOC bất thường (Rapid Drain)",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "B_left_cap1 giảm > 15% trong 5 phút khi dòng xả nhỏ",
+    condDesc: "Dung lượng pin tụt dốc nhanh trong khi dòng phụ tải đo được rất thấp.",
+    action: "Kiểm tra hiện tượng dung lượng ảo, lỗi đo đếm của BMS hoặc có cell pin yếu kéo tụt cả khối."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin quá nhiệt (Cell High Temp)",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "T_SCE_Bma1 >= 45°C khi nạp hoặc xả",
+    condDesc: "Nhiệt độ cell pin vượt ngưỡng làm việc an toàn.",
+    action: "Kiểm tra thông gió phòng kỹ thuật, quạt tủ pin; giảm công suất sạc/xả nếu nhiệt độ tiếp tục tăng."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin quá lạnh (Cell Low Temp)",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "T_SCE_Bma1 <= 5°C khi nạp",
+    condDesc: "Nhiệt độ cell xuống quá thấp, tiếp tục sạc dòng lớn có thể gây hỏng cell.",
+    action: "Hệ thống tự động hạn chế dòng sạc. Kiểm tra che chắn giữ ấm cho khu vực đặt pin."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Lệch áp cell cảnh báo",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "cell_diff_mv >= 50 mV kéo dài",
+    condDesc: "Chênh lệch điện áp giữa cell cao nhất và cell thấp nhất vượt quá 50 mV.",
+    action: "Cần sạc no pin và thả nổi (Float Charge) từ 2–4 tiếng để mạch cân bằng thụ động xử lý."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Lệch áp cell nghiêm trọng",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "cell_diff_mv >= 150 mV hoặc có cell < 2.8V",
+    condDesc: "Độ lệch áp vượt khả năng tự cân bằng của BMS; nguy cơ làm hỏng pack.",
+    action: "Tạm dừng xả sâu. Cần kỹ thuật viên dùng máy cân bằng chủ động xử lý."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Lỗi đứt dây cảm biến nhiệt độ cell",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "CELL_T_x <= -35°C hoặc CELL_T_x >= 110°C",
+    condDesc: "Giá trị đo bất thường do lỏng giắc hoặc đứt dây tín hiệu cảm biến NTC.",
+    action: "Kỹ thuật viên kiểm tra cắm lại giắc cảm biến nhiệt tương ứng trên bo mạch BMS."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Pin suy giảm chất lượng (SOH < 80%)",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "B_HLT_SOH1 < 80%",
+    condDesc: "Dung lượng thực tế của pin đã chai quá 20% so với thiết kế xuất xưởng.",
+    action: "Kiểm tra kích hoạt chính sách bảo hành dung lượng của nhà cung cấp hoặc lập kế hoạch thay thế."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Tụt SOH đột biến",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "B_HLT_SOH1 giảm > 2% chỉ sau vài chu kỳ",
+    condDesc: "Chỉ số sức khỏe pin tụt dốc bất thường không theo quy luật hao mòn tự nhiên.",
+    action: "Kiểm tra nội bộ khối pin; có khả năng có cell lỗi phần cứng hoặc lỏng tiếp xúc thanh dẫn đồng."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Mất kết nối que Pin",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Stick cắm cổng RS485 của Pin ngưng gửi tin > 10 phút",
+    condDesc: "Que pin mất tín hiệu trong khi Inverter vẫn online.",
+    action: "Kiểm tra giắc cắm RS485 từ stick vào cổng Link Port của Pin Pytes; kiểm tra đèn LED trên thân que."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Mất kết nối pack theo ID",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "BAT_ID của một pack không gửi phản hồi",
+    condDesc: "Trong hệ thống ghép song song nhiều pack, một pack mất tín hiệu về pack Master.",
+    action: "Kiểm tra dây cáp mạng RS485 nối tầng giữa các pack và nguồn cấp của pack bị ngắt."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Trùng địa chỉ ID Pack",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "Hai pack phản hồi cùng một giá trị BAT_ID",
+    condDesc: "Xung đột địa chỉ truyền thông làm sai lệch số liệu dòng và dung lượng tổng.",
+    action: "Tắt máy, gạt lại công tắc DIP switch địa chỉ trên mặt từng pack theo hướng dẫn (1, 2, 3...)."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Tần suất nạp xả quá cao",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "NUMcyc1 tăng > 2.5 chu kỳ/ngày kéo dài",
+    condDesc: "Pin bị nạp/xả nhấp nhả quá nhiều lần trong một ngày.",
+    action: "Kiểm tra lại cấu hình cài đặt Inverter để tránh làm giảm nhanh tuổi thọ pin."
+  },
+  {
+    type: "pin",
+    typeName: "Pin",
+    name: "Dòng tự xả rò rỉ bất thường",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Dòng xả BC < -0.8A liên tục khi Inverter ở chế độ chờ",
+    condDesc: "Pin liên tục hao hụt dòng ra ngoài dù phụ tải không hoạt động.",
+    action: "Kiểm tra thiết bị phụ trợ đấu sai nguồn hoặc dòng rò qua tiếp địa."
+  },
 
-<!-- ═══════════ 1 ═══════════ -->
-<section id="s1">
-<h2>1 · Tổng quan — 2 đường vào</h2>
-<div class="flow">
-                     <span class="b">THIẾT BỊ (que/pin/inverter)</span>
-                            │  TCP · MQTT · API Solis
-                            ▼
-                <span class="p">consumer-bems (Java, cùng repo — leader làm)</span>
-                  · ghi schema telemetry (như cũ)
-                  · <span class="y">MỚI: đọc rule → so từng mẫu → phát tín hiệu EDGE-TRIGGERED</span>
-                            │  chỉ khi: VƯỢT ngưỡng / VƯỢT BẬC / HỒI PHỤC
-                            ▼
-        ═══════ KAFKA bems.alert.signals.v1 (msg 3 phần, HMAC-SHA256) ═══════
-                            │
-        ┌───────────────────┴───────────────────┐
-        ▼  <span class="b">ĐƯỜNG 1 — 21 loại Pin/Stick</span>          ▼  <span class="o">ĐƯỜNG 2 — 2 loại nội bộ (KHÔNG qua Kafka)</span>
-  <span class="g">AlertSignalListener</span> (tắt mặc định,          <span class="g">AlertScheduler</span> — 2 nhịp cron:
-  bật = application.alerting.kafka.enabled)   · 5 phút:  renotify + watchdog
-  verify HMAC → TTL 15' → idempotency         · 15 phút: milestone maint_due + batch_issue
-        │                                     │   (milestone từ installed_at/giờ vận hành;
-        ▼                                     │    lô gom theo order_code — thiếu = im lặng)
-  <span class="g">AlertSignals.process()</span> ◄──── cả 2 đường converge ◄──┘
-  máy trạng thái episode → notification → FCM/inbox
-</div>
-<p class="desc"><b>Nguyên tắc phân vai</b>: consumer-bems trả lời <i>"dữ liệu nói điều kiện có đang xảy ra không?"</i> — bems-be trả lời <i>"ai cần biết, lúc nào, mấy lần, push hay inbox?"</i>. Hai câu không bao giờ đổi bên.</p>
-</section>
+  /* ================= STICK (16 CẢNH BÁO) ================= */
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Mất kết nối que Inverter",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Stick cắm Inverter mất kết nối đám mây > 15 phút",
+    condDesc: "Dữ liệu Inverter (công suất mặt trời, phụ tải, điện lưới) bị đóng băng trên ứng dụng.",
+    action: "Kiểm tra nguồn que stick, kiểm tra modem Wi-Fi nhà có đổi mật khẩu hoặc mất mạng."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Mất kết nối Công tơ thông minh (Smart Meter)",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "Inverter mất giao tiếp RS485 với Smart Meter",
+    condDesc: "Chức năng bám tải (Zero Export) bị tê liệt, nguy cơ phát ngược điện ra lưới.",
+    action: "Kiểm tra ngay dây tín hiệu RS485 nối từ công tơ về cổng điều khiển Inverter."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Sóng Wi-Fi thiết bị yếu",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Chỉ số RSSI của stick < -80 dBm liên tục > 1 giờ",
+    condDesc: "Tín hiệu Wi-Fi chập chờn, dữ liệu gửi lên máy chủ bị ngắt quãng.",
+    action: "Di chuyển bộ phát Wi-Fi lại gần vị trí Inverter hoặc gắn thêm bộ lặp sóng (Extender)."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Mất điện lưới — Đang dùng pin",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "Điện áp lưới V_Grid == 0V, Inverter chuyển sang cổng dự phòng",
+    condDesc: "Lưới điện quốc gia mất; nhà đang chạy hoàn toàn bằng pin lưu trữ.",
+    action: "Thông báo gia đình biết đang chạy pin; chủ động ngắt thiết bị lớn để duy trì nguồn dự phòng."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Đã có điện lưới trở lại",
+    level: "info",
+    levelName: "Thông tin",
+    condCode: "Điện áp lưới V_Grid >= 185V ổn định > 60 giây",
+    condDesc: "Điện lực đã cấp điện trở lại; Inverter tự hòa lưới an toàn.",
+    action: "Hệ thống tự động chuyển sang sạc bù pin. Sinh hoạt sử dụng điện bình thường."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Quá tải cổng phụ tải dự phòng",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "Công suất tải vượt định mức cổng EPS hoặc dòng xả BC > 100A",
+    condDesc: "Bật cùng lúc nhiều thiết bị nặng khi mất lưới, vượt giới hạn công suất của Inverter.",
+    action: "Tắt ngay lập tức bếp từ, máy lạnh, ấm đun nước để tránh Inverter tự sập cổng dự phòng."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Điện lưới quá áp / tụt áp",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Điện áp lưới > 253V hoặc < 185V",
+    condDesc: "Điện lưới ngoài dải cho phép, Inverter tạm ngắt hòa lưới để bảo vệ thiết bị.",
+    action: "Theo dõi thêm và liên hệ đơn vị điện lực địa phương nếu hiện tượng lặp lại nhiều lần."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Nắng to nhưng sản lượng pin mặt trời bằng 0",
+    level: "danger",
+    levelName: "Khẩn cấp",
+    condCode: "Khung giờ 11h00–13h00 trưa nhưng công suất PV < 100W",
+    condDesc: "Trời nắng đỉnh điểm nhưng dàn tấm pin hoàn toàn không có công suất phát.",
+    action: "Khả năng nhảy Aptomat DC hoặc nổ cầu chì chuỗi PV. Cần kỹ thuật viên kiểm tra gấp."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Pin không xả vào giờ cao điểm",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "17h00–20h00, Pin còn > 50% nhưng dòng xả BC == 0A",
+    condDesc: "Giờ cao điểm điện giá cao nhưng pin không phát để cắt đỉnh tiêu thụ.",
+    action: "Kiểm tra chế độ vận hành (Work Mode) và khung giờ cài đặt trên Inverter."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Tiêu thụ điện nhà tăng vọt bất thường",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Phụ tải cao bất thường lúc vắng người hoặc nửa đêm (> 3kW lúc 2h sáng)",
+    condDesc: "Phụ tải nhảy vọt ngoài khung giờ sinh hoạt thông thường.",
+    action: "Kiểm tra thiết bị tiêu thụ trong nhà có quên tắt hoặc nghi ngờ rò rỉ điện phụ tải."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Từ chối lệnh điều khiển",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Stick gửi lệnh sạc/xả nhưng Inverter/BMS phản hồi mã lỗi từ chối",
+    condDesc: "Thiết bị không thực thi thao tác cài đặt từ xa của người dùng.",
+    action: "Kiểm tra thiết bị có đang bị khóa tại chỗ (Local Mode) hoặc thông số nằm ngoài dải hợp lệ."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Xung đột khung giờ cài đặt",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Khung giờ sạc trùng hoặc đè lên khung giờ xả",
+    condDesc: "Hai quy tắc nạp xả tự động bị chồng lấn thời gian thực thi.",
+    action: "Chỉnh sửa lại thời gian bắt đầu và kết thúc của các khung giờ trên ứng dụng."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Dự báo thời tiết mưa dông ngày mai",
+    level: "info",
+    levelName: "Thông tin",
+    condCode: "API thời tiết dự báo mai mưa nhiều, bức xạ mặt trời giảm > 70%",
+    condDesc: "Sản lượng điện mặt trời ngày mai dự kiến sẽ rất ít.",
+    action: "Gợi ý bật nạp pin từ lưới vào ban đêm (giờ thấp điểm giá rẻ) để chủ động tích trữ điện."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Nhắc nhở sắp đến giờ cao điểm",
+    level: "info",
+    levelName: "Thông tin",
+    condCode: "Tự động kích hoạt lúc 16h45 hàng ngày",
+    condDesc: "Chuẩn bị bước vào khung giờ giá điện đắt nhất trong ngày (17h00–20h00).",
+    action: "Báo cáo mức pin sẵn sàng xả để tiết kiệm tiền điện mua từ lưới."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Bảo trì: Nhắc siết lực cọc cực DC",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Hệ thống vận hành đạt mốc 6 tháng hoặc 1 năm",
+    condDesc: "Ốc cọc tiếp xúc DC có thể bị lỏng do giãn nở nhiệt.",
+    action: "Kỹ thuật viên dùng cờ lê lực kiểm tra siết lại bu lông các đầu cọc tiếp xúc."
+  },
+  {
+    type: "stick",
+    typeName: "Stick",
+    name: "Bảo trì: Nhắc vệ sinh quạt Inverter",
+    level: "warning",
+    levelName: "Cảnh báo",
+    condCode: "Inverter hoạt động đạt 4.000 giờ hoặc nhiệt độ tản nhiệt tăng",
+    condDesc: "Bụi bẩn bám vào khe nhôm và quạt gió làm giảm hiệu quả làm mát máy.",
+    action: "Thổi bụi, vệ sinh lưới lọc gió và quạt làm mát Inverter."
+  }
+];
 
-<!-- ═══════════ 2 ═══════════ -->
-<section id="s2">
-<h2>2 · Luồng xử lý một tín hiệu Kafka — <code>AlertSignals.process()</code></h2>
-<div class="flow">
-message đến listener (<span class="d">AlertSignalListener.onMessage</span>)
-  │
-  1️⃣ <span class="y">parse JSON</span> hỏng ──────────────► <span class="r">DLQ</span> (kèm lý do) — không ném exception
-  2️⃣ mã thuộc scheduler nội bộ? ────────► <span class="r">DLQ</span> (lỗi hợp đồng: maint_due/batch_issue)
-  3️⃣ <span class="y">verify HMAC-SHA256</span> sai ─────────► <span class="r">DLQ</span> (so sánh constant-time)
-  4️⃣ TTL: emittedAt cũ &gt; 15 phút ──────► <span class="d">bỏ + metric skipped.ttl</span> (KHÔNG DLQ — tin lỗi thời)
-  │
-  ▼ vào port (bọc transaction + retry DB 3 lần 1s/5s/30s; vẫn lỗi → DLQ)
-  5️⃣ messageId đã xử lý? ───────────────► <span class="d">DUPLICATE</span> (idempotency lớp 1 — Kafka at-least-once)
-  6️⃣ <span class="y">công tắc hộ</span>: mã KHÔNG khóa + hộ đã tắt?
-  │     ├── tín hiệu RAISED/ESCALATED ──► <span class="d">IGNORED_HOUSEHOLD_DISABLED</span> (không mở episode)
-  │     └── tín hiệu CLEARED ──────────► vẫn XỬ LÝ (đóng episode đang mở, im lặng)
-  7️⃣ <span class="y">rule toàn hệ thống</span> enabled=false? ──► IGNORED_DISABLED (mọi tín hiệu im lặng)
-  8️⃣ <span class="g">máy trạng thái</span> (mục 3) → outcome + episode
-  9️⃣ lưu episode → <span class="g">fanOut</span> nếu outcome xứng đáng + hộ bật (mục 5)
-  🔟 markProcessed(messageId) — tất cả trong 1 transaction
-</div>
-<div class="note">Lỗi DB tạm thời được <b>retry trong memory</b> (1s → 5s → 30s, tự viết BackOffPolicy) trước khi vào DLQ — sóng ngắn không làm mất tín hiệu. Mọi nhánh đều có metric <code>alerting.signal.*</code>.</div>
-</section>
+let selectedTab = 'all';
 
-<!-- ═══════════ 3 ═══════════ -->
-<section id="s3">
-<h2>3 · Máy trạng thái episode — <code>AlertSignalProcessor</code> (thuần Java)</h2>
-<p class="desc">Episode = một "đợt" cảnh báo. Khóa: <code>(hộ, asset_id, alert_code, instance)</code> — tối đa <b>1 episode mở</b> mỗi khóa (unique index partial WHERE phase='open'). <code>instance</code> = pack_sn / cell hỏng / loại việc bảo trì (NULL = cấp asset).</p>
-<div class="flow">
-                    ┌────────────── episode đang mở? ──────────────┐
-   <span class="g">RAISED</span> ────────► KHÔNG                                       CÓ ─────────────────────────┐
-   <span class="g">ESCALATED</span>        │                                            │                          │
-        │            │                                                     severity tín hiệu        │
-        │            ├── cooldown chặn? ──► <span class="d">SUPPRESSED_COOLDOWN</span>            outranks mức hiện tại?    │
-        │            │    (2 đợt phát cách nhau                            ├── CÓ ──► <span class="o">ESCALATED</span>       │
-        │            │     &lt; cooldown_minutes, đo từ                        │    nâng severity TẠI CHỖ,    │
-        │            │     resolved_at đợt trước)                          │    KHÔNG mở episode mới     │
-        │            │                                                    └── KHÔNG                  │
-        │            ├── ONESHOT? ──► <span class="g">OPENED_ONESHOT</span>                          ├── tín hiệu ESCALATED ─► <span class="d">IGNORED_NO_ESCALATION</span>
-        │            │    phát xong tự đóng ngay                          │    (refresh bằng chứng)     │
-        │            │    (chống lặp = cooldown lần kế)                   └── RAISED lặp:             │
-        │            └── còn lại ──► <span class="g">OPENED</span>                            ├── đủ hạn renotify ──► <span class="y">RENOTIFIED</span>
-        │                 first_raised_at = happenedAt                    │    (last_notified_at +
-        │                 (thời điểm DỮ LIỆU, không phải                    │     renotify_minutes ≤ now)
-        │                  lúc job chạy)                                  └── chưa đủ ──► <span class="d">SUPPRESSED_RENOTIFY</span>
-        │
-   <span class="r">CLEARED</span> ────────► KHÔNG episode mở = <span class="d">ORPHAN_CLOSED</span>            CÓ ──► <span class="r">CLOSED</span>
-                     ghi episode đã đóng im lặng (audit,                resolved_at = happenedAt
-                     first_raised_at lùi theo duration_minutes)         + refresh + markNotified
-                     <span class="d">#32 — RAISED đã bị TTL bỏ trong downtime</span>
-</div>
-<div class="warn"><b>ESCALATED mồ côi</b> (RAISED đã bị TTL bỏ): mở episode mới tại bậc nghiêm trọng của tín hiệu — chủ đích <i>"an toàn, không im lặng bất thường"</i>: thà báo muội mức cao còn hơn mất hết.</div>
-</section>
+function updateStats() {
+  const pinCount = data.filter(d => d.type === 'pin').length;
+  const stickCount = data.filter(d => d.type === 'stick').length;
+  const dangerCount = data.filter(d => d.level === 'danger').length;
 
-<!-- ═══════════ 4 ═══════════ -->
-<section id="s4">
-<h2>4 · Chính sách push — <code>AlertPushPolicy.decide()</code> (thuần Java)</h2>
-<p class="desc">Quyết định MỘT sự kiện thông báo của episode được <span class="badge b-push">PUSH</span> hay <span class="badge b-inbox">CHỈ INBOX + badge</span>. Mọi luật đã chốt H1 (spec v2.3).</p>
-<div class="two-col">
-  <div class="mini"><h4>OPENED · OPENED_ONESHOT · RENOTIFIED</h4>
-<div class="flow">severity == info?        ─► <span class="badge b-inbox">inbox</span> <span class="d">(info-inbox-only)</span>
-đang snooze (snooze_until &gt; now)? ─► <span class="badge b-inbox">inbox</span> <span class="d">(snoozed)</span>
-giờ local hộ ∈ [22h, 6h) + rule mute? ─► <span class="badge b-inbox">inbox</span> <span class="d">(mute-overnight)</span>
-   (critical được MIỄN im lặng đêm)
-push_count ≥ max_pushes?  ─► <span class="badge b-inbox">inbox</span> <span class="d">(budget-exhausted)</span>
-còn lại                   ─► <span class="badge b-push">PUSH</span> <span class="d">(raised) — tốn 1 budget</span></div></div>
-  <div class="mini"><h4>ESCALATED</h4>
-<div class="flow">mức mới == critical? ─► bỏ qua snooze (an toàn)
-   không critical + snooze? ─► <span class="badge b-inbox">inbox</span> <span class="d">(snoozed)</span>
-mute đêm (theo mức MỚI)?  ─► <span class="badge b-inbox">inbox</span>
-push_count ≥ max_pushes?  ─► <span class="badge b-inbox">inbox</span> <span class="d">(cap tuyệt đối)</span>
-lần push cuối &lt; 2h?      ─► <span class="badge b-inbox">inbox</span> <span class="d">(escalated-within-2h)</span>
-còn lại ─► <span class="badge b-push">PUSH</span> <span class="d">(escalated-no-budget)</span>
-   <span class="y">KHÔNG tốn budget</span> (H1)</div></div>
-</div>
-<div class="two-col">
-  <div class="mini"><h4>CLOSED (hết cảnh báo)</h4>
-<div class="flow">episode KHÔNG critical? ─► <span class="badge b-inbox">inbox</span> <span class="d">(cleared-non-critical)</span>
-episode critical? ─► <span class="badge b-push">PUSH</span> <span class="d">(cleared-critical-no-budget)</span>
-   không tốn budget, không chặn bởi snooze/mute/đêm —
-   khớp ví dụ "23:58 PUSH Đã có điện lưới trở lại"</div></div>
-  <div class="mini"><h4>ORPHAN_CLOSED / SUPPRESSED / IGNORED / DUPLICATE</h4>
-<div class="flow">Không phát notification gì cả — chỉ episode/audit/metric.
-(ORPHAN_CLOSED khi hộ đã tắt mã → chuyển thành skip luôn,
- không giữ audit — "không mở episode" cho hộ từ chối nhận)</div></div>
-</div>
-</section>
+  document.getElementById('statTotal').textContent = data.length;
+  document.getElementById('statPin').textContent = pinCount;
+  document.getElementById('statStick').textContent = stickCount;
+  document.getElementById('statDanger').textContent = dangerCount;
 
-<!-- ═══════════ 5 ═══════════ -->
-<section id="s5">
-<h2>5 · Fan-out &amp; ngân sách push — <code>AlertEpisodes.fanOut()</code></h2>
-<div class="flow">
-outcome notificationWorthy + hộ bật
-  │  audience internal (batch_issue) ─► <span class="d">skip</span> (hàng chờ ALR-07, admin soạn — không push hộ)
-  ▼
-<span class="g">AlertPushPolicy.decide</span> → verdict push|inbox
-  ▼
-<span class="g">NotificationsPort.publish</span>(draft.push = verdict)
-  · type: <code>bems_alert_raised</code> (mở/nhắc/nâng) hoặc <code>bems_alert_cleared</code> (đóng)
-  · dedupe_key: <code>alert:&lt;episodeId&gt;:raised</code> · <code>:renotify:&lt;n&gt;</code> · <code>:resolved</code>
-  · draft.push=false → <span class="badge b-inbox">vẫn ghi inbox + badge</span>, bỏ hẳn tầng FCM (Notifications.java)
-  ▼
-publish.created() &amp;&amp; verdict.pushed  ──► đánh dấu <span class="y">push THẬT</span>:
-     episode.lastPushedAt = now     (mốc luật ESCALATED &gt; 2h)
-     push_count++  CHỈ KHI outcome ∈ {OPENED, OPENED_ONESHOT, RENOTIFIED}
-     <span class="d">(ESCALATED + CLEARED-critical không tốn budget — H1)</span>
-</div>
-<div class="note">Trùng <code>dedupe_key</code> (Kafka giao trùng sau khi notification đã tạo) → <code>publish.created() = false</code> → <b>không</b> đếm budget — idempotency lớp 2.</div>
-</section>
+  document.querySelector('.tab-btn[data-type="all"]').textContent = `Tất cả (${data.length})`;
+  document.querySelector('.tab-btn[data-type="pin"]').textContent = `Cảnh báo Pin (${pinCount})`;
+  document.querySelector('.tab-btn[data-type="stick"]').textContent = `Cảnh báo Stick (${stickCount})`;
+}
 
-<!-- ═══════════ 6 ═══════════ -->
-<section id="s6">
-<h2>6 · Scheduler nội bộ — <code>AlertScheduler</code> (ShedLock, bật bằng <code>alerting.enabled</code>)</h2>
-<table>
-<tr><th>Nhịp</th><th>Cron</th><th>Việc</th><th>Logic chính</th></tr>
-<tr><td><code>runRenotifyAndWatchdog</code></td><td>5 phút<br><code>alerting-renotify</code></td><td><b>renotifyOverdue</b></td><td>Lấy episode mở có last_notified_at cũ → lọc: hộ tắt mã → bỏ; rule.renotify NULL (info) → bỏ; chưa đủ hạn rule hiệu lực (critical 120' / warning 360' / kin niên 10080') → bỏ. Đủ: notify_count++ → publish → push theo policy → budget nếu push thật.</td></tr>
-<tr><td></td><td></td><td><b>watchdogStale</b></td><td>Episode mở mà <code>last_evaluated_at</code> cũ hơn <code>watchdog-days</code> (7 ngày) → <b>đóng im lặng</b> như mồ côi. Ngoại lệ: MILESTONE (maint_due) chưa ACK — <b>không đóng</b> (nó chờ con người, không chờ dữ liệu). <i>Giả định theo câu mở #33.</i></td></tr>
-<tr><td><code>runMilestonesAndBatchScan</code></td><td>15 phút<br><code>alerting-batch-scan</code></td><td><b>scanMilestones</b></td><td><code>maint_due</code>: đủ 6 tháng từ <code>installed_at</code> (siết cọc) hoặc 4.000h vận hành (derive từ độ phủ <code>inverter_rt</code>) → mở MILESTONE episode (instance = loại việc). Đóng bằng ACK (ALR-06); <b>chu kỳ kế tính từ <code>ack_at</code></b> (#31). Cột DB trống → im lặng an toàn (#24).</td></tr>
-<tr><td></td><td></td><td><b>scanBatches</b></td><td><code>batch_issue</code>: gom episode mở theo <code>household_asset.order_code</code> (thiếu → không thuộc lô — im lặng) → 5 bộ phát hiện (≥30% offline/24h, ≥20% lỗi/7 ngày, ≥3 cùng lỗi/72h, ≥3 cùng firmware, lô &lt; 90 ngày tới hạn bảo hành) → episode nội bộ vào <b>hàng chờ ALR-07</b> — KHÔNG push hộ; admin duyệt + soạn title/nội dung rồi gửi broadcast (ALR-09).</td></tr>
-</table>
-<div class="note">Hai việc trong nhịp 15 phút chạy <b>độc lập</b> (<code>runScanIsolated</code>): một việc ném exception thì việc kia vẫn chạy — lỗi được nuốt + log ERROR đầy đủ, không cuốn giết cả nhịp.</div>
-</section>
+function renderTable(items) {
+  const tbody = document.getElementById('tableBody');
+  if (!items || items.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">Không có cảnh báo phù hợp với tìm kiếm.</td></tr>';
+    return;
+  }
 
-<!-- ═══════════ 7 ═══════════ -->
-<section id="s7">
-<h2>7 · Rule &amp; công tắc hộ (v2.4)</h2>
-<div class="two-col">
-<div class="mini"><h4>Rule toàn hệ thống — <code>alerting.alert_rule</code></h4>
-<div class="flow">tín hiệu mã X
-  ▼
-rule DB của X (1 dòng/mã, admin sửa)
-  ├── có &amp; enabled → dùng params/recover/sustain/
-  │     window/renotify/cooldown/max_pushes/mute
-  └── thiếu dòng / mã lạ
-        └─► <span class="y">fallback hard-code AlertCode.RuleDefaults</span>
-             (khớp seed V22 — "an toàn, không im lặng bất thường")</div>
-<p class="desc">Validate: <code>renotify</code> = NULL hoặc ≥ 30 phút (#30). <code>window_cron</code> = khung <code>[start, end)</code> giờ local hộ (#35): "11h–13h" = <code>0 11-12 * * *</code>, hết khung tự đóng im lặng.</p></div>
-<div class="mini"><h4>Công tắc nhận thông báo — <code>alerting.household_alert_setting</code></h4>
-<div class="flow">hộ × alert_code → enabled
-  · <span class="d">vắng dòng = BẬT</span> (#42 — hộ mới không cần seed)
-  · chỉ OWNER/ADMIN hộ được toggle (#43)
-  · <span class="r">9 MÃ KHÓA — không bao giờ tắt được:</span>
-    5 thuần critical (meter_comm_lost, grid_lost_on_battery,
-    eps_overload, pv_zero_at_noon, batt_pack_id_conflict)
-    + 4 loại 2 bậc (batt_low, batt_cell_temp_abnormal,
-    batt_imbalance, batt_soh_abnormal)   <span class="d">(#41)</span>
-  · batch_issue: locked (nội bộ, không hiện UI hộ)
-  · API chặn ghi false cho mã khóa; engine bỏ qua
-    enable của hộ với mã khóa (luôn gửi)</div></div>
-</div>
-<p class="desc">Snooze (ALR-08): MEMBER trở lên bấm "ẩn nhắc" 1…<code>snooze_max_hours</code> (mặc định 12) — chặn <b>đợt push kế</b> nhưng inbox vẫn ghi theo nhịp renotify; nâng lên critical hoặc tin đóng của critical vẫn xuyên qua ("không im lặng bất thường").</p>
-</section>
+  tbody.innerHTML = items.map((item, idx) => {
+    let levelClass = 'level-info';
+    if (item.level === 'danger') levelClass = 'level-danger';
+    if (item.level === 'warning') levelClass = 'level-warning';
 
-<!-- ═══════════ 8 ═══════════ -->
-<section id="s8">
-<h2>8 · Timeline thực tế — mất lưới 10 tiếng, pin yếu dần (đúng code)</h2>
-<div class="flow">
-<span class="b">14:02</span>  CB: grid_present=false → RAISED grid_lost_on_battery (critical)
-         → OPENED → policy: critical, không snooze/mute/budget-vượt → <span class="badge b-push">PUSH 1/3</span>
-         (budget riêng episode này: push_count=1)
+    return `
+      <tr>
+        <td class="td-stt">${idx + 1}</td>
+        <td class="td-name">
+          <span class="alert-title">${item.name}</span>
+          <span class="type-tag">[Cảnh báo từ ${item.typeName}]</span>
+        </td>
+        <td class="td-level">
+          <span class="level-text ${levelClass}">${item.levelName}</span>
+        </td>
+        <td class="td-trigger">
+          <div class="code-cond">${item.condCode}</div>
+          <div class="desc-cond">${item.condDesc}</div>
+        </td>
+        <td class="td-action">
+          <div class="action-text">${item.action}</div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
 
-<span class="b">16:40</span>  CB: soc xuống 20% → RAISED batt_low (warning, episode MỚI — budget riêng)
-         → OPENED → <span class="badge b-push">PUSH 1/3</span> (push_count=1)
+function applyFilter() {
+  const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+  const selectedLevel = document.getElementById('levelSelect').value;
 
-<span class="b">18:05</span>  CB: soc xuống 10% → ESCALATED batt_low lên critical
-         → mức mới outranks → ESCALATED outcome
-         → policy: cách push cuối (16:40) chỉ 1h25' &lt; 2h → <span class="badge b-inbox">INBOX</span>
-           <span class="d">(escalated-within-2h — KHÔNG tốn budget, push_count vẫn 1)</span>
+  const filtered = data.filter(item => {
+    if (selectedTab !== 'all' && item.type !== selectedTab) return false;
+    if (selectedLevel !== 'all' && item.level !== selectedLevel) return false;
+    if (keyword) {
+      const matchName = item.name.toLowerCase().includes(keyword);
+      const matchCond = item.condCode.toLowerCase().includes(keyword) || item.condDesc.toLowerCase().includes(keyword);
+      const matchAction = item.action.toLowerCase().includes(keyword);
+      return matchName || matchCond || matchAction;
+    }
+    return true;
+  });
 
-<span class="b">20:10</span>  scheduler renotify: last_notified (18:05) + 120' (critical) ≤ now
-         → RENOTIFIED → policy: cách push cuối 3h30' ≥ 2h, budget 1/3 &lt; 3
-         → <span class="badge b-push">PUSH 2/3</span> (push_count=2)
+  renderTable(filtered);
+}
 
-<span class="b">21:30</span>  user bấm "Ẩn nhắc 6h" → snooze_until = 03:30
-         → mọi lượt sau <span class="badge b-inbox">INBOX</span> tới 03:30 (trừ nâng critical sau 2h / tin đóng)
+function setTab(tab) {
+  selectedTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-type') === tab);
+  });
+  applyFilter();
+}
 
-<span class="b">23:58</span>  CB: lưới về ≥185V ổn định 60s → CLEARED grid_lost_on_battery
-         → CLOSED → policy: episode critical → <span class="badge b-push">PUSH</span> cleared-critical-no-budget
-           <span class="d">(không tốn budget — tin đóng của critical luôn được push)</span>
+// Khởi chạy
+updateStats();
+renderTable(data);
+</script>
 
-KẾT QUẢ: 4 push / 10 tiếng (~6.000 mẫu dữ liệu) — inbox đầy đủ từng bước, badge đúng.
-</div>
-</section>
-
-<!-- ═══════════ 9 ═══════════ -->
-<section id="s9">
-<h2>9 · Bảng outcome — mọi nhánh máy trạng thái</h2>
-<table>
-<tr><th>Outcome</th><th>Ý nghĩa</th><th>Episode</th><th>Notification</th><th>Push policy</th></tr>
-<tr><td><code>OPENED</code></td><td>mở episode mới (RAISED/ESCALATED khi chưa có)</td><td>mở</td><td>có</td><td>nhánh raised — tốn budget</td></tr>
-<tr><td><code>OPENED_ONESHOT</code></td><td>ONESHOT (pin đầy): phát xong tự đóng ngay</td><td>đóng</td><td>có</td><td>info → inbox-only</td></tr>
-<tr><td><code>ESCALATED</code></td><td>nâng bậc trong episode đang mở</td><td>mở (severity mới)</td><td>có</td><td>2h rule, KHÔNG tốn budget</td></tr>
-<tr><td><code>RENOTIFIED</code></td><td>nhắc lại khi còn kéo dài (tín hiệu lặp / scheduler)</td><td>mở</td><td>có</td><td>nhánh raised — tốn budget</td></tr>
-<tr><td><code>CLOSED</code></td><td>CLEARED khi có episode mở</td><td>đóng</td><td>có</td><td>critical → push free; khác → inbox</td></tr>
-<tr><td><code>ORPHAN_CLOSED</code></td><td>CLEARED mà RAISED đã bị TTL bỏ — ghi audit im lặng</td><td>đóng (mới)</td><td>không</td><td>—</td></tr>
-<tr><td><code>SUPPRESSED_COOLDOWN</code></td><td>2 đợt phát gần hơn cooldown</td><td>—</td><td>không</td><td>—</td></tr>
-<tr><td><code>SUPPRESSED_RENOTIFY</code></td><td>RAISED lặp chưa đủ hạn nhắc</td><td>mở (refresh bằng chứng)</td><td>không</td><td>—</td></tr>
-<tr><td><code>IGNORED_DISABLED</code></td><td>rule toàn hệ thống tắt</td><td>—</td><td>không</td><td>—</td></tr>
-<tr><td><code>IGNORED_NO_ESCALATION</code></td><td>ESCALATED mà mức không cao hơn</td><td>mở</td><td>không</td><td>—</td></tr>
-<tr><td><code>IGNORED_HOUSEHOLD_DISABLED</code></td><td>hộ tắt mã không khóa (RAISED/ESCALATED)</td><td>—</td><td>không</td><td>—</td></tr>
-<tr><td><code>DUPLICATE</code></td><td>messageId đã xử lý (Kafka giao trùng)</td><td>—</td><td>không</td><td>—</td></tr>
-</table>
-<p class="desc"><code>notificationWorthy()</code> = {OPENED, OPENED_ONESHOT, ESCALATED, RENOTIFIED, CLOSED} — 5 outcome đi vào fanOut + push policy; còn lại chỉ episode/audit/metric.</p>
-</section>
-
-<div class="footer">Logic business · đối chiếu commit 4aef4f5 · 14/10/2026 · cùng folder: spec-canh-bao-v2.html (spec) · 08-tu-dien-truong-du-lieu.md (schema) · 04-kafka-message-contract.md (hợp đồng message)</div>
-</div>
 </body>
 </html>
