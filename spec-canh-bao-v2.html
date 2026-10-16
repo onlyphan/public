@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec Cảnh báo BeMS v2 — Khả thi theo DB · Ma trận + Demo Config</title>
+<style>
+  :root{
+    --bg:#FFFFFF;--border:#E5E7EB;--border-dark:#D1D5DB;--text:#111827;--muted:#4B5563;--sub:#6B7280;
+    --hover:#F9FAFB;--code-bg:#F3F4F6;
+    --danger:#991B1B;--warning:#92400E;--info:#374151;--ok:#065F46;--brand:#111827;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#F9FAFB;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5;padding:24px 20px;font-size:13px}
+  .container{max-width:1320px;margin:0 auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:22px 26px}
+  .header{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px}
+  .header h1{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+  .header p{color:var(--sub);font-size:12.5px}
+  .stats-row{display:flex;gap:18px;margin-top:12px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+  .stats-row strong{color:var(--text);font-weight:600}
+
+  /* Nav màn hình chính */
+  .screen-nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .screen-btn{padding:8px 16px;font-size:12.5px;font-weight:600;border:1px solid var(--border);border-radius:5px;background:#fff;color:var(--muted);cursor:pointer}
+  .screen-btn:hover{background:var(--hover)}
+  .screen-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+  .controls{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .tabs{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:#fff}
+  .tab-btn{padding:6px 14px;font-size:12px;font-weight:500;border:none;border-right:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}
+  .tab-btn:last-child{border-right:none}
+  .tab-btn.active{background:var(--brand);color:#fff}
+  .filters-right{display:flex;gap:10px;flex:1;justify-content:flex-end}
+  .search-box input,.level-select{padding:6px 10px;font-size:12px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text);outline:none}
+  .search-box input{width:260px}
+
+  table{width:100%;border-collapse:collapse;border:1px solid var(--border);text-align:left}
+  thead th{background:#F9FAFB;color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:9px 12px;border-bottom:1px solid var(--border-dark);white-space:nowrap}
+  tbody tr{border-bottom:1px solid var(--border)}
+  tbody tr:hover{background:var(--hover)}
+  td{padding:11px 12px;vertical-align:top;font-size:12.5px;line-height:1.45}
+  .td-stt{width:36px;text-align:center;color:var(--sub);font-size:12px}
+  .td-name{width:230px}
+  .alert-title{font-weight:600;display:block;margin-bottom:3px}
+  .type-tag,.kind-tag,.who-tag{font-size:10.5px;color:var(--sub);display:inline-block;background:var(--code-bg);border:1px solid var(--border);border-radius:3px;padding:1px 6px;margin-right:4px}
+  .level-text{font-size:11.5px;font-weight:600;white-space:nowrap}
+  .level-danger{color:var(--danger)} .level-warning{color:var(--warning)} .level-info{color:var(--info)}
+  .code-cond{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:var(--code-bg);border:1px solid #E5E7EB;border-radius:3px;padding:2px 6px;color:#1F2937;display:inline-block;margin-bottom:3px;word-break:break-word}
+  .db-src{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--ok);background:#ECFDF5;border:1px solid #A7F3D0;border-radius:3px;padding:2px 6px;display:inline-block;margin-top:3px}
+  .desc-cond{color:var(--sub);font-size:11.5px}
+  .footer{margin-top:14px;font-size:11px;color:var(--sub);text-align:right}
+  .note-bar{background:#FFFBEB;border:1px solid #FDE68A;border-radius:5px;padding:10px 14px;font-size:12px;color:#78350F;margin-bottom:14px}
+
+  /* ==== Màn cấu hình ==== */
+  .cfg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+  .cfg-head h2{font-size:14px;font-weight:600}
+  select.house-sel{padding:7px 10px;font-size:12.5px;border:1px solid var(--border-dark);border-radius:5px;background:#fff}
+  .cfg-table input[type=number]{width:86px;padding:5px 6px;font-size:12px;border:1px solid var(--border);border-radius:4px}
+  .cfg-table input[type=checkbox]{width:16px;height:16px;cursor:pointer}
+  .cfg-table select.sev{padding:5px 6px;font-size:11.5px;border:1px solid var(--border);border-radius:4px}
+  .row-selected{background:#EEF2FF !important}
+  .json-panel{margin-top:14px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .json-panel .jp-head{background:#F9FAFB;padding:8px 14px;font-size:11.5px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+  .json-panel pre{padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.6;color:#1F2937;overflow:auto;max-height:300px;background:#fff}
+
+  /* Chủ nhà */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .card{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:#fff}
+  .card.critical-off{background:#FFFBFA}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+  .card-name{font-weight:600;font-size:12.5px}
+  .switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0}
+  .switch input{opacity:0;width:0;height:0}
+  .slider-t{position:absolute;cursor:pointer;inset:0;background:#D1D5DB;border-radius:22px;transition:.2s}
+  .slider-t:before{content:"";position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+  .switch input:checked + .slider-t{background:#059669}
+  .switch input:checked + .slider-t:before{transform:translateX(18px)}
+  .switch input:disabled + .slider-t{opacity:.45;cursor:not-allowed}
+  .slider-row{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:12px;color:var(--muted)}
+  .slider-row input[type=range]{flex:1;accent-color:#111827}
+  .slider-row .val{font-weight:600;color:var(--text);min-width:64px;text-align:right;font-variant-numeric:tabular-nums}
+  .mini-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-top:8px}
+  .btn-reset{padding:5px 10px;font-size:11.5px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--muted);cursor:pointer}
+  .btn-reset:hover{background:var(--hover)}
+  .lock-note{font-size:11px;color:var(--danger);margin-top:6px}
+
+  /* Hộp cảnh báo */
+  .inbox .card{display:flex;gap:14px;margin-bottom:10px;align-items:flex-start}
+  .sev-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0}
+  .sev-critical{background:#DC2626}.sev-warning{background:#D97706}.sev-info{background:#9CA3AF}
+  .ib-title{font-weight:600;font-size:13px}
+  .ib-meta{font-size:11.5px;color:var(--sub);margin:2px 0 6px}
+  .ib-action{font-size:12px;color:var(--muted);background:var(--hover);border:1px solid var(--border);border-radius:4px;padding:7px 10px}
+  .btn-ack{margin-left:auto;padding:6px 12px;font-size:11.5px;font-weight:600;border:none;border-radius:4px;background:#111827;color:#fff;cursor:pointer;flex-shrink:0}
+  .btn-ack.done{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;cursor:default}
+  .chip-internal{font-size:10.5px;background:#EEF2FF;color:#3730A3;border:1px solid #C7D2FE;border-radius:3px;padding:1px 6px;margin-left:6px}
+  .chip-live{font-size:10.5px;background:#FEF2F2;color:#991B1B;border:1px solid #FECACA;border-radius:3px;padding:1px 6px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Spec Cảnh báo BeMS v2 — khả thi theo dữ liệu DB (Stick · Pin · Lô hàng)</h1>
+    <p>32 cảnh báo giữ lại (mọi điều kiện đã đối chiếu cột DB thật — điều tra 12/10/2026) · 4 cảnh báo đã loại/hoãn · kèm demo 3 màn cấu hình. Thay thế ma trận 05/10.</p>
+    <div class="stats-row">
+      <span>Tổng giữ lại: <strong id="statTotal">32</strong></span>
+      <span>Pin: <strong id="statPin"></strong></span>
+      <span>Stick: <strong id="statStick"></strong></span>
+      <span>Lô hàng: <strong id="statBatch"></strong></span>
+      <span>Khẩn cấp: <strong id="statDanger"></strong></span>
+      <span>Đã loại/hoãn: <strong id="statCut">4</strong></span>
+    </div>
+  </div>
+
+  <div class="screen-nav">
+    <button class="screen-btn active" data-screen="matrix" onclick="setScreen('matrix')">📄 Ma trận cảnh báo</button>
+    <button class="screen-btn" data-screen="admin" onclick="setScreen('admin')">⚙️ Cấu hình — Admin</button>
+    <button class="screen-btn" data-screen="home" onclick="setScreen('home')">🏠 Cấu hình — Chủ nhà</button>
+    <button class="screen-btn" data-screen="inbox" onclick="setScreen('inbox')">🔔 Hộp cảnh báo (demo)</button>
+  </div>
+
+  <!-- ══════════ MÀN 1: MA TRẬN ══════════ -->
+  <div id="screen-matrix">
+    <div class="note-bar">Nhóm <b>Lô hàng</b> là cảnh báo <b>nội bộ</b> (KTV/CSKH, gom theo <code>order_code</code>) — đánh giá bởi scheduler trong bems-be, <b>không</b> đẩy push cho gia đình. Các nhóm Pin/Stick do consumer-bems đánh giá theo rule → Kafka → bems-be phát push.</div>
+    <div class="controls">
+      <div class="tabs">
+        <button class="tab-btn active" data-type="all" onclick="setTab('all')">Tất cả (32)</button>
+        <button class="tab-btn" data-type="pin" onclick="setTab('pin')">Pin (16)</button>
+        <button class="tab-btn" data-type="stick" onclick="setTab('stick')">Stick (11)</button>
+        <button class="tab-btn" data-type="batch" onclick="setTab('batch')">Lô hàng (5)</button>
+        <button class="tab-btn" data-type="cut" onclick="setTab('cut')">Đã loại / hoãn (4)</button>
+      </div>
+      <div class="filters-right">
+        <select id="levelSelect" class="level-select" onchange="applyFilter()">
+          <option value="all">Tất cả mức độ</option><option value="danger">Khẩn cấp</option>
+          <option value="warning">Cảnh báo</option><option value="info">Thông tin</option>
+        </select>
+        <div class="search-box"><input id="searchInput" placeholder="Tìm cảnh báo / cột DB…" onkeyup="applyFilter()"></div>
+      </div>
+    </div>
+    <table>
+      <thead><tr>
+        <th class="td-stt">STT</th><th>Tên cảnh báo &amp; phân loại</th><th>Mức độ</th>
+        <th>Điều kiện (đã đối chiếu DB)</th><th>Nguồn dữ liệu</th><th>Hành động</th>
+      </tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ══════════ MÀN 2: CONFIG ADMIN ══════════ -->
+  <div id="screen-admin" style="display:none">
+    <div class="cfg-head">
+      <h2>Quản trị rule — mọi ngưỡng là dữ liệu (bảng <code>alerting.alert_rule</code>)</h2>
+      <div>
+        <select class="house-sel" id="adminScope" onchange="renderAdmin()">
+          <option value="default">Phạm vi: Mặc định toàn hệ thống</option>
+          <option value="household">Phạm vi: Hộ demo — Nguyễn Văn An</option>
+        </select>
+      </div>
+    </div>
+    <div class="note-bar">Sửa ở đây tương đương API <code>PUT ADMIN/alerting/rules</code> (mặc định) hoặc <code>PUT PRIVATE/households/{hid}/alert-rules/{code}</code> (theo hộ — chỉ được chỉnh trong dải an toàn). Bấm một dòng để xem JSON rule tương ứng bên dưới.</div>
+    <table class="cfg-table">
+      <thead><tr><th>Bật</th><th>Mã / Tên</th><th>Mức độ</th><th>Ngưỡng chính</th><th>Hồi phục</th><th>Cooldown (phút)</th><th>Nhắc lại (phút)</th><th>Im lặng đêm</th></tr></thead>
+      <tbody id="adminBody"></tbody>
+    </table>
+    <div class="json-panel">
+      <div class="jp-head" id="jsonTitle">JSON rule — bấm một dòng để xem</div>
+      <pre id="jsonPre">{
+  "table": "alerting.alert_rule",
+  "hint": "chọn một dòng trong bảng trên"
+}</pre>
+    </div>
+  </div>
+
+  <!-- ══════════ MÀN 3: CONFIG CHỦ NHÀ ══════════ -->
+  <div id="screen-home" style="display:none">
+    <div class="cfg-head"><h2>Cấu hình cảnh báo của gia đình</h2>
+      <button class="btn-reset" onclick="resetHome()">↺ Khôi phục toàn bộ mặc định</button></div>
+    <div class="note-bar">Chủ nhà (OWNER/ADMIN) chỉ chỉnh được trong <b>dải an toàn</b>; cảnh báo Khẩn cấp bị khoá bật (đổi được mức nhận: push/inbox). Thay đổi áp dụng sau ≤ 60 giây (consumer-bems reload rule theo chu kỳ).</div>
+    <div class="cards" id="homeCards"></div>
+  </div>
+
+  <!-- ══════════ MÀN 4: HỘP CẢNH BÁO DEMO ══════════ -->
+  <div id="screen-inbox" style="display:none">
+    <div class="cfg-head"><h2>Hộp cảnh báo đang mở — FE render từ <code>GET PRIVATE/households/{hid}/alerts</code></h2></div>
+    <div class="inbox" id="inboxList"></div>
+  </div>
+
+  <div class="footer">Spec v2 · 2026-10-12 · mọi điều kiện đã đối chiếu DB dev (bảng ánh xạ trong 05-cau-hoi-mo.md) · lịch sử lệch spec: 06-nhat-ky-thay-doi-spec.md</div>
+</div>
+
+<script>
+/* ================= DỮ LIỆU SPEC ================= */
+/* g: pin|stick|batch|cut · lv: danger|warning|info · kind: STATEFUL|ONESHOT|MILESTONE
+   cfg: tham số chỉnh được ở màn config [{k,label,v,min,max,step,unit}] — giá trị = mặc định seed
+   rec: tham số hồi phục (hysteresis) */
+const DATA = [
+ /* ── PIN (16) ── */
+ {g:"pin",c:"batt_low_l1",n:"Pin yếu cấp 1",lv:"warning",kind:"STATEFUL",
+  cond:"battery_rt.soc_pct ≤ 20 (%) khi mất lưới (inverter_state.grid_present = false)",
+  src:"battery_rt.soc_pct · inverter_state.grid_present",
+  act:"Tắt bớt thiết bị công suất lớn (máy lạnh, máy giặt, bếp từ) để kéo dài nguồn dự phòng.",
+  cfg:[{k:"soc_pct",label:"Ngưỡng SOC",v:20,min:5,max:40,step:1,unit:"%"}],rec:{soc_pct:30},cd:0,rn:240},
+ {g:"pin",c:"batt_low_l2",n:"Pin cạn kiệt cấp 2",lv:"danger",kind:"STATEFUL",
+  cond:"battery_rt.soc_pct ≤ 10 (%) khi mất lưới — escalate: RAISED L2 kèm CLEARED L1",
+  src:"battery_rt.soc_pct",
+  act:"Báo động sắp mất điện hoàn toàn. Chuẩn bị nguồn dự phòng khác.",
+  cfg:[{k:"soc_pct",label:"Ngưỡng SOC",v:10,min:3,max:20,step:1,unit:"%"}],rec:{soc_pct:30},cd:0,rn:60},
+ {g:"pin",c:"batt_full",n:"Pin sạc đầy",lv:"info",kind:"ONESHOT",
+  cond:"battery_rt.soc_pct = 100 và pack_ma ≤ 1000 (mA) — dòng sạc gần bằng 0",
+  src:"battery_rt.soc_pct · battery_rt.pack_ma",
+  act:"Bật các thiết bị tiêu thụ để tận dụng điện mặt trời phát dư.",
+  cfg:[{k:"cooldown_minutes",label:"Tối thiểu giữa 2 lần báo",v:1440,min:360,max:2880,step:60,unit:"phút"}],rec:null,cd:1440,rn:null},
+ {g:"pin",c:"batt_rapid_drain",n:"Tụt SOC bất thường",lv:"warning",kind:"STATEFUL",
+  cond:"soc_pct giảm > 15 điểm % trong 5 phút khi inverter_rt.load_w < 300 W",
+  src:"battery_rt.soc_pct (so sánh lịch sử) · inverter_rt.load_w",
+  act:"Kiểm tra dung lượng ảo, lỗi đo đếm BMS hoặc cell yếu kéo tụt cả khối.",
+  cfg:[{k:"drop_pct",label:"Mức tụt / 5 phút",v:15,min:5,max:30,step:1,unit:"%"}],rec:null,cd:0,rn:240},
+ {g:"pin",c:"batt_cell_high_temp",n:"Pin quá nhiệt",lv:"warning",kind:"STATEFUL",
+  cond:"battery_rt.temp_max_mc ≥ 45 000 (m°C = 45°C) khi nạp hoặc xả",
+  src:"battery_rt.temp_max_mc (milli-°C — đã xác nhận qua dữ liệu)",
+  act:"Kiểm tra thông gió phòng kỹ thuật, quạt tủ pin; giảm công suất sạc/xả.",
+  cfg:[{k:"temp_c",label:"Ngưỡng nhiệt",v:45,min:40,max:60,step:1,unit:"°C"}],rec:{temp_c:40},cd:0,rn:240},
+ {g:"pin",c:"batt_cell_low_temp",n:"Pin quá lạnh",lv:"warning",kind:"STATEFUL",
+  cond:"temp_max_mc ≤ 5 000 (5°C) khi đang nạp (pack_ma > 0)",
+  src:"battery_rt.temp_max_mc · battery_rt.pack_ma",
+  act:"Hệ thống tự hạn chế dòng sạc. Che chắn giữ ấm khu vực pin.",
+  cfg:[{k:"temp_c",label:"Ngưỡng lạnh",v:5,min:0,max:10,step:1,unit:"°C"}],rec:{temp_c:8},cd:0,rn:240},
+ {g:"pin",c:"batt_imbalance_warn",n:"Lệch áp cell — cảnh báo",lv:"warning",kind:"STATEFUL",
+  cond:"battery_cell.cell_diff_mv ≥ 50 (mV) kéo dài",
+  src:"battery_cell.cell_diff_mv (tính sẵn, kèm cell_max/min_mv + index)",
+  act:"Sạc no pin và thả nổi (float) 2–4 giờ để mạch cân bằng xử lý.",
+  cfg:[{k:"cell_diff_mv",label:"Chênh lệch",v:50,min:30,max:100,step:5,unit:"mV"}],rec:{cell_diff_mv:30},cd:0,rn:240},
+ {g:"pin",c:"batt_imbalance_severe",n:"Lệch áp cell — nghiêm trọng",lv:"danger",kind:"STATEFUL",
+  cond:"cell_diff_mv ≥ 150 hoặc cell_min_mv < 2 800 — escalate từ mức cảnh báo",
+  src:"battery_cell.cell_diff_mv · battery_cell.cell_min_mv",
+  act:"Tạm dừng xả sâu. Cần KTV cân bằng chủ động.",
+  cfg:[{k:"cell_diff_mv",label:"Chênh lệch",v:150,min:100,max:250,step:10,unit:"mV"}],rec:{cell_diff_mv:80},cd:0,rn:60},
+ {g:"pin",c:"batt_temp_sensor_broken",n:"Đứt dây cảm biến nhiệt cell",lv:"warning",kind:"STATEFUL",
+  cond:"battery_cell.cell_temp_mc[i] ≤ −35 000 hoặc ≥ 110 000 — instance = vị trí cell hỏng",
+  src:"battery_cell.cell_temp_mc[] (mảng 16 cell)",
+  act:"KTV cắm lại giắc cảm biến NTC tương ứng trên BMS.",
+  cfg:[],rec:null,cd:0,rn:240},
+ {g:"pin",c:"batt_soh_low",n:"Pin suy giảm chất lượng (SOH < 80%)",lv:"warning",kind:"STATEFUL",
+  cond:"battery_rt.soh_pct < 80 — cảnh báo kinh niên, nhắc 1 lần/tuần",
+  src:"battery_rt.soh_pct",
+  act:"Kiểm tra chính sách bảo hành dung lượng hoặc lập kế hoạch thay pin.",
+  cfg:[{k:"soh_pct",label:"Ngưỡng SOH",v:80,min:70,max:90,step:1,unit:"%"}],rec:null,cd:0,rn:10080},
+ {g:"pin",c:"batt_soh_rapid_drop",n:"Tụt SOH đột biến",lv:"danger",kind:"STATEFUL",
+  cond:"soh_pct giảm > 2 điểm % trong 7 ngày (so sánh lịch sử battery_rt)",
+  src:"battery_rt.soh_pct (lịch sử)",
+  act:"Kiểm tra cell lỗi phần cứng / lỏng thanh dẫn đồng.",
+  cfg:[{k:"drop_pct",label:"Mức tụt / 7 ngày",v:2,min:1,max:5,step:0.5,unit:"%"}],rec:null,cd:0,rn:1440},
+ {g:"pin",c:"batt_stick_disconnected",n:"Mất kết nối que Pin",lv:"warning",kind:"STATEFUL",
+  cond:"que pin (trong sn_link) không gửi tin > 10 phút trong khi Inverter vẫn online",
+  src:"sn_link.last_seen · sn_status_current",
+  act:"Kiểm tra giắc RS485 từ que vào cổng Link Port; xem LED trên thân que.",
+  cfg:[{k:"silent_minutes",label:"Thời gian im lặng",v:10,min:5,max:30,step:1,unit:"phút"}],rec:null,cd:0,rn:240},
+ {g:"pin",c:"batt_pack_lost",n:"Mất kết nối pack theo ID",lv:"warning",kind:"STATEFUL",
+  cond:"pack_sn mất phản hồi trong sn_link — instance = pack_sn",
+  src:"sn_link (per-pack) · sn_status_current",
+  act:"Kiểm tra cáp tầng RS485 và nguồn cấp pack bị ngắt.",
+  cfg:[{k:"silent_minutes",label:"Thời gian im lặng",v:10,min:5,max:30,step:1,unit:"phút"}],rec:null,cd:0,rn:240},
+ {g:"pin",c:"batt_pack_id_conflict",n:"Trùng địa chỉ pack",lv:"danger",kind:"STATEFUL",
+  cond:"hai pack cùng BAT_ID — instance = ID trùng (shape đa pack chờ CB xác nhận, câu #20)",
+  src:"sn_link / BAT_ID",
+  act:"Tắt máy, gạt lại DIP switch địa chỉ từng pack (1, 2, 3…).",
+  cfg:[],rec:null,cd:0,rn:60},
+ {g:"pin",c:"batt_cycle_rate_high",n:"Tần suất nạp xả quá cao",lv:"warning",kind:"STATEFUL",
+  cond:"battery_info.cycle_count tăng > 2.5 chu kỳ/ngày, liên tục 3 ngày",
+  src:"battery_info.cycle_count (luỹ kế — lấy delta theo ngày)",
+  act:"Tối ưu lại cấu hình Inverter để giảm hao mòn pin.",
+  cfg:[{k:"cycles_per_day",label:"Chu kỳ/ngày",v:2.5,min:1,max:5,step:0.5,unit:"chu kỳ"}],rec:{cycles_per_day:2},cd:0,rn:1440},
+ {g:"pin",c:"batt_self_discharge_leak",n:"Dòng tự xả rò rỉ",lv:"warning",kind:"STATEFUL",
+  cond:"pack_ma < −800 (mA) liên tục khi Inverter ở chế độ chờ (load_w ≈ 0)",
+  src:"battery_rt.pack_ma · inverter_rt.load_w",
+  act:"Kiểm tra thiết bị phụ trợ đấu sai nguồn hoặc dòng rò tiếp địa.",
+  cfg:[{k:"leak_ma",label:"Dòng rò",v:800,min:300,max:2000,step:50,unit:"mA"}],rec:null,cd:0,rn:240},
+
+ /* ── STICK (11) ── */
+ {g:"stick",c:"stick_offline",n:"Mất kết nối que Inverter",lv:"warning",kind:"STATEFUL",
+  cond:"TCP/MQTT: sn_status_current = OFFLINE > 15 phút · API: data_ts cũ > 15 phút (heartbeat API không phản ánh thiết bị sống — đã chứng minh bằng dữ liệu)",
+  src:"sn_status_current · sn_link.last_seen · logger_heartbeat.data_ts",
+  act:"Kiểm tra nguồn que, modem Wi-Fi có đổi mật khẩu / mất mạng.",
+  cfg:[{k:"silent_minutes",label:"Thời gian mất kết nối",v:15,min:5,max:60,step:5,unit:"phút"}],rec:null,cd:0,rn:240},
+ {g:"stick",c:"meter_comm_lost",n:"Mất kết nối Smart Meter",lv:"danger",kind:"STATEFUL",
+  cond:"inverter_state.meter_comm_ok = false",
+  src:"inverter_state.meter_comm_ok",
+  act:"Kiểm tra ngay dây RS485 từ công tơ về Inverter — nguy cơ phát ngược điện ra lưới.",
+  cfg:[],rec:null,cd:0,rn:60},
+ {g:"stick",c:"wifi_signal_weak",n:"Sóng Wi-Fi thiết bị yếu",lv:"warning",kind:"STATEFUL",
+  cond:"logger_heartbeat.rssi < −80 dBm liên tục > 1 giờ",
+  src:"logger_heartbeat.rssi",
+  act:"Di chuyển bộ phát Wi-Fi lại gần hoặc gắn extender.",
+  cfg:[{k:"rssi_dbm",label:"Ngưỡng RSSI",v:-80,min:-90,max:-65,step:1,unit:"dBm"},{k:"sustain_minutes",label:"Duy trì liên tục",v:60,min:15,max:180,step:15,unit:"phút"}],rec:{rssi_dbm:-75},cd:0,rn:720},
+ {g:"stick",c:"grid_lost_on_battery",n:"Mất điện lưới — đang dùng pin",lv:"danger",kind:"STATEFUL",
+  cond:"grid_present = false (hoặc ac_mv[] = 0) — CLEARED khi ph_mv[] ≥ 185 V ổn định 60 giây",
+  src:"inverter_state.grid_present · inverter_ac.ac_mv[] · inverter_meter_rt.ph_mv[]",
+  act:"Thông báo gia đình đang chạy pin; ngắt thiết bị lớn để duy trì nguồn dự phòng.",
+  cfg:[],rec:{grid_v:185,sustain_seconds:60},cd:0,rn:60},
+ {g:"stick",c:"eps_overload",n:"Quá tải cổng phụ tải dự phòng",lv:"danger",kind:"STATEFUL",
+  cond:"inverter_ac.bkp_ma[] vượt định mức cổng EPS hoặc pack_ma > 100 000 (mA)",
+  src:"inverter_ac.bkp_ma[] / bkp_w[] · battery_rt.pack_ma",
+  act:"Tắt ngay bếp từ, máy lạnh, ấm đun nước để tránh Inverter tự sập cổng dự phòng.",
+  cfg:[{k:"pack_ma",label:"Dòng xả tối đa",v:100000,min:50000,max:150000,step:5000,unit:"mA"}],rec:null,cd:0,rn:60},
+ {g:"stick",c:"grid_voltage_abnormal",n:"Điện lưới quá áp / tụt áp",lv:"warning",kind:"STATEFUL",
+  cond:"ph_mv[] > 253 000 hoặc < 185 000 (mV, bất kỳ pha nào)",
+  src:"inverter_meter_rt.ph_mv[] · inverter_ac.ac_mv[]",
+  act:"Theo dõi thêm; liên hệ điện lực địa phương nếu lặp nhiều lần.",
+  cfg:[{k:"over_v",label:"Quá áp",v:253,min:240,max:270,step:1,unit:"V"},{k:"under_v",label:"Tụt áp",v:185,min:170,max:200,step:1,unit:"V"}],rec:null,cd:0,rn:240},
+ {g:"stick",c:"pv_zero_at_noon",n:"Trưa nắng nhưng PV = 0",lv:"danger",kind:"STATEFUL",
+  cond:"khung 11h–13h, inverter_rt.pv_w < 100 W (điều kiện trời nắng: phase sau — câu #17)",
+  src:"inverter_rt.pv_w (window_cron 0 11-13 * * *)",
+  act:"Khả năng nhảy aptomat DC / cháy cầu chì chuỗi PV. KTV kiểm tra gấp.",
+  cfg:[{k:"pv_w",label:"Công suất tối thiểu",v:100,min:50,max:300,step:10,unit:"W"}],rec:null,cd:0,rn:120},
+ {g:"stick",c:"batt_idle_at_peak",n:"Pin không xả giờ cao điểm",lv:"warning",kind:"STATEFUL",
+  cond:"17h–20h, soc_pct > 50 nhưng |pack_ma| < 500 (mA)",
+  src:"battery_rt (window_cron 0 17-20 * * *)",
+  act:"Kiểm tra Work Mode và khung giờ cài đặt trên Inverter.",
+  cfg:[{k:"soc_pct",label:"SOC tối thiểu",v:50,min:20,max:80,step:5,unit:"%"}],rec:null,cd:0,rn:0},
+ {g:"stick",c:"load_spike_night",n:"Tiêu thụ tăng vọt ban đêm",lv:"warning",kind:"STATEFUL",
+  cond:"1h–4h sáng, inverter_rt.load_w > 3 000 W",
+  src:"inverter_rt.load_w (window_cron 0 1-4 * * *)",
+  act:"Kiểm tra thiết bị quên tắt hoặc nghi rò rỉ phụ tải.",
+  cfg:[{k:"load_w",label:"Ngưỡng phụ tải",v:3000,min:1000,max:6000,step:100,unit:"W"}],rec:null,cd:0,rn:0},
+ {g:"stick",c:"maint_dc_terminal_torque",n:"Bảo trì: siết lực cọc cực DC",lv:"warning",kind:"MILESTONE",
+  cond:"đủ 6 tháng từ household_asset.installed_at — đóng khi người dùng bấm \"Đã xử lý\"",
+  src:"household_asset.installed_at",
+  act:"KTV dùng cờ lê lực siết lại bu lông các đầu cọc tiếp xúc DC.",
+  cfg:[{k:"every_months",label:"Chu kỳ nhắc",v:6,min:3,max:12,step:3,unit:"tháng"}],rec:null,cd:0,rn:null},
+ {g:"stick",c:"maint_inverter_fan_clean",n:"Bảo trì: vệ sinh quạt Inverter",lv:"warning",kind:"MILESTONE",
+  cond:"đủ 4 000 giờ vận hành — derive từ độ phủ mẫu inverter_rt (DB không lưu sẵn số giờ)",
+  src:"inverter_rt (tổng gap ≤ 15 phút) — câu #12",
+  act:"Thổi bụi, vệ sinh lưới lọc gió và quạt làm mát Inverter.",
+  cfg:[{k:"hours",label:"Số giờ vận hành",v:4000,min:2000,max:8000,step:500,unit:"giờ"}],rec:null,cd:0,rn:null},
+
+ /* ── LÔ HÀNG (5 — nội bộ, gom theo order_code) ── */
+ {g:"batch",c:"batch_stick_offline_wave",n:"Lô: stick rớt mạng hàng loạt",lv:"warning",kind:"STATEFUL",
+  cond:"≥ 30% stick cùng order_code OFFLINE trong 24h (tối thiểu 5 thiết bị)",
+  src:"episodes + household_asset.order_code — đánh giá bởi bems-be",
+  act:"KTV soi lô: nghi firmware / bo mạch lỗi chung.",
+  cfg:[{k:"pct",label:"Tỷ lệ offline",v:30,min:10,max:60,step:5,unit:"%"},{k:"min_devices",label:"Tối thiểu thiết bị",v:5,min:3,max:20,step:1,unit:"cái"}],rec:null,cd:0,rn:0},
+ {g:"batch",c:"batch_fault_rate_high",n:"Lô: tỷ lệ lỗi cao",lv:"warning",kind:"STATEFUL",
+  cond:"≥ 20% thiết bị trong lô có cảnh báo mức warning+ trong 7 ngày",
+  src:"episodes (bems-be) + household_asset.order_code",
+  act:"Rà soát chất lượng lô, cân nhắc chủ động liên hệ khách cùng lô.",
+  cfg:[{k:"pct",label:"Tỷ lệ lỗi",v:20,min:5,max:50,step:5,unit:"%"}],rec:null,cd:0,rn:0},
+ {g:"batch",c:"batch_same_fault_repeat",n:"Lô: cùng lỗi lặp lại",lv:"warning",kind:"STATEFUL",
+  cond:"≥ 3 thiết bị cùng lô + cùng alert_code trong 72h",
+  src:"episodes (bems-be)",
+  act:"So sánh điều kiện lắp đặt / cấu hình chung của các vị trí lỗi.",
+  cfg:[{k:"min_devices",label:"Số thiết bị",v:3,min:2,max:10,step:1,unit:"cái"}],rec:null,cd:0,rn:0},
+ {g:"batch",c:"batch_firmware_anomaly",n:"Lô: firmware lỗi chung",lv:"danger",kind:"STATEFUL",
+  cond:"≥ 3 thiết bị cùng phiên bản logger_info.version / inverter_info.firmware gặp lỗi trong 72h",
+  src:"logger_info.version · inverter_info.firmware + episodes",
+  act:"Phân tích ảnh hưởng firmware; cân nhắc khoá bản phân phối / rollback.",
+  cfg:[{k:"min_devices",label:"Số thiết bị",v:3,min:2,max:10,step:1,unit:"cái"}],rec:null,cd:0,rn:0},
+ {g:"batch",c:"batch_warranty_expiring",n:"Lô: sắp hết bảo hành",lv:"info",kind:"ONESHOT",
+  cond:"lô (order_code) còn < 90 ngày tới household_asset.warranty_until",
+  src:"household_asset.warranty_until",
+  act:"CSKH chủ động liên hệ chăm sóc / chào gia hạn trước khi hết hạn.",
+  cfg:[{k:"days",label:"Số ngày trước hạn",v:90,min:30,max:180,step:15,unit:"ngày"}],rec:null,cd:10080,rn:null},
+
+ /* ── ĐÃ LOẠI / HOÃN (4) ── */
+ {g:"cut",c:"schedule_conflict",n:"Xung đột khung giờ cài đặt",lv:"warning",
+  cond:"(ma trận 05/10) khung sạc trùng khung xả",
+  src:"→ ĐÃ CHUYỂN: validate ngay tại API lưu khung giờ của bems-be (trả 422) — không phải cảnh báo",
+  act:"Câu mở #19 · 06/A3",cfg:[],rec:null,cd:0,rn:0},
+ {g:"cut",c:"peak_hour_reminder",n:"Nhắc sắp đến giờ cao điểm",lv:"info",
+  cond:"(ma trận 05/10) cron 16h45 hằng ngày",
+  src:"→ ĐÃ LOẠI: là tính năng nhắc FE (không tiêu thụ dữ liệu thiết bị) — làm ở app, không nằm trong hệ cảnh báo",
+  act:"06/A4",cfg:[],rec:null,cd:0,rn:0},
+ {g:"cut",c:"weather_rain_forecast",n:"Dự báo mưa dông ngày mai",lv:"info",
+  cond:"(ma trận 05/10) API thời tiết, bức xạ giảm > 70%",
+  src:"→ HOÃN: chưa có owner gọi API thời tiết + chưa có nguồn dữ liệu trong DB",
+  act:"Câu mở #4 · 06/A5",cfg:[],rec:null,cd:0,rn:0},
+ {g:"cut",c:"cmd_rejected",n:"Từ chối lệnh điều khiển",lv:"warning",
+  cond:"(ma trận 05/10) stick gửi lệnh nhưng thiết bị phản hồi lỗi",
+  src:"→ HOÃN phase 2: phụ thuộc luồng lệnh điều khiển từ xa (hiện chưa có trong DB)",
+  act:"05 · 06",cfg:[],rec:null,cd:0,rn:0}
+];
+
+const LV_NAME={danger:"Khẩn cấp",warning:"Cảnh báo",info:"Thông tin"};
+const G_NAME={pin:"Pin",stick:"Stick",batch:"Lô hàng",cut:"Đã loại / hoãn"};
+const KIND_WHO={STATEFUL:" vòng đời mở→đóng ",ONESHOT:" phát 1 lần ",MILESTONE:" chờ xác nhận "};
+
+let selectedTab="all", selectedScreen="matrix";
+const homeState={};   // cấu hình chủ nhà (override demo)
+const adminState={};  // cấu hình admin demo
+
+/* ================= MA TRẬN ================= */
+function setTab(t){selectedTab=t;document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.type===t));applyFilter();}
+function setScreen(s){selectedScreen=s;document.querySelectorAll(".screen-btn").forEach(b=>b.classList.toggle("active",b.dataset.screen===s));
+ ["matrix","admin","home","inbox"].forEach(x=>document.getElementById("screen-"+x).style.display=(x===s?"":"none"));
+ if(s==="admin")renderAdmin(); if(s==="home")renderHome(); if(s==="inbox")renderInbox();}
+function applyFilter(){
+ const kw=document.getElementById("searchInput").value.toLowerCase().trim();
+ const lv=document.getElementById("levelSelect").value;
+ const rows=DATA.filter(d=>(selectedTab==="all"&&d.g!=="cut")||d.g===selectedTab)
+  .filter(d=>lv==="all"||d.lv===lv)
+  .filter(d=>!kw||[d.n,d.c,d.cond,d.src,d.act].join(" ").toLowerCase().includes(kw));
+ document.getElementById("tableBody").innerHTML=rows.length?rows.map((d,i)=>`
+  <tr>
+   <td class="td-stt">${i+1}</td>
+   <td class="td-name"><span class="alert-title">${d.n}</span><span class="type-tag">${G_NAME[d.g]}</span><code style="font-size:10.5px;color:#6B7280">${d.c}</code>${d.kind?`<span class="kind-tag">${d.kind}</span>`:""}</td>
+   <td class="td-level"><span class="level-text level-${d.lv}">${LV_NAME[d.lv]}</span></td>
+   <td class="td-trigger"><div class="code-cond">${d.cond}</div><div class="desc-cond">${d.rec?("Hồi phục: "+JSON.stringify(d.rec).replace(/[{}"]/g,"").replace(/,/g," · ")):""}</div></td>
+   <td><div class="db-src">${d.src}</div></td>
+   <td class="td-action"><div class="action-text">${d.act}</div>${d.g==="batch"?'<span class="who-tag">👥 Nội bộ KTV/CSKH</span>':""}</td>
+  </tr>`).join(""):`<tr><td colspan="6" style="text-align:center;padding:30px;color:#6B7280;font-style:italic">Không có cảnh báo phù hợp.</td></tr>`;
+}
+function updateStats(){
+ const live=DATA.filter(d=>d.g!=="cut");
+ document.getElementById("statTotal").textContent=live.length;
+ document.getElementById("statPin").textContent=live.filter(d=>d.g==="pin").length;
+ document.getElementById("statStick").textContent=live.filter(d=>d.g==="stick").length;
+ document.getElementById("statBatch").textContent=live.filter(d=>d.g==="batch").length;
+ document.getElementById("statDanger").textContent=live.filter(d=>d.lv==="danger").length;
+ document.querySelectorAll(".tab-btn").forEach(b=>{const t=b.dataset.type;
+  b.textContent=t==="all"?`Tất cả (${live.length})`:t==="cut"?`Đã loại / hoãn (4)`:`${G_NAME[t]} (${live.filter(d=>d.g===t).length})`;});
+}
+
+/* ================= CONFIG ADMIN ================= */
+function renderAdmin(){
+ const scope=document.getElementById("adminScope").value;
+ const live=DATA.filter(d=>d.g!=="cut");
+ document.getElementById("adminBody").innerHTML=live.map(d=>{
+  const st=adminState[d.c]||{enabled:true,lv:d.lv,cd:d.cd,rn:d.rn,mute:false,params:(d.cfg||[]).map(p=>({...p}))};
+  return `<tr onclick="showJson('${d.c}')" style="cursor:pointer" id="ar-${d.c}">
+   <td><input type="checkbox" ${st.enabled?"checked":""} onchange="adminSet('${d.c}','enabled',this.checked)"></td>
+   <td><b style="font-size:12px">${d.n}</b><br><code style="font-size:10.5px;color:#6B7280">${d.c}</code>${scope==="household"?' <span style="color:#4338CA;font-size:10px">▲ override hộ</span>':""}</td>
+   <td><select class="sev" onchange="adminSet('${d.c}','lv',this.value)">
+     ${["info","warning","danger"].map(l=>`<option value="${l}" ${st.lv===l?"selected":""}>${LV_NAME[l]}</option>`).join("")}</select></td>
+   <td>${(d.cfg||[]).map((p,i)=>`<div style="display:flex;gap:4px;align-items:center;margin:2px 0"><span style="font-size:11px;color:#6B7280;min-width:110px">${p.label}</span><input type="number" value="${st.params[i]?st.params[i].v:p.v}" min="${p.min}" max="${p.max}" step="${p.step}" onchange="adminParam('${d.c}',${i},this.value)"><span style="font-size:10.5px;color:#9CA3AF">${p.unit}</span></div>`).join("")||'<span style="color:#9CA3AF">—</span>'}</td>
+   <td>${d.rec?`<code style="font-size:10.5px">${JSON.stringify(d.rec)}</code>`:'<span style="color:#9CA3AF">—</span>'}</td>
+   <td><input type="number" value="${st.cd}" min="0" step="30" onchange="adminSet('${d.c}','cd',+this.value)"></td>
+   <td><input type="number" value="${st.rn??""}" min="0" step="30" placeholder="—" onchange="adminSet('${d.c}','rn',this.value===''?null:+this.value)"></td>
+   <td><input type="checkbox" ${st.mute?"checked":""} onchange="adminSet('${d.c}','mute',this.checked)"></td>
+  </tr>`;}).join("");
+}
+function adminSet(c,k,v){(adminState[c]=adminState[c]||{});adminState[c][k]=v;showJson(c,true);}
+function adminParam(c,i,val){const st=adminState[c];if(st&&st.params&&st.params[i])st.params[i].v=+val;showJson(c,true);}
+function showJson(c,keep){
+ if(!keep)document.querySelectorAll("#adminBody tr").forEach(r=>r.classList.remove("row-selected"));
+ const tr=document.getElementById("ar-"+c);if(tr)tr.classList.add("row-selected");
+ const d=DATA.find(x=>x.c===c);const st=adminState[c]||{};
+ const params={};(d.cfg||[]).forEach((p,i)=>{params[p.k]=(st.params&&st.params[i]?st.params[i].v:p.v);});
+ const scope=document.getElementById("adminScope").value;
+ document.getElementById("jsonTitle").textContent=`JSON rule · ${d.c} · ${scope==="household"?"override HỘ demo":"mặc định hệ thống"} — tương đương PUT ${scope==="household"?"PRIVATE/households/{hid}/alert-rules/"+c:"ADMIN/alerting/rules/"+c}`;
+ document.getElementById("jsonPre").textContent=JSON.stringify({
+  alert_code:c,household_id:scope==="household"?"<uuid hộ demo>":null,
+  enabled:st.enabled??true,severity:st.lv??d.lv,
+  params,recover_params:d.rec||null,
+  sustain_seconds:d.c==="wifi_signal_weak"&&params.sustain_minutes?params.sustain_minutes*60:null,
+  window_cron:d.c==="pv_zero_at_noon"?"0 11-13 * * *":d.c==="batt_idle_at_peak"?"0 17-20 * * *":d.c==="load_spike_night"?"0 1-4 * * *":null,
+  cooldown_minutes:st.cd??d.cd,renotify_minutes:st.rn??d.rn??null,
+  mute_overnight:st.mute??false
+ },null,2);
+}
+
+/* ================= CONFIG CHỦ NHÀ ================= */
+function renderHome(){
+ const live=DATA.filter(d=>d.g!=="cut"&&d.g!=="batch");
+ document.getElementById("homeCards").innerHTML=live.map(d=>{
+  const st=homeState[d.c]||{enabled:true,mute:false,params:(d.cfg||[]).map(p=>({...p}))};
+  const locked=d.lv==="danger";
+  return `<div class="card ${locked&&!st.enabled?"critical-off":""}">
+   <div class="card-top"><div><div class="card-name">${d.n}</div>
+     <span class="type-tag">${G_NAME[d.g]}</span><span class="level-text level-${d.lv}">${LV_NAME[d.lv]}</span></div>
+    <label class="switch"><input type="checkbox" ${st.enabled?"checked":""} ${locked?"disabled":""} onchange="homeSet('${d.c}','enabled',this.checked)"><span class="slider-t"></span></label></div>
+   ${(d.cfg||[]).map((p,i)=>`<div class="slider-row"><span style="min-width:110px">${p.label}</span>
+     <input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${st.params[i]?st.params[i].v:p.v}" oninput="homeParam('${d.c}',${i},this.value)"><span class="val">${(st.params[i]?st.params[i].v:p.v)} ${p.unit}</span></div>`).join("")}
+   <div class="mini-row"><span>🌙 Im lặng 22h–6h</span>
+    <label class="switch"><input type="checkbox" ${st.mute?"checked":""} ${locked?"disabled":""} onchange="homeSet('${d.c}','mute',this.checked)"><span class="slider-t"></span></label></div>
+   ${locked?'<div class="lock-note">Cảnh báo an toàn — luôn bật, không thể tắt.</div>':""}
+  </div>`;}).join("");
+}
+function homeSet(c,k,v){(homeState[c]=homeState[c]||{enabled:true,mute:false,params:[]});homeState[c][k]=v;}
+function homeParam(c,i,v){if(homeState[c]&&homeState[c].params&&homeState[c].params[i]){homeState[c].params[i].v=+v;}}
+function resetHome(){Object.keys(homeState).forEach(k=>delete homeState[k]);renderHome();}
+
+/* ================= HỘP CẢNH BÁO DEMO ================= */
+const INBOX=[
+ {sev:"critical",live:true,title:"Mất điện lưới — Đang dùng pin",code:"grid_lost_on_battery",
+  meta:"Nhà demo · Inverter Solis (SN …0001) · bắt đầu 14:02 hôm nay · đã nhắc 1 lần",
+  action:"Thông báo gia đình đang chạy pin; ngắt thiết bị lớn để duy trì nguồn. Pin còn 43%."},
+ {sev:"warning",title:"Pin yếu cấp 1",code:"batt_low_l1",
+  meta:"Nhà demo · Pin E-Box-48100R (SN …9302) · từ 06:00 · SOC 18% (ngưỡng 20%)",
+  action:"Tắt bớt thiết bị công suất lớn để kéo dài nguồn dự phòng."},
+ {sev:"warning",title:"Sóng Wi-Fi thiết bị yếu",code:"wifi_signal_weak",
+  meta:"Nhà demo · Que S2-WL-ST · từ 09:15 hôm qua · RSSI −84 dBm kéo dài 1h",
+  action:"Di chuyển bộ phát Wi-Fi lại gần Inverter hoặc gắn extender."},
+ {sev:"warning",title:"Bảo trì: vệ sinh quạt Inverter",code:"maint_inverter_fan_clean",ack:true,
+  meta:"Nhà demo · Inverter Solis · đủ 4.000 giờ vận hành",
+  action:"Thổi bụi, vệ sinh lưới lọc gió và quạt làm mát. Bấm \"Đã xử lý\" để đóng nhắc."},
+ {sev:"info",title:"Lô: sắp hết bảo hành",code:"batch_warranty_expiring",internal:true,
+  meta:"Lô OC-2026-08 · 12 thiết bị còn 74 ngày · nội bộ CSKH",
+  action:"Chủ động liên hệ khách cùng lô chào gia hạn trước khi hết hạn."}
+];
+function renderInbox(){
+ document.getElementById("inboxList").innerHTML=INBOX.map((e,i)=>`
+  <div class="card">
+   <div class="sev-dot sev-${e.sev}"></div>
+   <div style="flex:1">
+    <div class="ib-title">${e.title}${e.live?'<span class="chip-live">● đang diễn ra</span>':""}${e.internal?'<span class="chip-internal">👥 nội bộ</span>':""}</div>
+    <div class="ib-meta">${e.meta}</div>
+    <div class="ib-action">💡 ${e.action}</div>
+   </div>
+   ${e.ack?`<button class="btn-ack" onclick="ack(this)">Đã xử lý</button>`:""}
+  </div>`).join("");
+}
+function ack(btn){btn.classList.add("done");btn.textContent="✓ Đã đóng";}
+
+updateStats();applyFilter();
+</script>
+</body>
+</html>
