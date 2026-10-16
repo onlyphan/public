@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logic Business — Cảnh báo BEMS (đối chiếu code 4aef4f5)</title>
+<style>
+  :root{--border:#E5E7EB;--text:#111827;--muted:#4B5563;--sub:#6B7280;--bg:#F9FAFB;
+    --danger:#991B1B;--warning:#92400E;--info:#374151;--ok:#065F46;--brand:#111827;
+    --blue:#1E40AF;--purple:#5B21B6}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;padding:24px 20px;font-size:13.5px}
+  .container{max-width:1180px;margin:0 auto}
+  .header{background:#fff;border:1px solid var(--border);border-radius:6px;padding:22px 26px;margin-bottom:16px}
+  .header h1{font-size:19px;font-weight:600;margin-bottom:6px}
+  .header p{color:var(--sub);font-size:12.5px}
+  .toc{background:#fff;border:1px solid var(--border);border-radius:6px;padding:14px 20px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:6px 14px}
+  .toc a{color:var(--blue);text-decoration:none;font-size:12px;font-weight:500}
+  .toc a:hover{text-decoration:underline}
+  section{background:#fff;border:1px solid var(--border);border-radius:6px;padding:20px 24px;margin-bottom:16px}
+  section h2{font-size:15px;font-weight:600;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  section h3{font-size:13px;font-weight:600;margin:14px 0 8px}
+  p.desc{color:var(--muted);font-size:12.5px;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;text-align:left;margin:8px 0}
+  th{background:var(--bg);color:var(--muted);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border:1px solid var(--border)}
+  td{padding:8px 10px;border:1px solid var(--border);font-size:12px;vertical-align:top}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:#F3F4F6;border:1px solid var(--border);border-radius:3px;padding:1px 5px;color:#1F2937}
+  .flow{background:#0F172A;color:#E2E8F0;border-radius:6px;padding:16px 18px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.65;overflow-x:auto;margin:10px 0;white-space:pre}
+  .flow .g{color:#6EE7B7}.flow .r{color:#FCA5A5}.flow .y{color:#FDE68A}.flow .b{color:#93C5FD}.flow .p{color:#C4B5FD}.flow .d{color:#94A3B8}.flow .o{color:#FDBA74}
+  .badge{display:inline-block;font-size:10px;font-weight:600;border-radius:3px;padding:1px 7px;margin:1px 2px}
+  .b-push{background:#DBEAFE;color:#1E40AF}.b-inbox{background:#FEF3C7;color:#92400E}
+  .b-skip{background:#F3F4F6;color:#6B7280}.b-ok{background:#D1FAE5;color:#065F46}
+  .note{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:5px;padding:10px 14px;font-size:12px;color:var(--blue);margin:10px 0}
+  .warn{background:#FFFBEB;border:1px solid #FDE68A;border-radius:5px;padding:10px 14px;font-size:12px;color:#92400E;margin:10px 0}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.two-col{grid-template-columns:1fr}}
+  .mini{border:1px solid var(--border);border-radius:6px;padding:12px 14px}
+  .mini h4{font-size:12px;font-weight:600;margin-bottom:6px;color:var(--muted)}
+  .footer{text-align:right;font-size:11px;color:var(--sub);padding:6px 2px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>⚡ Logic Business — Hệ cảnh báo BEMS</h1>
+  <p>Đối chiếu commit <code>4aef4f5 "feature alerting"</code> (14/10) — mô tả <b>đúng code đang chạy</b>, không phải ý định thiết kế. Class gốc ghi cuối mỗi phần. Mở bằng trình duyệt.</p>
+</div>
+
+<div class="toc">
+  <a href="#s1">1 · Tổng quan 2 đường</a><a href="#s2">2 · Luồng tín hiệu Kafka</a>
+  <a href="#s3">3 · Máy trạng thái episode</a><a href="#s4">4 · Chính sách push</a>
+  <a href="#s5">5 · Ngân sách push &amp; fan-out</a><a href="#s6">6 · Scheduler nội bộ</a>
+  <a href="#s7">7 · Rule &amp; công tắc hộ</a><a href="#s8">8 · Timeline thực tế</a>
+  <a href="#s9">9 · Bảng outcome</a>
+</div>
+
+<!-- ═══════════ 1 ═══════════ -->
+<section id="s1">
+<h2>1 · Tổng quan — 2 đường vào</h2>
+<div class="flow">
+                     <span class="b">THIẾT BỊ (que/pin/inverter)</span>
+                            │  TCP · MQTT · API Solis
+                            ▼
+                <span class="p">consumer-bems (Java, cùng repo — leader làm)</span>
+                  · ghi schema telemetry (như cũ)
+                  · <span class="y">MỚI: đọc rule → so từng mẫu → phát tín hiệu EDGE-TRIGGERED</span>
+                            │  chỉ khi: VƯỢT ngưỡng / VƯỢT BẬC / HỒI PHỤC
+                            ▼
+        ═══════ KAFKA bems.alert.signals.v1 (msg 3 phần, HMAC-SHA256) ═══════
+                            │
+        ┌───────────────────┴───────────────────┐
+        ▼  <span class="b">ĐƯỜNG 1 — 21 loại Pin/Stick</span>          ▼  <span class="o">ĐƯỜNG 2 — 2 loại nội bộ (KHÔNG qua Kafka)</span>
+  <span class="g">AlertSignalListener</span> (tắt mặc định,          <span class="g">AlertScheduler</span> — 2 nhịp cron:
+  bật = application.alerting.kafka.enabled)   · 5 phút:  renotify + watchdog
+  verify HMAC → TTL 15' → idempotency         · 15 phút: milestone maint_due + batch_issue
+        │                                     │   (milestone từ installed_at/giờ vận hành;
+        ▼                                     │    lô gom theo order_code — thiếu = im lặng)
+  <span class="g">AlertSignals.process()</span> ◄──── cả 2 đường converge ◄──┘
+  máy trạng thái episode → notification → FCM/inbox
+</div>
+<p class="desc"><b>Nguyên tắc phân vai</b>: consumer-bems trả lời <i>"dữ liệu nói điều kiện có đang xảy ra không?"</i> — bems-be trả lời <i>"ai cần biết, lúc nào, mấy lần, push hay inbox?"</i>. Hai câu không bao giờ đổi bên.</p>
+</section>
+
+<!-- ═══════════ 2 ═══════════ -->
+<section id="s2">
+<h2>2 · Luồng xử lý một tín hiệu Kafka — <code>AlertSignals.process()</code></h2>
+<div class="flow">
+message đến listener (<span class="d">AlertSignalListener.onMessage</span>)
+  │
+  1️⃣ <span class="y">parse JSON</span> hỏng ──────────────► <span class="r">DLQ</span> (kèm lý do) — không ném exception
+  2️⃣ mã thuộc scheduler nội bộ? ────────► <span class="r">DLQ</span> (lỗi hợp đồng: maint_due/batch_issue)
+  3️⃣ <span class="y">verify HMAC-SHA256</span> sai ─────────► <span class="r">DLQ</span> (so sánh constant-time)
+  4️⃣ TTL: emittedAt cũ &gt; 15 phút ──────► <span class="d">bỏ + metric skipped.ttl</span> (KHÔNG DLQ — tin lỗi thời)
+  │
+  ▼ vào port (bọc transaction + retry DB 3 lần 1s/5s/30s; vẫn lỗi → DLQ)
+  5️⃣ messageId đã xử lý? ───────────────► <span class="d">DUPLICATE</span> (idempotency lớp 1 — Kafka at-least-once)
+  6️⃣ <span class="y">công tắc hộ</span>: mã KHÔNG khóa + hộ đã tắt?
+  │     ├── tín hiệu RAISED/ESCALATED ──► <span class="d">IGNORED_HOUSEHOLD_DISABLED</span> (không mở episode)
+  │     └── tín hiệu CLEARED ──────────► vẫn XỬ LÝ (đóng episode đang mở, im lặng)
+  7️⃣ <span class="y">rule toàn hệ thống</span> enabled=false? ──► IGNORED_DISABLED (mọi tín hiệu im lặng)
+  8️⃣ <span class="g">máy trạng thái</span> (mục 3) → outcome + episode
+  9️⃣ lưu episode → <span class="g">fanOut</span> nếu outcome xứng đáng + hộ bật (mục 5)
+  🔟 markProcessed(messageId) — tất cả trong 1 transaction
+</div>
+<div class="note">Lỗi DB tạm thời được <b>retry trong memory</b> (1s → 5s → 30s, tự viết BackOffPolicy) trước khi vào DLQ — sóng ngắn không làm mất tín hiệu. Mọi nhánh đều có metric <code>alerting.signal.*</code>.</div>
+</section>
+
+<!-- ═══════════ 3 ═══════════ -->
+<section id="s3">
+<h2>3 · Máy trạng thái episode — <code>AlertSignalProcessor</code> (thuần Java)</h2>
+<p class="desc">Episode = một "đợt" cảnh báo. Khóa: <code>(hộ, asset_id, alert_code, instance)</code> — tối đa <b>1 episode mở</b> mỗi khóa (unique index partial WHERE phase='open'). <code>instance</code> = pack_sn / cell hỏng / loại việc bảo trì (NULL = cấp asset).</p>
+<div class="flow">
+                    ┌────────────── episode đang mở? ──────────────┐
+   <span class="g">RAISED</span> ────────► KHÔNG                                       CÓ ─────────────────────────┐
+   <span class="g">ESCALATED</span>        │                                            │                          │
+        │            │                                                     severity tín hiệu        │
+        │            ├── cooldown chặn? ──► <span class="d">SUPPRESSED_COOLDOWN</span>            outranks mức hiện tại?    │
+        │            │    (2 đợt phát cách nhau                            ├── CÓ ──► <span class="o">ESCALATED</span>       │
+        │            │     &lt; cooldown_minutes, đo từ                        │    nâng severity TẠI CHỖ,    │
+        │            │     resolved_at đợt trước)                          │    KHÔNG mở episode mới     │
+        │            │                                                    └── KHÔNG                  │
+        │            ├── ONESHOT? ──► <span class="g">OPENED_ONESHOT</span>                          ├── tín hiệu ESCALATED ─► <span class="d">IGNORED_NO_ESCALATION</span>
+        │            │    phát xong tự đóng ngay                          │    (refresh bằng chứng)     │
+        │            │    (chống lặp = cooldown lần kế)                   └── RAISED lặp:             │
+        │            └── còn lại ──► <span class="g">OPENED</span>                            ├── đủ hạn renotify ──► <span class="y">RENOTIFIED</span>
+        │                 first_raised_at = happenedAt                    │    (last_notified_at +
+        │                 (thời điểm DỮ LIỆU, không phải                    │     renotify_minutes ≤ now)
+        │                  lúc job chạy)                                  └── chưa đủ ──► <span class="d">SUPPRESSED_RENOTIFY</span>
+        │
+   <span class="r">CLEARED</span> ────────► KHÔNG episode mở = <span class="d">ORPHAN_CLOSED</span>            CÓ ──► <span class="r">CLOSED</span>
+                     ghi episode đã đóng im lặng (audit,                resolved_at = happenedAt
+                     first_raised_at lùi theo duration_minutes)         + refresh + markNotified
+                     <span class="d">#32 — RAISED đã bị TTL bỏ trong downtime</span>
+</div>
+<div class="warn"><b>ESCALATED mồ côi</b> (RAISED đã bị TTL bỏ): mở episode mới tại bậc nghiêm trọng của tín hiệu — chủ đích <i>"an toàn, không im lặng bất thường"</i>: thà báo muội mức cao còn hơn mất hết.</div>
+</section>
+
+<!-- ═══════════ 4 ═══════════ -->
+<section id="s4">
+<h2>4 · Chính sách push — <code>AlertPushPolicy.decide()</code> (thuần Java)</h2>
+<p class="desc">Quyết định MỘT sự kiện thông báo của episode được <span class="badge b-push">PUSH</span> hay <span class="badge b-inbox">CHỈ INBOX + badge</span>. Mọi luật đã chốt H1 (spec v2.3).</p>
+<div class="two-col">
+  <div class="mini"><h4>OPENED · OPENED_ONESHOT · RENOTIFIED</h4>
+<div class="flow">severity == info?        ─► <span class="badge b-inbox">inbox</span> <span class="d">(info-inbox-only)</span>
+đang snooze (snooze_until &gt; now)? ─► <span class="badge b-inbox">inbox</span> <span class="d">(snoozed)</span>
+giờ local hộ ∈ [22h, 6h) + rule mute? ─► <span class="badge b-inbox">inbox</span> <span class="d">(mute-overnight)</span>
+   (critical được MIỄN im lặng đêm)
+push_count ≥ max_pushes?  ─► <span class="badge b-inbox">inbox</span> <span class="d">(budget-exhausted)</span>
+còn lại                   ─► <span class="badge b-push">PUSH</span> <span class="d">(raised) — tốn 1 budget</span></div></div>
+  <div class="mini"><h4>ESCALATED</h4>
+<div class="flow">mức mới == critical? ─► bỏ qua snooze (an toàn)
+   không critical + snooze? ─► <span class="badge b-inbox">inbox</span> <span class="d">(snoozed)</span>
+mute đêm (theo mức MỚI)?  ─► <span class="badge b-inbox">inbox</span>
+push_count ≥ max_pushes?  ─► <span class="badge b-inbox">inbox</span> <span class="d">(cap tuyệt đối)</span>
+lần push cuối &lt; 2h?      ─► <span class="badge b-inbox">inbox</span> <span class="d">(escalated-within-2h)</span>
+còn lại ─► <span class="badge b-push">PUSH</span> <span class="d">(escalated-no-budget)</span>
+   <span class="y">KHÔNG tốn budget</span> (H1)</div></div>
+</div>
+<div class="two-col">
+  <div class="mini"><h4>CLOSED (hết cảnh báo)</h4>
+<div class="flow">episode KHÔNG critical? ─► <span class="badge b-inbox">inbox</span> <span class="d">(cleared-non-critical)</span>
+episode critical? ─► <span class="badge b-push">PUSH</span> <span class="d">(cleared-critical-no-budget)</span>
+   không tốn budget, không chặn bởi snooze/mute/đêm —
+   khớp ví dụ "23:58 PUSH Đã có điện lưới trở lại"</div></div>
+  <div class="mini"><h4>ORPHAN_CLOSED / SUPPRESSED / IGNORED / DUPLICATE</h4>
+<div class="flow">Không phát notification gì cả — chỉ episode/audit/metric.
+(ORPHAN_CLOSED khi hộ đã tắt mã → chuyển thành skip luôn,
+ không giữ audit — "không mở episode" cho hộ từ chối nhận)</div></div>
+</div>
+</section>
+
+<!-- ═══════════ 5 ═══════════ -->
+<section id="s5">
+<h2>5 · Fan-out &amp; ngân sách push — <code>AlertEpisodes.fanOut()</code></h2>
+<div class="flow">
+outcome notificationWorthy + hộ bật
+  │  audience internal (batch_issue) ─► <span class="d">skip</span> (hàng chờ ALR-07, admin soạn — không push hộ)
+  ▼
+<span class="g">AlertPushPolicy.decide</span> → verdict push|inbox
+  ▼
+<span class="g">NotificationsPort.publish</span>(draft.push = verdict)
+  · type: <code>bems_alert_raised</code> (mở/nhắc/nâng) hoặc <code>bems_alert_cleared</code> (đóng)
+  · dedupe_key: <code>alert:&lt;episodeId&gt;:raised</code> · <code>:renotify:&lt;n&gt;</code> · <code>:resolved</code>
+  · draft.push=false → <span class="badge b-inbox">vẫn ghi inbox + badge</span>, bỏ hẳn tầng FCM (Notifications.java)
+  ▼
+publish.created() &amp;&amp; verdict.pushed  ──► đánh dấu <span class="y">push THẬT</span>:
+     episode.lastPushedAt = now     (mốc luật ESCALATED &gt; 2h)
+     push_count++  CHỈ KHI outcome ∈ {OPENED, OPENED_ONESHOT, RENOTIFIED}
+     <span class="d">(ESCALATED + CLEARED-critical không tốn budget — H1)</span>
+</div>
+<div class="note">Trùng <code>dedupe_key</code> (Kafka giao trùng sau khi notification đã tạo) → <code>publish.created() = false</code> → <b>không</b> đếm budget — idempotency lớp 2.</div>
+</section>
+
+<!-- ═══════════ 6 ═══════════ -->
+<section id="s6">
+<h2>6 · Scheduler nội bộ — <code>AlertScheduler</code> (ShedLock, bật bằng <code>alerting.enabled</code>)</h2>
+<table>
+<tr><th>Nhịp</th><th>Cron</th><th>Việc</th><th>Logic chính</th></tr>
+<tr><td><code>runRenotifyAndWatchdog</code></td><td>5 phút<br><code>alerting-renotify</code></td><td><b>renotifyOverdue</b></td><td>Lấy episode mở có last_notified_at cũ → lọc: hộ tắt mã → bỏ; rule.renotify NULL (info) → bỏ; chưa đủ hạn rule hiệu lực (critical 120' / warning 360' / kin niên 10080') → bỏ. Đủ: notify_count++ → publish → push theo policy → budget nếu push thật.</td></tr>
+<tr><td></td><td></td><td><b>watchdogStale</b></td><td>Episode mở mà <code>last_evaluated_at</code> cũ hơn <code>watchdog-days</code> (7 ngày) → <b>đóng im lặng</b> như mồ côi. Ngoại lệ: MILESTONE (maint_due) chưa ACK — <b>không đóng</b> (nó chờ con người, không chờ dữ liệu). <i>Giả định theo câu mở #33.</i></td></tr>
+<tr><td><code>runMilestonesAndBatchScan</code></td><td>15 phút<br><code>alerting-batch-scan</code></td><td><b>scanMilestones</b></td><td><code>maint_due</code>: đủ 6 tháng từ <code>installed_at</code> (siết cọc) hoặc 4.000h vận hành (derive từ độ phủ <code>inverter_rt</code>) → mở MILESTONE episode (instance = loại việc). Đóng bằng ACK (ALR-06); <b>chu kỳ kế tính từ <code>ack_at</code></b> (#31). Cột DB trống → im lặng an toàn (#24).</td></tr>
+<tr><td></td><td></td><td><b>scanBatches</b></td><td><code>batch_issue</code>: gom episode mở theo <code>household_asset.order_code</code> (thiếu → không thuộc lô — im lặng) → 5 bộ phát hiện (≥30% offline/24h, ≥20% lỗi/7 ngày, ≥3 cùng lỗi/72h, ≥3 cùng firmware, lô &lt; 90 ngày tới hạn bảo hành) → episode nội bộ vào <b>hàng chờ ALR-07</b> — KHÔNG push hộ; admin duyệt + soạn title/nội dung rồi gửi broadcast (ALR-09).</td></tr>
+</table>
+<div class="note">Hai việc trong nhịp 15 phút chạy <b>độc lập</b> (<code>runScanIsolated</code>): một việc ném exception thì việc kia vẫn chạy — lỗi được nuốt + log ERROR đầy đủ, không cuốn giết cả nhịp.</div>
+</section>
+
+<!-- ═══════════ 7 ═══════════ -->
+<section id="s7">
+<h2>7 · Rule &amp; công tắc hộ (v2.4)</h2>
+<div class="two-col">
+<div class="mini"><h4>Rule toàn hệ thống — <code>alerting.alert_rule</code></h4>
+<div class="flow">tín hiệu mã X
+  ▼
+rule DB của X (1 dòng/mã, admin sửa)
+  ├── có &amp; enabled → dùng params/recover/sustain/
+  │     window/renotify/cooldown/max_pushes/mute
+  └── thiếu dòng / mã lạ
+        └─► <span class="y">fallback hard-code AlertCode.RuleDefaults</span>
+             (khớp seed V22 — "an toàn, không im lặng bất thường")</div>
+<p class="desc">Validate: <code>renotify</code> = NULL hoặc ≥ 30 phút (#30). <code>window_cron</code> = khung <code>[start, end)</code> giờ local hộ (#35): "11h–13h" = <code>0 11-12 * * *</code>, hết khung tự đóng im lặng.</p></div>
+<div class="mini"><h4>Công tắc nhận thông báo — <code>alerting.household_alert_setting</code></h4>
+<div class="flow">hộ × alert_code → enabled
+  · <span class="d">vắng dòng = BẬT</span> (#42 — hộ mới không cần seed)
+  · chỉ OWNER/ADMIN hộ được toggle (#43)
+  · <span class="r">9 MÃ KHÓA — không bao giờ tắt được:</span>
+    5 thuần critical (meter_comm_lost, grid_lost_on_battery,
+    eps_overload, pv_zero_at_noon, batt_pack_id_conflict)
+    + 4 loại 2 bậc (batt_low, batt_cell_temp_abnormal,
+    batt_imbalance, batt_soh_abnormal)   <span class="d">(#41)</span>
+  · batch_issue: locked (nội bộ, không hiện UI hộ)
+  · API chặn ghi false cho mã khóa; engine bỏ qua
+    enable của hộ với mã khóa (luôn gửi)</div></div>
+</div>
+<p class="desc">Snooze (ALR-08): MEMBER trở lên bấm "ẩn nhắc" 1…<code>snooze_max_hours</code> (mặc định 12) — chặn <b>đợt push kế</b> nhưng inbox vẫn ghi theo nhịp renotify; nâng lên critical hoặc tin đóng của critical vẫn xuyên qua ("không im lặng bất thường").</p>
+</section>
+
+<!-- ═══════════ 8 ═══════════ -->
+<section id="s8">
+<h2>8 · Timeline thực tế — mất lưới 10 tiếng, pin yếu dần (đúng code)</h2>
+<div class="flow">
+<span class="b">14:02</span>  CB: grid_present=false → RAISED grid_lost_on_battery (critical)
+         → OPENED → policy: critical, không snooze/mute/budget-vượt → <span class="badge b-push">PUSH 1/3</span>
+         (budget riêng episode này: push_count=1)
+
+<span class="b">16:40</span>  CB: soc xuống 20% → RAISED batt_low (warning, episode MỚI — budget riêng)
+         → OPENED → <span class="badge b-push">PUSH 1/3</span> (push_count=1)
+
+<span class="b">18:05</span>  CB: soc xuống 10% → ESCALATED batt_low lên critical
+         → mức mới outranks → ESCALATED outcome
+         → policy: cách push cuối (16:40) chỉ 1h25' &lt; 2h → <span class="badge b-inbox">INBOX</span>
+           <span class="d">(escalated-within-2h — KHÔNG tốn budget, push_count vẫn 1)</span>
+
+<span class="b">20:10</span>  scheduler renotify: last_notified (18:05) + 120' (critical) ≤ now
+         → RENOTIFIED → policy: cách push cuối 3h30' ≥ 2h, budget 1/3 &lt; 3
+         → <span class="badge b-push">PUSH 2/3</span> (push_count=2)
+
+<span class="b">21:30</span>  user bấm "Ẩn nhắc 6h" → snooze_until = 03:30
+         → mọi lượt sau <span class="badge b-inbox">INBOX</span> tới 03:30 (trừ nâng critical sau 2h / tin đóng)
+
+<span class="b">23:58</span>  CB: lưới về ≥185V ổn định 60s → CLEARED grid_lost_on_battery
+         → CLOSED → policy: episode critical → <span class="badge b-push">PUSH</span> cleared-critical-no-budget
+           <span class="d">(không tốn budget — tin đóng của critical luôn được push)</span>
+
+KẾT QUẢ: 4 push / 10 tiếng (~6.000 mẫu dữ liệu) — inbox đầy đủ từng bước, badge đúng.
+</div>
+</section>
+
+<!-- ═══════════ 9 ═══════════ -->
+<section id="s9">
+<h2>9 · Bảng outcome — mọi nhánh máy trạng thái</h2>
+<table>
+<tr><th>Outcome</th><th>Ý nghĩa</th><th>Episode</th><th>Notification</th><th>Push policy</th></tr>
+<tr><td><code>OPENED</code></td><td>mở episode mới (RAISED/ESCALATED khi chưa có)</td><td>mở</td><td>có</td><td>nhánh raised — tốn budget</td></tr>
+<tr><td><code>OPENED_ONESHOT</code></td><td>ONESHOT (pin đầy): phát xong tự đóng ngay</td><td>đóng</td><td>có</td><td>info → inbox-only</td></tr>
+<tr><td><code>ESCALATED</code></td><td>nâng bậc trong episode đang mở</td><td>mở (severity mới)</td><td>có</td><td>2h rule, KHÔNG tốn budget</td></tr>
+<tr><td><code>RENOTIFIED</code></td><td>nhắc lại khi còn kéo dài (tín hiệu lặp / scheduler)</td><td>mở</td><td>có</td><td>nhánh raised — tốn budget</td></tr>
+<tr><td><code>CLOSED</code></td><td>CLEARED khi có episode mở</td><td>đóng</td><td>có</td><td>critical → push free; khác → inbox</td></tr>
+<tr><td><code>ORPHAN_CLOSED</code></td><td>CLEARED mà RAISED đã bị TTL bỏ — ghi audit im lặng</td><td>đóng (mới)</td><td>không</td><td>—</td></tr>
+<tr><td><code>SUPPRESSED_COOLDOWN</code></td><td>2 đợt phát gần hơn cooldown</td><td>—</td><td>không</td><td>—</td></tr>
+<tr><td><code>SUPPRESSED_RENOTIFY</code></td><td>RAISED lặp chưa đủ hạn nhắc</td><td>mở (refresh bằng chứng)</td><td>không</td><td>—</td></tr>
+<tr><td><code>IGNORED_DISABLED</code></td><td>rule toàn hệ thống tắt</td><td>—</td><td>không</td><td>—</td></tr>
+<tr><td><code>IGNORED_NO_ESCALATION</code></td><td>ESCALATED mà mức không cao hơn</td><td>mở</td><td>không</td><td>—</td></tr>
+<tr><td><code>IGNORED_HOUSEHOLD_DISABLED</code></td><td>hộ tắt mã không khóa (RAISED/ESCALATED)</td><td>—</td><td>không</td><td>—</td></tr>
+<tr><td><code>DUPLICATE</code></td><td>messageId đã xử lý (Kafka giao trùng)</td><td>—</td><td>không</td><td>—</td></tr>
+</table>
+<p class="desc"><code>notificationWorthy()</code> = {OPENED, OPENED_ONESHOT, ESCALATED, RENOTIFIED, CLOSED} — 5 outcome đi vào fanOut + push policy; còn lại chỉ episode/audit/metric.</p>
+</section>
+
+<div class="footer">Logic business · đối chiếu commit 4aef4f5 · 14/10/2026 · cùng folder: spec-canh-bao-v2.html (spec) · 08-tu-dien-truong-du-lieu.md (schema) · 04-kafka-message-contract.md (hợp đồng message)</div>
+</div>
+</body>
+</html>
